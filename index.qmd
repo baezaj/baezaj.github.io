@@ -1,11 +1,20 @@
 ---
-title: "baezaj.github.io"
+title: "About Me"
+about:
+  id: me
+  template: broadside
+  image: img/Josue_bitmoji.png
+  image-shape: round
 ---
 
-This is a Quarto website.
+:::{#me}
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+## Goals
 
-```{r}
-1 + 2
-```
+## Education
+
+## Experience
+
+:::
+
+Website is under construction. Check back again soon!

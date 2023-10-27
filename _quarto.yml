@@ -1,20 +1,27 @@
 project:
   type: website
   output-dir: docs
-
+  
 website:
-  title: "baezaj.github.io"
+  title: "My Personal website"
   navbar:
     left:
       - href: index.qmd
         text: Home
+      - projects.qmd
       - about.qmd
+    tools:
+      - icon: twitter
+        href: https://twitter.com/
+      - icon: github
+        href: https://github.com/baezaj/baezaj.github.io
+  page-footer:
+    right: "Built with [Quarto](https://quarto.org/)"
+    left: "&copy; Copyright 2023, Josue Baeza"
 
 format:
   html:
-    theme: cosmo
-    css: styles.css
+    theme: cerulean
     toc: true
 
-
-
+editor: source
