@@ -8,8 +8,10 @@ website:
     left:
       - href: index.qmd
         text: Home
-      - projects.qmd
       - about.qmd
+      - href: Baeza_cv.pdf
+        text: CV
+      - projects.qmd
     tools:
       - icon: twitter
         href: https://twitter.com/
