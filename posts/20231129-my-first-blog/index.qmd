@@ -4,7 +4,7 @@ description: "blog post description (appears underneath the title in smaller tex
 author:
   - name: Josue Baeza
     url: https://baezaj.github.io/
-    orcid: 0000-0002-5300-3075
+    orcid: 0000-0003-4960-3905
 date: 11-29-2023
 categories: [Quarto, R] # self-defined categories
 image: bucky.gif
