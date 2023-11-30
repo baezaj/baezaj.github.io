@@ -1,20 +1,51 @@
 ---
-title: "About Me"
+title: "Josue Baeza"
+format:
+  html:
+    page-layout: full
+    toc: false
 about:
-  id: me
-  template: broadside
+  template: trestles
   image: img/Josue_bitmoji.png
-  image-shape: round
+  image-shape: rectangle
+  image-width: 20em
+  links:
+    - icon: envelope
+      text: e-mail
+      href: mailto:baezaj83@gmail.com
+    - icon: github
+      text: GitHub
+      href: https://github.com/baezaj
+    - icon: bluesky
+      text: Bluesky
+      href: https://bsky.app/profile/josuebaeza.bsky.social
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/baezaj/
 ---
 
-:::{#me}
+# Biography
 
-## Goals
+I'm an analytical biochemist working in drug development. 
 
-## Education
+::: columns
+::: column
+### Interests
 
-## Experience
+-   Mass Spectrometry
+-   Proteomics
+-   Data analysis in R
+-   Reproducible research
+-   Parenting
+:::
 
+::: column
+### Education
+
+-   Postdoc in Biochemistry & Biophysics, University of Pennsylvania
+-   PhD in Biomolecular Chemistry, University of Wisconsin-Madison
+-   BS in Biology, University of Texas Permian Basin
+:::
 :::
 
 Website is under construction. Check back again soon!
