@@ -1,0 +1,31 @@
+---
+title: "Blog"
+format:
+  html:
+    page-layout: full
+listing:
+  contents: posts # all Quarto docs in the `posts` directory will be included on your listing page
+  sort: "date desc" # can also sort on more than one field
+  type: default # or `default` or `table`; each type has its own set of yaml options to include
+  categories: true # allows you to sort posts by assigned categories 
+  feed: true
+---
+
+
+```{r}
+#| include: false
+
+#write _redirects so old links still work.  From: https://blog.djnavarro.net/posts/2022-04-20_porting-to-quarto/
+posts <- list.dirs(
+  here::here("posts"),
+  full.names = FALSE,
+  recursive = FALSE
+)
+#get slugs from dir names
+slugs <- gsub("^\\d{4}-\\d{2}-\\d{2}-", "", posts)
+
+redirects <- paste0("/post/", slugs, " ", "/posts/", posts)
+
+writeLines(redirects, here::here("_site", "_redirects"))
+
+```

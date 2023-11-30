@@ -7,5 +7,29 @@
   },
   "projects.qmd": {
     "projects.html": "b8216839"
+  },
+  "blog.qmd": {
+    "blog.html": "782dba13"
+  },
+  "posts/about.qmd": {
+    "about.html": "10cb4a35"
+  },
+  "posts/index.qmd": {
+    "index.html": "7aead68c"
+  },
+  "posts/posts/post-with-code/index.qmd": {
+    "index.html": "4f37d3d8"
+  },
+  "posts/posts/welcome/index.qmd": {
+    "index.html": "ca64a4e1"
+  },
+  "posts/post-with-code/index.qmd": {
+    "index.html": "7b26335f"
+  },
+  "posts/welcome/index.qmd": {
+    "index.html": "5b431f8b"
+  },
+  "posts/20231129-my-first-blog/index.qmd": {
+    "index.html": "5d8dae40"
   }
 }
