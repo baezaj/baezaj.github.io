@@ -1,6 +1,12 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
 # baezaj.github.io
-my personal website
 
+<!-- badges: start -->
+<!-- badges: end -->
 
+This repository is where I keep all things related to [my
+website](https://baezaj.github.io/)
 
-*This repo was initially generated from a Quarto template available here: https://github.com/jtr13/website-template.*
+![](img/Josue_bitmoji.png)
