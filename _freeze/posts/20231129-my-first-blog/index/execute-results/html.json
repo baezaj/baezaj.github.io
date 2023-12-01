@@ -1,8 +1,10 @@
 {
-  "hash": "c15d97dcced0c481c1dfebe15ad0eacd",
+  "hash": "d339fe61107bf1528207718724818ff8",
   "result": {
-    "markdown": "---\ntitle: \"My First Blog Post\"\ndescription: \"blog post description (appears underneath the title in smaller text) which is included on the listing page\"\nauthor:\n  - name: Josue Baeza\n    url: https://baezaj.github.io/\n    orcid: 0000-0002-5300-3075\ndate: 11-29-2023\ncategories: [Quarto, R] # self-defined categories\nimage: bucky.gif\ndraft: false # setting this to `true` will prevent your post from appearing on your listing page until you're ready!\n---\n\n\nThis blog was inspired by [this post](https://samanthacsik.github.io/posts/2022-10-24-quarto-blogs/)\n\n\n::: {.cell}\n\n```{.r .cell-code}\n1 + 1\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 2\n```\n:::\n:::\n",
-    "supporting": [],
+    "markdown": "---\ntitle: \"My First Blog Post\"\ndescription: \"This is my first blog post. I finally did it!\"\nauthor:\n  - name: Josue Baeza\n    url: https://baezaj.github.io/\n    orcid: 0000-0003-4960-3905\ndate: 11-29-2023\ncategories: [Quarto, R] # self-defined categories\n# image: \ndraft: false # setting this to `true` will prevent your post from appearing on your listing page until you're ready!\n---\n\n\nI've always been talkig about starting a blog. Well I finally sat down to figure it out. I followed much of the information found in this [post](https://samanthacsik.github.io/posts/2022-10-24-quarto-blogs/)\n\n\nNow to include some executable code...\n\n\n\n\n::: {.cell}\n\n```{.r .cell-code  code-fold=\"true\"}\niris %>% \n  ggplot(aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +\n  geom_point() +\n  theme_classic(base_size = 18) +\n  coord_fixed()\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/Iris data-1.png){width=672}\n:::\n:::\n",
+    "supporting": [
+      "index_files"
+    ],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],

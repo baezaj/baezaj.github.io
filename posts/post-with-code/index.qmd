@@ -2,8 +2,9 @@
 title: "Post With Code"
 author: "Harlow Malloc"
 date: "2023-11-29"
-categories: [news, code, analysis]
+categories: [R, Quarto]
 image: "image.jpg"
+draft: true
 ---
 
 This is a post with executable code.

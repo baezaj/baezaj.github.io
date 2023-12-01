@@ -1,17 +1,39 @@
 ---
 title: "My First Blog Post"
-description: "blog post description (appears underneath the title in smaller text) which is included on the listing page"
+description: "This is my first blog post. I finally did it!"
 author:
   - name: Josue Baeza
     url: https://baezaj.github.io/
     orcid: 0000-0003-4960-3905
 date: 11-29-2023
 categories: [Quarto, R] # self-defined categories
-image: bucky.gif
+# image: 
 draft: false # setting this to `true` will prevent your post from appearing on your listing page until you're ready!
 ---
 
-This blog was inspired by this [post](https://samanthacsik.github.io/posts/2022-10-24-quarto-blogs/)
+I've always been talkig about starting a blog. Well I finally sat down to figure it out. I followed much of the information found in this [post](https://samanthacsik.github.io/posts/2022-10-24-quarto-blogs/)
 
 
+Now to include some executable code...
+
+```{r setup}
+#| include: false
+
+library(tidyverse)
+
+
+```
+
+```{r}
+#| label: Iris data
+#| code-fold: true
+
+iris %>% 
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +
+  geom_point() +
+  theme_classic(base_size = 18) +
+  coord_fixed()
+
+
+```
 
