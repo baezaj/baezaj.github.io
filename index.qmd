@@ -24,7 +24,7 @@ about:
       href: https://www.linkedin.com/in/baezaj/
 ---
 
-# Biography
+# About me
 
 I'm an analytical biochemist working in drug development. 
 
@@ -34,15 +34,14 @@ I'm an analytical biochemist working in drug development.
 
 -   Mass Spectrometry
 -   Proteomics
--   Data analysis in R
--   Reproducible research
+-   Data Analysis in R
+-   Reproducible Research
 -   Parenting
 :::
 
 ::: column
 ### Education
 
--   Postdoc in Biochemistry & Biophysics, University of Pennsylvania
 -   PhD in Biomolecular Chemistry, University of Wisconsin-Madison
 -   BS in Biology, University of Texas Permian Basin
 :::
