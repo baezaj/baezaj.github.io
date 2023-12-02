@@ -25,7 +25,7 @@
     "href": "posts/20231129-my-first-blog/index.html",
     "title": "My First Blog Post",
     "section": "",
-    "text": "I’ve always been talkig about starting a blog. Well I finally sat down to figure it out. I followed much of the information found in this post\nNow to include some executable code…\n\n\nCode\niris %&gt;% \n  ggplot(aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +\n  geom_point() +\n  theme_classic(base_size = 18) +\n  coord_fixed()"
+    "text": "For the past two years, I’ve been talking about starting a personal wesbite. This past week, I finally did by following this tutorial\nTo add a blog to the new website, I followed much of the information found in this post\nVoila, a new website.\nNow to include some executable code…\n\n\nCode\niris %&gt;% \n  ggplot(aes(x = Sepal.Length, y = Sepal.Width, color = Species)) +\n  geom_point() +\n  theme_classic(base_size = 18) +\n  coord_fixed()"
   },
   {
     "objectID": "projects.html#project-2",
