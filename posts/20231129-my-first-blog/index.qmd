@@ -1,6 +1,6 @@
 ---
 title: "My First Blog Post"
-description: "This is my first blog post. I finally did it!"
+description: "I created a website. Now, let me blog about it!"
 author:
   - name: Josue Baeza
     url: https://baezaj.github.io/
