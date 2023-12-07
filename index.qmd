@@ -29,6 +29,7 @@ about:
 I'm an analytical biochemist working in drug development. 
 
 ::: columns
+
 ::: column
 ### Interests
 
@@ -36,7 +37,7 @@ I'm an analytical biochemist working in drug development.
 -   Proteomics
 -   Data Analysis in R
 -   Reproducible Research
--   Parenting
+-   BBQ
 :::
 
 ::: column
@@ -45,6 +46,7 @@ I'm an analytical biochemist working in drug development.
 -   PhD in Biomolecular Chemistry, University of Wisconsin-Madison
 -   BS in Biology, University of Texas Permian Basin
 :::
+
 :::
 
 Website is under construction. Check back again soon!
