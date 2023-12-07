@@ -1,0 +1,354 @@
+---
+title: "DIA window placement"
+description: "What is this optimization feature?"
+author:
+  - name: Josue Baeza
+    url: https://josuebaeza.com/
+    orcid: 0000-0003-4960-3905
+date: 11-29-2023
+date-modified: last-modified
+categories: [Mass Spectrometry, DIA] # self-defined categories
+# image: 
+toc: true
+toc-location: left
+toc-expand: true
+draft: true 
+---
+
+
+
+
+```{r setup}
+#| label: Setup
+#| include: false
+
+knitr::opts_chunk$set(echo = TRUE, fig.width = 10)
+
+library(tidyverse)
+library(rio)
+library(readxl)
+library(patchwork)
+library(kableExtra)
+source("../../../../r-mass-spectrometry-tools/bin/import_fasta_as_df.R")
+source("../../../../r-mass-spectrometry-tools/bin/digest_aa_sequence.R")
+source("../../../../r-mass-spectrometry-tools/bin/Calculate_monoisotopic_mass.R")
+
+```
+
+### Importing data
+
+* Human fasta file
+* Acetyl Spectral library (from [Baeza et.al. 2020](https://pubs.acs.org/doi/10.1021/acs.jproteome.0c00088))
+* Precursor isolation windows
+
+```{r Data import}
+#| label: Data Import
+
+
+
+# Human fasta file
+hu_fasta <- import_fasta_as_df("../../../../../Garcia_Lab/Data/Fasta_Files/Human/Human_Uniprot_20190821_20416entries.fasta")
+
+# acetylation stoichiometry spectral library
+ack_speclib <- import("../../../../../Garcia_Lab/Data/Proteomics/Acetylation_Encylcopedia/data/Hek_stoich_curve_HPRP (inflated).tsv")
+
+# window placement
+optimal_windows_proteome <- read_xlsx("../../../../../Garcia_Lab/Data/Methods/DIA/DIA_HFX_Proteome_Isolation_windows_400_1000_mz.xlsx", sheet = 1)
+
+
+```
+
+#### Global functions
+
+```{r}
+#| label: document functions
+
+# Digesting protein
+digest_argc <- function(sequence){
+  
+  tryCatch(
+    digest_aa_sequence(sequence, enzyme = "arg.c", missed = 0)$peptide,
+    error = function(e) NA,
+    warning = function(w) NA
+    )
+}
+
+# Digesting protein
+digest_tryp <- function(sequence){
+  
+  tryCatch(
+    digest_aa_sequence(sequence, enzyme = "trypsin", missed = 0)$peptide,
+    error = function(e) NA,
+    warning = function(w) NA
+    )
+}
+
+```
+
+```{r}
+
+min_pep_len <- 7
+proton <- 1.007276466
+
+```
+
+
+### *In-silico* digest of the human proteome
+
+I am digesting the complete human fasta file using trypsin cleavage rules. This is a list of all possible tryptic peptides with a charge state of 2 or 3 and at least `r min_pep_len` amino acid residues.
+
+```{r}
+
+# Digesting human proteome
+# filtering for a minimum peptide length
+hu_prot <- hu_fasta %>% 
+  mutate(peptide = map(ProteinSequence, digest_tryp)) %>% # digesting proteome TAKES A LONG TIME!
+  unnest(peptide) %>% 
+  select(-ProteinSequence) %>% 
+  mutate(pep_len = nchar(peptide)) %>% # Counting peptide length
+  filter(pep_len >= min_pep_len) # Filtering for peptide size
+
+# Calculating monoisotopic mass
+# All lysines have acetyl modification
+hu_prot <- hu_prot %>% 
+  mutate(monoisotopic_mass = calculate_monoisotopic_mass(peptide, IAA = TRUE, AcK = FALSE))
+
+# Calculating most likely charge state based on R|H + 1
+hu_prot$z <- sapply(hu_prot$peptide, function(x){
+  length(unlist(gregexpr("K|R|H", x))) + 1 # For N-terminus
+})
+
+# calculating precursor m/z
+# assuming z=2; z=3
+hu_prot <- hu_prot %>% 
+  filter(z == 2 | z == 3) %>% 
+  mutate(precursor_mz = (monoisotopic_mass + (z * proton)) / z)
+
+
+```
+
+### *In-silico* digest of the acetyl proteome
+
+In this step, I am adding an acetyl modification to every lysine residue and digesting the complete human proteome using the Arg-C digest rules. Acetylation on lysine residues prevents the proteolytic digestion by trypsin. Therefore only the arginine residues are used for digestion. 
+
+```{r}
+
+# Acetylation mass
+ack_d0_mass <- 42.010565
+ack_d3_mass <- 42.010565 - 3*(1.007825) + 3*(2.014102) 
+
+# Digesting human proteome
+# Filtering for lysine containing peptides
+# filtering for a minimum peptide length
+hu_acetyl <- hu_fasta %>% 
+  mutate(peptide = map(ProteinSequence, digest_argc)) %>% 
+  unnest(peptide) %>% 
+  select(-ProteinSequence) %>% 
+  mutate(k_count = str_count(peptide, "K"),
+         pep_len = nchar(peptide)) %>% 
+  filter(k_count > 0,
+         pep_len >= min_pep_len)
+
+# Calculating monoisotopic mass
+# All lysines have acetyl modification - either light (non-isotopic) or D3-Acetyl
+hu_acetyl <- hu_acetyl %>% 
+  mutate(Ack_D0 = calculate_monoisotopic_mass(peptide, IAA = TRUE, AcK = TRUE),
+         AcK_D3 = Ack_D0 - k_count*ack_d0_mass + k_count*ack_d3_mass) %>% 
+  gather(isotope, monoisotopic_mass, Ack_D0, AcK_D3)
+
+# Calculating most likely charge state based on R|H + 1
+hu_acetyl$z <- sapply(hu_acetyl$peptide, function(x){
+  length(unlist(gregexpr("R|H", x))) + 1 # for n-terminus
+})
+
+# calculating precursor m/z
+# assuming z=2; z=3
+hu_acetyl <- hu_acetyl %>% 
+  filter(z == 2 | z == 3) %>% 
+  mutate(precursor_mz = (monoisotopic_mass + (z * proton)) / z)
+
+
+```
+
+
+### Acetyl spectral library cleaning
+
+I have a spectral library that was published in [Baeza et.al. 2020](https://pubs.acs.org/doi/10.1021/acs.jproteome.0c00088). I will also use this spectral library to compare with the human proteome analysis. As a clean up step, I am filtering only for peptides that are acetylated, i.e., contain a lysine residue. 
+
+```{r}
+
+# Filtering for acetyl peptide
+ack_speclib <- ack_speclib %>% 
+  mutate(acetyl = str_detect(ModifiedPeptide, "Acetyl \\(K"),
+         heavy = str_detect(LabeledPeptide, "Acetyl D3")) %>% 
+  filter(acetyl == TRUE)
+
+# Removing duplicate entries
+ack_speclib <- ack_speclib %>% 
+  select(PrecursorCharge, PrecursorMz, StrippedPeptide, ModifiedPeptide, LabeledPeptide,
+         ProteinGroups, acetyl, heavy) %>% 
+  distinct()
+
+```
+
+### Plots
+
+Plotting the number of precursors across the entire *m/z* range. 
+
+```{r}
+
+min_mz <- 300
+max_mz <- 2000
+
+ggplot(hu_prot %>% filter(precursor_mz > min_mz, precursor_mz < max_mz),
+       aes(x = precursor_mz)) +
+  geom_histogram(position = "dodge", binwidth = 10, color = "black", fill = "grey80") +
+  scale_x_continuous(n.breaks = 15) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme_bw(base_size = 14) +
+  labs(title = "Peptide m/z distribution",
+       subtitle = "Tryptic Proteome",
+       y = "Number of precursors",
+       x = "Precursor m/z")
+
+
+```
+
+What's the fraction of precursors covered within a given *m/z* range?
+
+
+```{r}
+
+# Initializing the for-loop
+proteome_coverage <- tibble(index = 1:10,
+                           start_mz = index * 100 + 200,
+                           stop_mz = index * 100 + 800,
+                           percent = NA_integer_)
+
+for (i in seq_along(proteome_coverage$percent)){
+  # Calculating the percentage of peptides withing a given mz range
+  proteome_coverage$percent[i] <- length(which(hu_prot$precursor_mz > proteome_coverage$start_mz[i] & 
+                                  hu_prot$precursor_mz < proteome_coverage$stop_mz[i])) / 
+    nrow(hu_prot)
+}
+
+# Rendered table
+proteome_coverage %>% 
+  select(-index) %>%
+  kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+```
+
+
+```{r}
+
+ggplot(hu_acetyl %>% filter(precursor_mz > min_mz, precursor_mz < max_mz),
+       aes(x = precursor_mz)) +
+  geom_histogram(position = "dodge", binwidth = 10, color = "black", fill = "grey80") +
+  scale_x_continuous(n.breaks = 15) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme_bw(base_size = 14) +
+  labs(title = "Peptide m/z distribution",
+       subtitle = "Acetyl Proteome",
+       y = "Number of precursors",
+       x = "Precursor m/z")
+
+
+```
+
+The peptides represented in this plot contains multiple lysine groups. Let's group the histogram by the number of lysines. 
+
+```{r}
+
+ggplot(hu_acetyl %>% filter(precursor_mz > min_mz, precursor_mz < max_mz, k_count <= 4),
+       aes(x = precursor_mz)) +
+  geom_histogram(position = "dodge", binwidth = 10, color = "black", fill = "grey80") +
+  scale_x_continuous(n.breaks = 15) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme_bw(base_size = 14) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(~k_count, nrow = 2) +
+  labs(title = "Peptide m/z distribution",
+       subtitle = "Acetyl Proteome",
+       y = "Number of precursors",
+       x = "Precursor m/z")
+
+
+```
+
+When calculating the percentage of precursors within a given *m/z* range, I am going to limit the search to peptides with one or two lysines. 
+
+```{r}
+
+hu_acetyl_filtered <- hu_acetyl %>% 
+  filter(k_count <= 2,
+         precursor_mz <= 2000,
+         precursor_mz >= 300)
+
+# Initializing the for-loop
+acetyl_prot_coverage <- tibble(index = 1:10,
+                           start_mz = index * 100 + 200,
+                           stop_mz = index * 100 + 800,
+                           percent = NA_integer_)
+
+for (i in seq_along(acetyl_prot_coverage$percent)){
+  # Calculating the percentage of peptides withing a given mz range
+  acetyl_prot_coverage$percent[i] <- length(which(hu_acetyl_filtered$precursor_mz > acetyl_prot_coverage$start_mz[i] &
+                                                  hu_acetyl_filtered$precursor_mz < acetyl_prot_coverage$stop_mz[i])) / nrow(hu_acetyl_filtered)
+}
+
+# Rendered table
+acetyl_prot_coverage%>% 
+  select(-index) %>% 
+  kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover"))
+
+```
+
+
+
+```{r, fig.height = 12}
+
+mz1 <- 640
+mz2 <- 650
+
+# Human proteome (Trypsin)
+g1 <- ggplot(hu_prot %>% filter(precursor_mz >= mz1 & precursor_mz <= mz2)) +
+  geom_histogram(aes(x = precursor_mz), binwidth = 0.025, color = "black", fill = "grey80") +
+  geom_vline(data = optimal_windows_proteome %>% filter(start_mz >= mz1 & start_mz <= mz2), 
+             aes(xintercept = start_mz), color = "black") +
+  theme_bw(base_size = 14) +
+  scale_x_continuous(n.breaks = 10) +
+    labs(title = "Tryptic Proteome",
+         subtitle = "in silico digest",
+         x = "Precursor m/z")
+
+# Acetyl proteome (Arg-C)
+g2 <- ggplot(hu_acetyl %>% filter(precursor_mz >= mz1 & precursor_mz <= mz2)) +
+  geom_histogram(aes(x = precursor_mz, fill = isotope), binwidth = 0.025, color = "black") +
+  geom_vline(data = optimal_windows_proteome %>% filter(start_mz >= mz1 & start_mz <= mz2), 
+             aes(xintercept = start_mz), color = "black") +
+  theme_bw(base_size = 14) +
+  scale_x_continuous(n.breaks = 10) +
+    labs(title = "Acetyl Proteome",
+         subtitle = "in silico digest",
+         x = "Precursor m/z")
+
+# Acetyl Spectral library
+g3 <- ggplot(ack_speclib %>% filter(PrecursorMz >= mz1 & PrecursorMz <= mz2, PrecursorCharge < 4)) +
+  geom_histogram(aes(x = PrecursorMz), binwidth = 0.025, fill = "#2b8cbe", color = "black") +
+  geom_vline(data = optimal_windows_proteome %>% filter(start_mz >= mz1 & start_mz <= mz2), 
+             aes(xintercept = start_mz), color = "black") +
+  theme_bw(base_size = 14) +
+  scale_x_continuous(n.breaks = 10) +
+    labs(title = "Acetyl Spectral library",
+         subtitle = "Baeza et.al. JPR 2020",
+         fill = "Charge",
+         x = "Precursor m/z")
+
+# Rendering all three plots
+g1 / g2 / g3 + plot_annotation(title = 'DIA Window placement')
+
+```
+
