@@ -11,11 +11,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-# baezaj.github.io
+# Josue Baeza
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-This repository is where I keep all things related to [my website](https://baezaj.github.io/)
+This repository is where I keep all things related to [my personal website](https://josuebaeza.com/)
 
 ![](img/Josue_bitmoji.png)
