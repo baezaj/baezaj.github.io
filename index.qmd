@@ -16,7 +16,7 @@ about:
     - icon: github
       text: GitHub
       href: https://github.com/baezaj
-    - icon: bluesky
+    - icon: cloud
       text: Bluesky
       href: https://bsky.app/profile/josuebaeza.bsky.social
     - icon: linkedin
