@@ -18,7 +18,7 @@ website:
         text: Blog
       - href: Baeza_cv.pdf
         text: CV
-      # - projects.qmd
+      - publications.qmd
     tools:
       - icon: twitter
         href: https://twitter.com/

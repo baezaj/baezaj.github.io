@@ -1,0 +1,61 @@
+---
+title: "Publications"
+editor: 
+  wrap: 72
+---
+
+```{r}
+#| label: Setup
+#| include: false
+
+
+library(tidyverse)
+library(scholar)
+library(glue)
+
+```
+
+```{r}
+#| label: Fetching publications
+#| echo: false
+
+
+# Retreiving citations from google scholar
+pubs <- get_publications("lIYgwaYAAAAJ")
+
+# Getting complete author list
+pubs$author <- unlist(lapply(pubs$pubid, function(x){
+  get_complete_authors("lIYgwaYAAAAJ", x)
+}))
+
+# Getting publication url
+pubs$url <- unlist(lapply(pubs$pubid, function(x){
+  get_publication_url("lIYgwaYAAAAJ", x)
+}))
+
+# Removing my thesis
+pubs <- pubs %>% 
+  filter(pubid != "Y0pCki6q_DkC")
+
+
+
+```
+
+```{r}
+#| include: true
+#| results: asis
+#| echo: false
+
+
+pubs %>%
+  arrange(-year) %>% 
+  mutate(author = str_replace_all(author, pattern = "J Baeza", replacement = "**J Baeza**"),
+         title = str_remove_all(title, "\\*")) %>% 
+  glue_data("{author}, ({year}). {title}. *{journal}*, {number}. \n\n") %>%
+  print()
+
+
+```
+
+
+♦ This article was selected as a Paper of the Week.
