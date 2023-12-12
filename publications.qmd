@@ -1,7 +1,5 @@
 ---
 title: "Publications"
-editor: 
-  wrap: 72
 ---
 
 ```{r}
