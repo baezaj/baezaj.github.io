@@ -31,11 +31,15 @@ pubs$url <- unlist(lapply(pubs$pubid, function(x){
   get_publication_url("lIYgwaYAAAAJ", x)
 }))
 
-# Removing my thesis
+# Removing my thesis from the list
 pubs <- pubs %>% 
   filter(pubid != "Y0pCki6q_DkC")
 
-
+# Manual edit of kNdYIx-mwKoC
+pubid <- "kNdYIx-mwKoC" # bioRxiv preprint from 2018
+pubs$journal[pubs$pubid == pubid] <- "bioRxiv"
+pubs$url[pubs$pubid == pubid] <- "https://www.biorxiv.org/content/10.1101/472530v3"
+pubs$number[pubs$pubid == pubid] <- "472530"
 
 ```
 
@@ -49,7 +53,7 @@ pubs %>%
   arrange(-year) %>% 
   mutate(author = str_replace_all(author, pattern = "J Baeza", replacement = "**J Baeza**"),
          title = str_remove_all(title, "\\*")) %>% 
-  glue_data("{author}, ({year}). {title}. *{journal}*, {number}. \n\n") %>%
+  glue_data("{author}, ({year}). {title}. *{journal}*, {number}. [{url}]({url}) \n\n") %>%
   print()
 
 
