@@ -8,9 +8,9 @@
 
 <meta name="author" content="Josue Baeza">
 <meta name="dcterms.date" content="2023-11-29">
-<meta name="description" content="What is this optimization feature?">
+<meta name="description" content="Can we replicate these forbidden zones?">
 
-<title>Josue Baeza - DIA window placement</title>
+<title>Josue Baeza - Understanding “forbidden zones”</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -149,15 +149,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">DIA window placement</h1>
+      <h1 class="title">Understanding “forbidden zones”</h1>
                   <div>
         <div class="description">
-          What is this optimization feature?
+          Can we replicate these forbidden zones?
         </div>
       </div>
                           <div class="quarto-categories">
                 <div class="quarto-category">Mass Spectrometry</div>
                 <div class="quarto-category">DIA</div>
+                <div class="quarto-category">Skyline</div>
               </div>
                   </div>
   </div>
@@ -182,7 +183,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">December 6, 2023</p>
+        <p class="date-modified">December 18, 2023</p>
       </div>
     </div>
       
@@ -214,6 +215,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="gr6_lrg.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">From Pino et.al. (2020)</figcaption>
+</figure>
+</div>
+<p>Ever wondered what this “optimize window placement” feature is for?</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="optimize_window_placement.png" class="img-fluid figure-img" style="width:40.0%"></p>
+<figcaption class="figure-caption">Skyline Screenshot</figcaption>
+</figure>
+</div>
 <section id="importing-data" class="level3">
 <h3 class="anchored" data-anchor-id="importing-data">Importing data</h3>
 <ul>
@@ -375,7 +389,7 @@ Attaching package: 'seqinr'</code></pre>
 <span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Number of precursors"</span>,</span>
 <span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Precursor m/z"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="960"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>What’s the fraction of precursors covered within a given <em>m/z</em> range?</p>
@@ -476,7 +490,7 @@ Attaching package: 'seqinr'</code></pre>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Number of precursors"</span>,</span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Precursor m/z"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="960"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>The peptides represented in this plot contains multiple lysine groups. Let’s group the histogram by the number of lysines.</p>
@@ -494,7 +508,7 @@ Attaching package: 'seqinr'</code></pre>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Number of precursors"</span>,</span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Precursor m/z"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="960"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>When calculating the percentage of precursors within a given <em>m/z</em> range, I am going to limit the search to peptides with one or two lysines.</p>
@@ -628,7 +642,7 @@ Attaching package: 'seqinr'</code></pre>
 <span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Rendering all three plots</span></span>
 <span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>g1 <span class="sc">/</span> g2 <span class="sc">/</span> g3 <span class="sc">+</span> <span class="fu">plot_annotation</span>(<span class="at">title =</span> <span class="st">'DIA Window placement'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="960"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 

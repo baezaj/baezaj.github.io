@@ -1,13 +1,13 @@
 ---
-title: "DIA window placement"
-description: "What is this optimization feature?"
+title: "Understanding \"forbidden zones\""
+description: "Can we replicate them from scratch?"
 author:
   - name: Josue Baeza
     url: https://josuebaeza.com/
     orcid: 0000-0003-4960-3905
 date: 11-29-2023
 date-modified: last-modified
-categories: [Mass Spectrometry, DIA] # self-defined categories
+categories: [Mass Spectrometry, DIA, Skyline] # self-defined categories
 # image: 
 toc: true
 toc-location: left
@@ -15,14 +15,20 @@ toc-expand: true
 draft: true 
 ---
 
+![From Pino et.al. (2020)](gr6_lrg.jpg)
+
+Ever wondered what this "optimize window placement" feature is for? 
+
+![Skyline Screenshot](optimize_window_placement.png){width=40%}
+
+
+
 
 
 
 ```{r setup}
 #| label: Setup
 #| include: false
-
-knitr::opts_chunk$set(echo = TRUE, fig.width = 10)
 
 library(tidyverse)
 library(rio)
