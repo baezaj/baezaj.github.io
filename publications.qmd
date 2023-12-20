@@ -51,9 +51,10 @@ pubs$number[pubs$pubid == pubid] <- "472530"
 
 pubs %>%
   arrange(-year) %>% 
+  mutate(index = row_number()) %>% 
   mutate(author = str_replace_all(author, pattern = "J Baeza", replacement = "**J Baeza**"),
          title = str_remove_all(title, "\\*")) %>% 
-  glue_data("{author}, ({year}). {title}. *{journal}*, {number}. [{url}]({url}) \n\n") %>%
+  glue_data("{index}. {author}, ({year}). {title}. *{journal}*, {number}. [{url}]({url}) \n\n") %>%
   print()
 
 
