@@ -1,6 +1,6 @@
 ---
 title: "Understanding \"forbidden zones\""
-description: "Can we replicate them from scratch?"
+# description:
 author:
   - name: Josue Baeza
     url: https://josuebaeza.com/
@@ -15,18 +15,37 @@ toc-expand: true
 draft: true 
 ---
 
+# Background
+
+As the saying goes...seeing is believing. This is especially true for me when it came to understanding "forbidden zones" in mass spectrometry-based proteomics. Forbidden zones, described in [Frahm et. al. (2006)](https://doi.org/10.1002/jms.1024), are the areas in the precursor mass range where peptides are not found. A more recent publication describing forbidden zones for DIA method development can be found in [Pino et. al. (2020)](https://doi.org/10.1074/mcp.P119.001913).
+
+![Forbidden Zones described in Pino et.al. (2020)](gr6_lrg.jpg)
+
+Ever wondered what this "optimize window placement" feature in [Skyline](https://skyline.ms/) is for? Yup, DIA window edges are placed exactly in these forbidden zones.
+
+![Skyline Screenshot](optimize_window_placement.png){width="40%"}
+
+But even while I used this feature for DIA window placement, I still didn't understand the reasoning behind it.
+
+The data in this blog was my attempt to understand DIA methods, window placement, and forbidden zones.
+
+# Workflow
+
+```{mermaid}
 
 
-![From Pino et.al. (2020)](gr6_lrg.jpg)
-
-Ever wondered what this "optimize window placement" feature is for? 
-
-![Skyline Screenshot](optimize_window_placement.png){width=40%}
-
-
-
-
-
+flowchart LR
+  A[Fasta\nProteome] --> C[Unmodified]
+  A[Fasta\nProteome] --> D(Acetyl Lysine)
+  C --> E[in silico\ndigest]
+  D --> F(in silico\ndigest)
+  E --> G[calculate\nprecursor m/z]
+  F --> G[calculate\nprecursor m/z]
+  G --> H[m/z distribution]
+  G --> I[Protein coverage]
+  G --> J[Forbidden zones]
+  
+```
 
 ```{r setup}
 #| label: Setup
@@ -45,9 +64,9 @@ source("../../../../r-mass-spectrometry-tools/bin/Calculate_monoisotopic_mass.R"
 
 ### Importing data
 
-* Human fasta file
-* Acetyl Spectral library (from [Baeza et.al. 2020](https://pubs.acs.org/doi/10.1021/acs.jproteome.0c00088))
-* Precursor isolation windows
+-   Human fasta file
+-   Acetyl Spectral library (from [Baeza et.al. 2020](https://pubs.acs.org/doi/10.1021/acs.jproteome.0c00088))
+-   Precursor isolation windows
 
 ```{r Data import}
 #| label: Data Import
@@ -100,7 +119,6 @@ proton <- 1.007276466
 
 ```
 
-
 ### *In-silico* digest of the human proteome
 
 I am digesting the complete human fasta file using trypsin cleavage rules. This is a list of all possible tryptic peptides with a charge state of 2 or 3 and at least `r min_pep_len` amino acid residues.
@@ -137,7 +155,7 @@ hu_prot <- hu_prot %>%
 
 ### *In-silico* digest of the acetyl proteome
 
-In this step, I am adding an acetyl modification to every lysine residue and digesting the complete human proteome using the Arg-C digest rules. Acetylation on lysine residues prevents the proteolytic digestion by trypsin. Therefore only the arginine residues are used for digestion. 
+In this step, I am adding an acetyl modification to every lysine residue and digesting the complete human proteome using the Arg-C digest rules. Acetylation on lysine residues prevents the proteolytic digestion by trypsin. Therefore only the arginine residues are used for digestion.
 
 ```{r}
 
@@ -178,10 +196,9 @@ hu_acetyl <- hu_acetyl %>%
 
 ```
 
-
 ### Acetyl spectral library cleaning
 
-I have a spectral library that was published in [Baeza et.al. 2020](https://pubs.acs.org/doi/10.1021/acs.jproteome.0c00088). I will also use this spectral library to compare with the human proteome analysis. As a clean up step, I am filtering only for peptides that are acetylated, i.e., contain a lysine residue. 
+I have a spectral library that was published in [Baeza et.al. 2020](https://pubs.acs.org/doi/10.1021/acs.jproteome.0c00088). I will also use this spectral library to compare with the human proteome analysis. As a clean up step, I am filtering only for peptides that are acetylated, i.e., contain a lysine residue.
 
 ```{r}
 
@@ -201,7 +218,7 @@ ack_speclib <- ack_speclib %>%
 
 ### Plots
 
-Plotting the number of precursors across the entire *m/z* range. 
+Plotting the number of precursors across the entire *m/z* range.
 
 ```{r}
 
@@ -223,7 +240,6 @@ ggplot(hu_prot %>% filter(precursor_mz > min_mz, precursor_mz < max_mz),
 ```
 
 What's the fraction of precursors covered within a given *m/z* range?
-
 
 ```{r}
 
@@ -248,7 +264,6 @@ proteome_coverage %>%
 
 ```
 
-
 ```{r}
 
 ggplot(hu_acetyl %>% filter(precursor_mz > min_mz, precursor_mz < max_mz),
@@ -265,7 +280,7 @@ ggplot(hu_acetyl %>% filter(precursor_mz > min_mz, precursor_mz < max_mz),
 
 ```
 
-The peptides represented in this plot contains multiple lysine groups. Let's group the histogram by the number of lysines. 
+The peptides represented in this plot contains multiple lysine groups. Let's group the histogram by the number of lysines.
 
 ```{r}
 
@@ -285,7 +300,7 @@ ggplot(hu_acetyl %>% filter(precursor_mz > min_mz, precursor_mz < max_mz, k_coun
 
 ```
 
-When calculating the percentage of precursors within a given *m/z* range, I am going to limit the search to peptides with one or two lysines. 
+When calculating the percentage of precursors within a given *m/z* range, I am going to limit the search to peptides with one or two lysines.
 
 ```{r}
 
@@ -313,8 +328,6 @@ acetyl_prot_coverage%>%
   kable_styling(bootstrap_options = c("striped", "hover"))
 
 ```
-
-
 
 ```{r, fig.height = 12}
 
@@ -359,4 +372,3 @@ g3 <- ggplot(ack_speclib %>% filter(PrecursorMz >= mz1 & PrecursorMz <= mz2, Pre
 g1 / g2 / g3 + plot_annotation(title = 'DIA Window placement')
 
 ```
-
