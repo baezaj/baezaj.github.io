@@ -62,7 +62,7 @@ source("../../../../r-mass-spectrometry-tools/bin/Calculate_monoisotopic_mass.R"
 
 ```
 
-### Importing data
+## Importing data
 
 -   Human fasta file
 -   Acetyl Spectral library (from [Baeza et.al. 2020](https://pubs.acs.org/doi/10.1021/acs.jproteome.0c00088))
@@ -70,7 +70,9 @@ source("../../../../r-mass-spectrometry-tools/bin/Calculate_monoisotopic_mass.R"
 
 ```{r Data import}
 #| label: Data Import
-
+#| include: false
+#| message: false
+#| warning: false
 
 
 # Human fasta file
@@ -89,10 +91,10 @@ optimal_windows_proteome <- read_xlsx("../../../../../Garcia_Lab/Data/Methods/DI
 
 ```{r}
 #| label: document functions
+#| code-fold: true
 
 # Digesting protein
 digest_argc <- function(sequence){
-  
   tryCatch(
     digest_aa_sequence(sequence, enzyme = "arg.c", missed = 0)$peptide,
     error = function(e) NA,
@@ -102,7 +104,6 @@ digest_argc <- function(sequence){
 
 # Digesting protein
 digest_tryp <- function(sequence){
-  
   tryCatch(
     digest_aa_sequence(sequence, enzyme = "trypsin", missed = 0)$peptide,
     error = function(e) NA,
@@ -112,14 +113,18 @@ digest_tryp <- function(sequence){
 
 ```
 
+## Setting global variables
+
 ```{r}
+#| label: Global variables
+
 
 min_pep_len <- 7
 proton <- 1.007276466
 
 ```
 
-### *In-silico* digest of the human proteome
+## *In-silico* digest of the human proteome
 
 I am digesting the complete human fasta file using trypsin cleavage rules. This is a list of all possible tryptic peptides with a charge state of 2 or 3 and at least `r min_pep_len` amino acid residues.
 
@@ -153,7 +158,7 @@ hu_prot <- hu_prot %>%
 
 ```
 
-### *In-silico* digest of the acetyl proteome
+## *In-silico* digest of the acetyl proteome
 
 In this step, I am adding an acetyl modification to every lysine residue and digesting the complete human proteome using the Arg-C digest rules. Acetylation on lysine residues prevents the proteolytic digestion by trypsin. Therefore only the arginine residues are used for digestion.
 
@@ -196,7 +201,7 @@ hu_acetyl <- hu_acetyl %>%
 
 ```
 
-### Acetyl spectral library cleaning
+## Acetyl spectral library cleaning
 
 I have a spectral library that was published in [Baeza et.al. 2020](https://pubs.acs.org/doi/10.1021/acs.jproteome.0c00088). I will also use this spectral library to compare with the human proteome analysis. As a clean up step, I am filtering only for peptides that are acetylated, i.e., contain a lysine residue.
 
