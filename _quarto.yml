@@ -26,7 +26,7 @@ website:
         href: https://github.com/baezaj/
   page-footer:
     right: "Built with [Quarto](https://quarto.org/)"
-    left: "&copy; Copyright 2023, Josue Baeza"
+    left: "&copy; Copyright 2024, Josue Baeza"
 
 format:
   html:
