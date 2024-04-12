@@ -9,6 +9,7 @@ resources:
   
 website:
   title: "Josue Baeza"
+  google-analytics: "G-9E13F99WG4"
   navbar:
     left:
       - href: index.qmd
