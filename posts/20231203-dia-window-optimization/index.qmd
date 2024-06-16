@@ -17,17 +17,16 @@ draft: true
 
 # Background
 
-As the saying goes...seeing is believing. This is especially true for me when it came to understanding "forbidden zones" in mass spectrometry-based proteomics. Forbidden zones, described in [Frahm et. al. (2006)](https://doi.org/10.1002/jms.1024), are the areas in the precursor mass range where peptides are not found. A more recent publication describing forbidden zones for DIA method development can be found in [Pino et. al. (2020)](https://doi.org/10.1074/mcp.P119.001913).
+What are "forbidden zones" when working with mass spectrometry-based data. Forbidden zones, described in [Frahm et. al. (2006)](https://doi.org/10.1002/jms.1024), are the areas in the precursor mass range where peptides are not found. A more recent publication describing forbidden zones for DIA method development can be found in [Pino et. al. (2020)](https://doi.org/10.1074/mcp.P119.001913).
 
 ![Forbidden Zones described in Pino et.al. (2020)](gr6_lrg.jpg)
 
-Ever wondered what this "optimize window placement" feature in [Skyline](https://skyline.ms/) is for? Yup, DIA window edges are placed exactly in these forbidden zones.
+The "optimize window placement" feature in [Skyline](https://skyline.ms/) is there to place the boundaries of DIA windows in these forbidden zones.
 
 ![Skyline Screenshot](optimize_window_placement.png){width="40%"}
 
-But even while I used this feature for DIA window placement, I still didn't understand the reasoning behind it.
 
-The data in this blog was my attempt to understand DIA methods, window placement, and forbidden zones.
+This blog post aims to understand DIA methods, window placement, and forbidden zones.
 
 # Workflow
 
@@ -67,6 +66,9 @@ source("../../../../r-mass-spectrometry-tools/bin/Calculate_monoisotopic_mass.R"
 -   Human fasta file
 -   Acetyl Spectral library (from [Baeza et.al. 2020](https://pubs.acs.org/doi/10.1021/acs.jproteome.0c00088))
 -   Precursor isolation windows
+
+We're going to analyze three data sets. The first is an *in silico* digest of the human proteome. The second is an *in silico* digest of the human proteome with acetyl-lysine (AcK) modifications present. The third is a spectral library from [Baeza et. al.](https://pubs.acs.org/doi/10.1021/acs.jproteome.0c00088)
+
 
 ```{r Data import}
 #| label: Data Import
@@ -126,7 +128,8 @@ proton <- 1.007276466
 
 ## *In-silico* digest of the human proteome
 
-I am digesting the complete human fasta file using trypsin cleavage rules. This is a list of all possible tryptic peptides with a charge state of 2 or 3 and at least `r min_pep_len` amino acid residues.
+The first step is to perform an *in silico* digest of the complete human fasta file using trypsin cleavage rules. This is a list of all possible tryptic peptides with a charge state of 2 or 3 and at least `r min_pep_len` amino acid residues.
+
 
 ```{r}
 

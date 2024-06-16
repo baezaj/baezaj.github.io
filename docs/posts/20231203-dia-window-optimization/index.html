@@ -189,7 +189,7 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">December 22, 2023</p>
+        <p class="date-modified">June 15, 2024</p>
       </div>
     </div>
       
@@ -230,22 +230,21 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 
 <section id="background" class="level1">
 <h1>Background</h1>
-<p>As the saying goes…seeing is believing. This is especially true for me when it came to understanding “forbidden zones” in mass spectrometry-based proteomics. Forbidden zones, described in <a href="https://doi.org/10.1002/jms.1024">Frahm et. al.&nbsp;(2006)</a>, are the areas in the precursor mass range where peptides are not found. A more recent publication describing forbidden zones for DIA method development can be found in <a href="https://doi.org/10.1074/mcp.P119.001913">Pino et. al.&nbsp;(2020)</a>.</p>
+<p>What are “forbidden zones” when working with mass spectrometry-based data. Forbidden zones, described in <a href="https://doi.org/10.1002/jms.1024">Frahm et. al.&nbsp;(2006)</a>, are the areas in the precursor mass range where peptides are not found. A more recent publication describing forbidden zones for DIA method development can be found in <a href="https://doi.org/10.1074/mcp.P119.001913">Pino et. al.&nbsp;(2020)</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="gr6_lrg.jpg" class="img-fluid figure-img"></p>
 <figcaption class="figure-caption">Forbidden Zones described in Pino et.al. (2020)</figcaption>
 </figure>
 </div>
-<p>Ever wondered what this “optimize window placement” feature in <a href="https://skyline.ms/">Skyline</a> is for? Yup, DIA window edges are placed exactly in these forbidden zones.</p>
+<p>The “optimize window placement” feature in <a href="https://skyline.ms/">Skyline</a> is there to place the boundaries of DIA windows in these forbidden zones.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="optimize_window_placement.png" class="img-fluid figure-img" style="width:40.0%"></p>
 <figcaption class="figure-caption">Skyline Screenshot</figcaption>
 </figure>
 </div>
-<p>But even while I used this feature for DIA window placement, I still didn’t understand the reasoning behind it.</p>
-<p>The data in this blog was my attempt to understand DIA methods, window placement, and forbidden zones.</p>
+<p>This blog post aims to understand DIA methods, window placement, and forbidden zones.</p>
 </section>
 <section id="workflow" class="level1">
 <h1>Workflow</h1>
@@ -277,6 +276,7 @@ flowchart LR
 <li>Acetyl Spectral library (from <a href="https://pubs.acs.org/doi/10.1021/acs.jproteome.0c00088">Baeza et.al. 2020</a>)</li>
 <li>Precursor isolation windows</li>
 </ul>
+<p>We’re going to analyze three data sets. The first is an <em>in silico</em> digest of the human proteome. The second is an <em>in silico</em> digest of the human proteome with acetyl-lysine (AcK) modifications present. The third is a spectral library from <a href="https://pubs.acs.org/doi/10.1021/acs.jproteome.0c00088">Baeza et. al.</a></p>
 <section id="global-functions" class="level4">
 <h4 class="anchored" data-anchor-id="global-functions">Global functions</h4>
 <div class="cell">
@@ -312,7 +312,7 @@ flowchart LR
 </section>
 <section id="in-silico-digest-of-the-human-proteome" class="level2">
 <h2 class="anchored" data-anchor-id="in-silico-digest-of-the-human-proteome"><em>In-silico</em> digest of the human proteome</h2>
-<p>I am digesting the complete human fasta file using trypsin cleavage rules. This is a list of all possible tryptic peptides with a charge state of 2 or 3 and at least 7 amino acid residues.</p>
+<p>The first step is to perform an <em>in silico</em> digest of the complete human fasta file using trypsin cleavage rules. This is a list of all possible tryptic peptides with a charge state of 2 or 3 and at least 7 amino acid residues.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Digesting human proteome</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># filtering for a minimum peptide length</span></span>
