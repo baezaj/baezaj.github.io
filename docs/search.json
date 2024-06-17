@@ -25,7 +25,7 @@
     "href": "blog.html",
     "title": "Blog",
     "section": "",
-    "text": "My First Blog Post\n\n\n\n\n\n\n\nQuarto\n\n\nR\n\n\n\n\nI created a website. Now, let me blog about it!\n\n\n\n\n\n\nNov 29, 2023\n\n\nJosue Baeza\n\n\n\n\n\n\nNo matching items"
+    "text": "My First Blog Post\n\n\n\n\n\n\n\nQuarto\n\n\nR\n\n\n\n\nI created a website. Now, let me blog about it!\n\n\n\n\n\n\nNov 29, 2023\n\n\nJosue Baeza\n\n\n\n\n\n\n  \n\n\n\n\nUnderstanding “forbidden zones”\n\n\n\n\n\n\n\nMass Spectrometry\n\n\nDIA\n\n\nSkyline\n\n\n\n\n\n\n\n\n\n\n\nNov 29, 2023\n\n\nJosue Baeza\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/20231129-my-first-blog/index.html",
@@ -47,5 +47,68 @@
     "title": "Projects",
     "section": "Project 3",
     "text": "Project 3"
+  },
+  {
+    "objectID": "posts/20231203-dia-window-optimization/index.html",
+    "href": "posts/20231203-dia-window-optimization/index.html",
+    "title": "Understanding “forbidden zones”",
+    "section": "",
+    "text": "What are “forbidden zones” when working with mass spectrometry-based data. Forbidden zones, described in Frahm et. al. (2006), are the areas in the precursor mass range where peptides are not found. A more recent publication describing forbidden zones for DIA method development can be found in Pino et. al. (2020).\n\n\n\nForbidden Zones described in Pino et.al. (2020)\n\n\nThe “optimize window placement” feature in Skyline is there to place the boundaries of DIA windows in these forbidden zones.\n\n\n\nSkyline Screenshot\n\n\nThis blog post aims to understand DIA methods, window placement, and forbidden zones."
+  },
+  {
+    "objectID": "posts/20231203-dia-window-optimization/index.html#importing-data",
+    "href": "posts/20231203-dia-window-optimization/index.html#importing-data",
+    "title": "Understanding “forbidden zones”",
+    "section": "Importing data",
+    "text": "Importing data\n\nHuman fasta file\nAcetyl Spectral library (from Baeza et.al. 2020)\nPrecursor isolation windows\n\nWe’re going to analyze three data sets. The first is an in silico digest of the human proteome. The second is an in silico digest of the human proteome with acetyl-lysine (AcK) modifications present. The third is a spectral library from Baeza et. al.\n\nGlobal functions\n\n\nCode\n# Digesting protein\ndigest_argc &lt;- function(sequence){\n  tryCatch(\n    digest_aa_sequence(sequence, enzyme = \"arg.c\", missed = 0)$peptide,\n    error = function(e) NA,\n    warning = function(w) NA\n    )\n}\n\n# Digesting protein\ndigest_tryp &lt;- function(sequence){\n  tryCatch(\n    digest_aa_sequence(sequence, enzyme = \"trypsin\", missed = 0)$peptide,\n    error = function(e) NA,\n    warning = function(w) NA\n    )\n}"
+  },
+  {
+    "objectID": "posts/20231203-dia-window-optimization/index.html#setting-global-variables",
+    "href": "posts/20231203-dia-window-optimization/index.html#setting-global-variables",
+    "title": "Understanding “forbidden zones”",
+    "section": "Setting global variables",
+    "text": "Setting global variables\n\n# Minimum peptide length\nmin_pep_len &lt;- 7\n\n# Mass of Proton (Da)\nproton &lt;- 1.007276466\n\n# Acetylation mass (Da)\nack_d0_mass &lt;- 42.010565\nack_d3_mass &lt;- ack_d0_mass - 3*(1.007825) + 3*(2.014102) \n\n# for the mz distribution\nmin_mz &lt;- 300\nmax_mz &lt;- 2500\n\n# for zooming in the mz distribution\nmz1 &lt;- 640\nmz2 &lt;- 650"
+  },
+  {
+    "objectID": "posts/20231203-dia-window-optimization/index.html#in-silico-digest-of-the-human-proteome",
+    "href": "posts/20231203-dia-window-optimization/index.html#in-silico-digest-of-the-human-proteome",
+    "title": "Understanding “forbidden zones”",
+    "section": "In-silico digest of the human proteome",
+    "text": "In-silico digest of the human proteome\nThe first step is to perform an in silico digest of the complete human fasta file using trypsin cleavage rules. This is a list of all possible tryptic peptides with a charge state of 2 or 3 and at least 7 amino acid residues.\n\n\nCode\n# Digesting human proteome\n# filtering for a minimum peptide length\nhu_prot &lt;- hu_fasta %&gt;% \n  mutate(peptide = map(ProteinSequence, digest_tryp)) %&gt;% # digesting proteome TAKES A LONG TIME!\n  unnest(peptide) %&gt;% \n  select(-ProteinSequence) %&gt;% \n  mutate(pep_len = nchar(peptide)) %&gt;% # Counting peptide length\n  filter(pep_len &gt;= min_pep_len) # Filtering for peptide size\n\n# Calculating monoisotopic mass\n# All lysines have acetyl modification\nhu_prot &lt;- hu_prot %&gt;% \n  mutate(monoisotopic_mass = calculate_monoisotopic_mass(peptide, IAA = TRUE, AcK = FALSE))\n\n# Calculating most likely charge state based on R|H + 1\nhu_prot$z &lt;- sapply(hu_prot$peptide, function(x){\n  length(unlist(gregexpr(\"K|R|H\", x))) + 1 # For N-terminus\n})\n\n# calculating precursor m/z\n# assuming z=2; z=3\nhu_prot &lt;- hu_prot %&gt;% \n  filter(z == 2 | z == 3) %&gt;% \n  mutate(precursor_mz = (monoisotopic_mass + (z * proton)) / z)"
+  },
+  {
+    "objectID": "posts/20231203-dia-window-optimization/index.html#in-silico-digest-of-the-acetyl-proteome",
+    "href": "posts/20231203-dia-window-optimization/index.html#in-silico-digest-of-the-acetyl-proteome",
+    "title": "Understanding “forbidden zones”",
+    "section": "In-silico digest of the acetyl proteome",
+    "text": "In-silico digest of the acetyl proteome\nIn this step, I am adding an acetyl modification to every lysine residue and digesting the complete human proteome using the Arg-C digest rules. Acetylation on lysine residues prevents the proteolytic digestion by trypsin. Therefore only the arginine residues are used for digestion.\nTo generate in silico AcK peptides, I change the digestion rule from trypsin to ArgC. Trypsin cleaves at K and R residues, while ArgC cleaves at R residues only. Then, the mass of 42.010565 and 45.029396 is added for light and heavy AcK peptides, respectively.\n\n\nCode\n# Digesting human proteome\n# Filtering for lysine containing peptides\n# filtering for a minimum peptide length\nhu_acetyl &lt;- hu_fasta %&gt;% \n  mutate(peptide = map(ProteinSequence, digest_argc)) %&gt;% \n  unnest(peptide) %&gt;% \n  select(-ProteinSequence) %&gt;% \n  mutate(k_count = str_count(peptide, \"K\"),\n         pep_len = nchar(peptide)) %&gt;% \n  filter(k_count &gt; 0,\n         pep_len &gt;= min_pep_len)\n\n# Calculating monoisotopic mass\n# All lysines have acetyl modification - either light (non-isotopic) or D3-Acetyl\nhu_acetyl &lt;- hu_acetyl %&gt;% \n  mutate(Ack_D0 = calculate_monoisotopic_mass(peptide, IAA = TRUE, AcK = TRUE),\n         AcK_D3 = Ack_D0 - k_count*ack_d0_mass + k_count*ack_d3_mass) %&gt;% \n  gather(isotope, monoisotopic_mass, Ack_D0, AcK_D3)\n\n# Calculating most likely charge state based on R|H + 1\nhu_acetyl$z &lt;- sapply(hu_acetyl$peptide, function(x){\n  length(unlist(gregexpr(\"R|H\", x))) + 1 # for n-terminus\n})\n\n# calculating precursor m/z\n# assuming z=2; z=3\nhu_acetyl &lt;- hu_acetyl %&gt;% \n  filter(z == 2 | z == 3) %&gt;% \n  mutate(precursor_mz = (monoisotopic_mass + (z * proton)) / z)"
+  },
+  {
+    "objectID": "posts/20231203-dia-window-optimization/index.html#acetyl-spectral-library-cleaning",
+    "href": "posts/20231203-dia-window-optimization/index.html#acetyl-spectral-library-cleaning",
+    "title": "Understanding “forbidden zones”",
+    "section": "Acetyl spectral library cleaning",
+    "text": "Acetyl spectral library cleaning\nI have a spectral library that was published in Baeza et.al. 2020. I will also use this spectral library to compare with the human proteome analysis. As a clean up step, I am filtering only for peptides that are acetylated, i.e., contain a lysine residue.\n\n\nCode\n# Filtering for acetyl peptide\nack_speclib &lt;- ack_speclib %&gt;% \n  mutate(acetyl = str_detect(ModifiedPeptide, \"Acetyl \\\\(K\"),\n         heavy = str_detect(LabeledPeptide, \"Acetyl D3\")) %&gt;% \n  filter(acetyl == TRUE)\n\n# Removing duplicate entries\nack_speclib &lt;- ack_speclib %&gt;% \n  select(PrecursorCharge, PrecursorMz, StrippedPeptide, ModifiedPeptide, LabeledPeptide,\n         ProteinGroups, acetyl, heavy) %&gt;% \n  distinct()"
+  },
+  {
+    "objectID": "posts/20231203-dia-window-optimization/index.html#mz-distribution",
+    "href": "posts/20231203-dia-window-optimization/index.html#mz-distribution",
+    "title": "Understanding “forbidden zones”",
+    "section": "mz distribution",
+    "text": "mz distribution\n\nTryptic digest\nPlotting the m/z distribution for tryptic peptide precursors\n\n\nCode\nggplot(hu_prot %&gt;% filter(precursor_mz &gt; min_mz, precursor_mz &lt; max_mz),\n       aes(x = precursor_mz)) +\n  geom_histogram(position = \"dodge\", binwidth = 10, color = \"black\", fill = \"grey80\") +\n  # annotate(\"rect\", xmin = mz1, xmax = mz2, ymin = 0, ymax = Inf) +\n  scale_x_continuous(n.breaks = 15) +\n  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +\n  theme_bw(base_size = 14) +\n  labs(title = \"Peptide m/z distribution\",\n       subtitle = \"Tryptic Proteome\",\n       y = \"Number of precursors\",\n       x = \"Precursor m/z\")\n\n\n\n\n\n\n\nAcK peptides\nPlotting the m/z distribution for Acetyl-K peptide precursors. Here, I’m restricting the peptides that have either 1 or 2 lysines.\n\n\nCode\nggplot(hu_acetyl %&gt;% filter(precursor_mz &gt; min_mz, precursor_mz &lt; max_mz, k_count &lt;= 2),\n       aes(x = precursor_mz)) +\n  geom_histogram(position = \"dodge\", binwidth = 10, color = \"black\", fill = \"grey80\") +\n  scale_x_continuous(n.breaks = 15) +\n  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +\n  theme_bw(base_size = 14) +\n  labs(title = \"Peptide m/z distribution\",\n       subtitle = \"Acetyl Proteome\",\n       y = \"Number of precursors\",\n       x = \"Precursor m/z\")"
+  },
+  {
+    "objectID": "posts/20231203-dia-window-optimization/index.html#dia-window-placement",
+    "href": "posts/20231203-dia-window-optimization/index.html#dia-window-placement",
+    "title": "Understanding “forbidden zones”",
+    "section": "DIA Window placement",
+    "text": "DIA Window placement\nNext, we will zoom in to the m/z distribution between 640 and 650 and add the optimized-window-placement windows\n\n\nCode\n# Human proteome (Trypsin)\ng1 &lt;- ggplot(hu_prot %&gt;% filter(precursor_mz &gt;= mz1 & precursor_mz &lt;= mz2)) +\n  geom_histogram(aes(x = precursor_mz), binwidth = 0.025, color = \"black\", fill = \"grey80\") +\n  geom_vline(data = optimal_windows_proteome %&gt;% filter(start_mz &gt;= mz1 & start_mz &lt;= mz2), \n             aes(xintercept = start_mz), color = \"black\", linewidth = 1) +\n  theme_bw(base_size = 22) +\n  scale_x_continuous(n.breaks = 10) +\n    labs(title = \"Tryptic Proteome\",\n         subtitle = \"in silico digest\",\n         x = \"Precursor m/z\")\n\n# Acetyl proteome (Arg-C)\ng2 &lt;- ggplot(hu_acetyl %&gt;% filter(precursor_mz &gt;= mz1 & precursor_mz &lt;= mz2)) +\n  geom_histogram(aes(x = precursor_mz, fill = isotope), binwidth = 0.025, color = \"black\") +\n  geom_vline(data = optimal_windows_proteome %&gt;% filter(start_mz &gt;= mz1 & start_mz &lt;= mz2), \n             aes(xintercept = start_mz), color = \"black\", linewidth = 1) +\n  theme_bw(base_size = 22) +\n  scale_x_continuous(n.breaks = 10) +\n    labs(title = \"Acetyl Proteome\",\n         subtitle = \"in silico digest\",\n         x = \"Precursor m/z\")\n\n# Acetyl Spectral library\ng3 &lt;- ggplot(ack_speclib %&gt;% filter(PrecursorMz &gt;= mz1 & PrecursorMz &lt;= mz2, PrecursorCharge &lt; 4)) +\n  geom_histogram(aes(x = PrecursorMz), binwidth = 0.025, fill = \"#2b8cbe\", color = \"black\") +\n  geom_vline(data = optimal_windows_proteome %&gt;% filter(start_mz &gt;= mz1 & start_mz &lt;= mz2), \n             aes(xintercept = start_mz), color = \"black\", linewidth = 1) +\n  theme_bw(base_size = 22) +\n  scale_x_continuous(n.breaks = 10) +\n    labs(title = \"Acetyl Spectral library\",\n         subtitle = \"Baeza et.al. JPR 2020\",\n         fill = \"Charge\",\n         x = \"Precursor m/z\")\n\n# Rendering all three plots\ng1 / g2 / g3"
+  },
+  {
+    "objectID": "posts/20231203-dia-window-optimization/index.html#conclusion",
+    "href": "posts/20231203-dia-window-optimization/index.html#conclusion",
+    "title": "Understanding “forbidden zones”",
+    "section": "Conclusion",
+    "text": "Conclusion\nSo, the optimized window placement function places the DIA windows within areas of the m/z space where monoisotopic peaks are not to be found. This works for acetyl-lysine peptides as well as deuterated acetyl-lysines as described in Baeza et. al."
   }
 ]

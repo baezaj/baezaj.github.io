@@ -189,7 +189,7 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">June 15, 2024</p>
+        <p class="date-modified">June 16, 2024</p>
       </div>
     </div>
       
@@ -210,10 +210,14 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
   <li><a href="#setting-global-variables" id="toc-setting-global-variables" class="nav-link" data-scroll-target="#setting-global-variables">Setting global variables</a></li>
   <li><a href="#in-silico-digest-of-the-human-proteome" id="toc-in-silico-digest-of-the-human-proteome" class="nav-link" data-scroll-target="#in-silico-digest-of-the-human-proteome"><em>In-silico</em> digest of the human proteome</a></li>
   <li><a href="#in-silico-digest-of-the-acetyl-proteome" id="toc-in-silico-digest-of-the-acetyl-proteome" class="nav-link" data-scroll-target="#in-silico-digest-of-the-acetyl-proteome"><em>In-silico</em> digest of the acetyl proteome</a></li>
-  <li><a href="#acetyl-spectral-library-cleaning" id="toc-acetyl-spectral-library-cleaning" class="nav-link" data-scroll-target="#acetyl-spectral-library-cleaning">Acetyl spectral library cleaning</a>
+  <li><a href="#acetyl-spectral-library-cleaning" id="toc-acetyl-spectral-library-cleaning" class="nav-link" data-scroll-target="#acetyl-spectral-library-cleaning">Acetyl spectral library cleaning</a></li>
+  <li><a href="#mz-distribution" id="toc-mz-distribution" class="nav-link" data-scroll-target="#mz-distribution">mz distribution</a>
   <ul class="collapse">
-  <li><a href="#plots" id="toc-plots" class="nav-link" data-scroll-target="#plots">Plots</a></li>
+  <li><a href="#tryptic-digest" id="toc-tryptic-digest" class="nav-link" data-scroll-target="#tryptic-digest">Tryptic digest</a></li>
+  <li><a href="#ack-peptides" id="toc-ack-peptides" class="nav-link" data-scroll-target="#ack-peptides">AcK peptides</a></li>
   </ul></li>
+  <li><a href="#dia-window-placement" id="toc-dia-window-placement" class="nav-link" data-scroll-target="#dia-window-placement">DIA Window placement</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -223,7 +227,7 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
 
 
 
@@ -246,7 +250,7 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 </div>
 <p>This blog post aims to understand DIA methods, window placement, and forbidden zones.</p>
 </section>
-<section id="workflow" class="level1">
+<section id="workflow" class="level1 page-columns page-full">
 <h1>Workflow</h1>
 <div class="cell">
 <div class="cell-output-display">
@@ -261,8 +265,8 @@ flowchart LR
   E --&gt; G[calculate\nprecursor m/z]
   F --&gt; G[calculate\nprecursor m/z]
   G --&gt; H[m/z distribution]
-  G --&gt; I[Protein coverage]
   G --&gt; J[Forbidden zones]
+  J --&gt; K[Optimal window placement]
   
 </pre>
 </div>
@@ -306,14 +310,31 @@ flowchart LR
 <section id="setting-global-variables" class="level2">
 <h2 class="anchored" data-anchor-id="setting-global-variables">Setting global variables</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>min_pep_len <span class="ot">&lt;-</span> <span class="dv">7</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>proton <span class="ot">&lt;-</span> <span class="fl">1.007276466</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Minimum peptide length</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>min_pep_len <span class="ot">&lt;-</span> <span class="dv">7</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Mass of Proton (Da)</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>proton <span class="ot">&lt;-</span> <span class="fl">1.007276466</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Acetylation mass (Da)</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>ack_d0_mass <span class="ot">&lt;-</span> <span class="fl">42.010565</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>ack_d3_mass <span class="ot">&lt;-</span> ack_d0_mass <span class="sc">-</span> <span class="dv">3</span><span class="sc">*</span>(<span class="fl">1.007825</span>) <span class="sc">+</span> <span class="dv">3</span><span class="sc">*</span>(<span class="fl">2.014102</span>) </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># for the mz distribution</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>min_mz <span class="ot">&lt;-</span> <span class="dv">300</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>max_mz <span class="ot">&lt;-</span> <span class="dv">2500</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># for zooming in the mz distribution</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>mz1 <span class="ot">&lt;-</span> <span class="dv">640</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>mz2 <span class="ot">&lt;-</span> <span class="dv">650</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="in-silico-digest-of-the-human-proteome" class="level2">
 <h2 class="anchored" data-anchor-id="in-silico-digest-of-the-human-proteome"><em>In-silico</em> digest of the human proteome</h2>
 <p>The first step is to perform an <em>in silico</em> digest of the complete human fasta file using trypsin cleavage rules. This is a list of all possible tryptic peptides with a charge state of 2 or 3 and at least 7 amino acid residues.</p>
 <div class="cell">
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Digesting human proteome</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># filtering for a minimum peptide length</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>hu_prot <span class="ot">&lt;-</span> hu_fasta <span class="sc">%&gt;%</span> </span>
@@ -338,51 +359,54 @@ flowchart LR
 <span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>hu_prot <span class="ot">&lt;-</span> hu_prot <span class="sc">%&gt;%</span> </span>
 <span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(z <span class="sc">==</span> <span class="dv">2</span> <span class="sc">|</span> z <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">precursor_mz =</span> (monoisotopic_mass <span class="sc">+</span> (z <span class="sc">*</span> proton)) <span class="sc">/</span> z)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="in-silico-digest-of-the-acetyl-proteome" class="level2">
 <h2 class="anchored" data-anchor-id="in-silico-digest-of-the-acetyl-proteome"><em>In-silico</em> digest of the acetyl proteome</h2>
 <p>In this step, I am adding an acetyl modification to every lysine residue and digesting the complete human proteome using the Arg-C digest rules. Acetylation on lysine residues prevents the proteolytic digestion by trypsin. Therefore only the arginine residues are used for digestion.</p>
+<p>To generate <em>in silico</em> AcK peptides, I change the digestion rule from trypsin to ArgC. Trypsin cleaves at K and R residues, while ArgC cleaves at R residues only. Then, the mass of 42.010565 and 45.029396 is added for light and heavy AcK peptides, respectively.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Acetylation mass</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ack_d0_mass <span class="ot">&lt;-</span> <span class="fl">42.010565</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>ack_d3_mass <span class="ot">&lt;-</span> <span class="fl">42.010565</span> <span class="sc">-</span> <span class="dv">3</span><span class="sc">*</span>(<span class="fl">1.007825</span>) <span class="sc">+</span> <span class="dv">3</span><span class="sc">*</span>(<span class="fl">2.014102</span>) </span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Digesting human proteome</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Filtering for lysine containing peptides</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># filtering for a minimum peptide length</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>hu_acetyl <span class="ot">&lt;-</span> hu_fasta <span class="sc">%&gt;%</span> </span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">peptide =</span> <span class="fu">map</span>(ProteinSequence, digest_argc)) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(peptide) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>ProteinSequence) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">k_count =</span> <span class="fu">str_count</span>(peptide, <span class="st">"K"</span>),</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">pep_len =</span> <span class="fu">nchar</span>(peptide)) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(k_count <span class="sc">&gt;</span> <span class="dv">0</span>,</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>         pep_len <span class="sc">&gt;=</span> min_pep_len)</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculating monoisotopic mass</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co"># All lysines have acetyl modification - either light (non-isotopic) or D3-Acetyl</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>hu_acetyl <span class="ot">&lt;-</span> hu_acetyl <span class="sc">%&gt;%</span> </span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Ack_D0 =</span> <span class="fu">calculate_monoisotopic_mass</span>(peptide, <span class="at">IAA =</span> <span class="cn">TRUE</span>, <span class="at">AcK =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>         <span class="at">AcK_D3 =</span> Ack_D0 <span class="sc">-</span> k_count<span class="sc">*</span>ack_d0_mass <span class="sc">+</span> k_count<span class="sc">*</span>ack_d3_mass) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(isotope, monoisotopic_mass, Ack_D0, AcK_D3)</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculating most likely charge state based on R|H + 1</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>hu_acetyl<span class="sc">$</span>z <span class="ot">&lt;-</span> <span class="fu">sapply</span>(hu_acetyl<span class="sc">$</span>peptide, <span class="cf">function</span>(x){</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">length</span>(<span class="fu">unlist</span>(<span class="fu">gregexpr</span>(<span class="st">"R|H"</span>, x))) <span class="sc">+</span> <span class="dv">1</span> <span class="co"># for n-terminus</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co"># calculating precursor m/z</span></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co"># assuming z=2; z=3</span></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>hu_acetyl <span class="ot">&lt;-</span> hu_acetyl <span class="sc">%&gt;%</span> </span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(z <span class="sc">==</span> <span class="dv">2</span> <span class="sc">|</span> z <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">precursor_mz =</span> (monoisotopic_mass <span class="sc">+</span> (z <span class="sc">*</span> proton)) <span class="sc">/</span> z)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Digesting human proteome</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Filtering for lysine containing peptides</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># filtering for a minimum peptide length</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>hu_acetyl <span class="ot">&lt;-</span> hu_fasta <span class="sc">%&gt;%</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">peptide =</span> <span class="fu">map</span>(ProteinSequence, digest_argc)) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(peptide) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>ProteinSequence) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">k_count =</span> <span class="fu">str_count</span>(peptide, <span class="st">"K"</span>),</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">pep_len =</span> <span class="fu">nchar</span>(peptide)) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(k_count <span class="sc">&gt;</span> <span class="dv">0</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>         pep_len <span class="sc">&gt;=</span> min_pep_len)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculating monoisotopic mass</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co"># All lysines have acetyl modification - either light (non-isotopic) or D3-Acetyl</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>hu_acetyl <span class="ot">&lt;-</span> hu_acetyl <span class="sc">%&gt;%</span> </span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Ack_D0 =</span> <span class="fu">calculate_monoisotopic_mass</span>(peptide, <span class="at">IAA =</span> <span class="cn">TRUE</span>, <span class="at">AcK =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">AcK_D3 =</span> Ack_D0 <span class="sc">-</span> k_count<span class="sc">*</span>ack_d0_mass <span class="sc">+</span> k_count<span class="sc">*</span>ack_d3_mass) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(isotope, monoisotopic_mass, Ack_D0, AcK_D3)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculating most likely charge state based on R|H + 1</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>hu_acetyl<span class="sc">$</span>z <span class="ot">&lt;-</span> <span class="fu">sapply</span>(hu_acetyl<span class="sc">$</span>peptide, <span class="cf">function</span>(x){</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">length</span>(<span class="fu">unlist</span>(<span class="fu">gregexpr</span>(<span class="st">"R|H"</span>, x))) <span class="sc">+</span> <span class="dv">1</span> <span class="co"># for n-terminus</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co"># calculating precursor m/z</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co"># assuming z=2; z=3</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>hu_acetyl <span class="ot">&lt;-</span> hu_acetyl <span class="sc">%&gt;%</span> </span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(z <span class="sc">==</span> <span class="dv">2</span> <span class="sc">|</span> z <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">precursor_mz =</span> (monoisotopic_mass <span class="sc">+</span> (z <span class="sc">*</span> proton)) <span class="sc">/</span> z)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 </section>
 <section id="acetyl-spectral-library-cleaning" class="level2">
 <h2 class="anchored" data-anchor-id="acetyl-spectral-library-cleaning">Acetyl spectral library cleaning</h2>
 <p>I have a spectral library that was published in <a href="https://pubs.acs.org/doi/10.1021/acs.jproteome.0c00088">Baeza et.al. 2020</a>. I will also use this spectral library to compare with the human proteome analysis. As a clean up step, I am filtering only for peptides that are acetylated, i.e., contain a lysine residue.</p>
 <div class="cell">
+<details>
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filtering for acetyl peptide</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ack_speclib <span class="ot">&lt;-</span> ack_speclib <span class="sc">%&gt;%</span> </span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">acetyl =</span> <span class="fu">str_detect</span>(ModifiedPeptide, <span class="st">"Acetyl </span><span class="sc">\\</span><span class="st">(K"</span>),</span>
@@ -394,284 +418,110 @@ flowchart LR
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(PrecursorCharge, PrecursorMz, StrippedPeptide, ModifiedPeptide, LabeledPeptide,</span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>         ProteinGroups, acetyl, heavy) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-<section id="plots" class="level3">
-<h3 class="anchored" data-anchor-id="plots">Plots</h3>
-<p>Plotting the number of precursors across the entire <em>m/z</em> range.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>min_mz <span class="ot">&lt;-</span> <span class="dv">300</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>max_mz <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(hu_prot <span class="sc">%&gt;%</span> <span class="fu">filter</span>(precursor_mz <span class="sc">&gt;</span> min_mz, precursor_mz <span class="sc">&lt;</span> max_mz),</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> precursor_mz)) <span class="sc">+</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">position =</span> <span class="st">"dodge"</span>, <span class="at">binwidth =</span> <span class="dv">10</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="st">"grey80"</span>) <span class="sc">+</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">n.breaks =</span> <span class="dv">15</span>) <span class="sc">+</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Peptide m/z distribution"</span>,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Tryptic Proteome"</span>,</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Number of precursors"</span>,</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Precursor m/z"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>What’s the fraction of precursors covered within a given <em>m/z</em> range?</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initializing the for-loop</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>proteome_coverage <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">index =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">start_mz =</span> index <span class="sc">*</span> <span class="dv">100</span> <span class="sc">+</span> <span class="dv">200</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">stop_mz =</span> index <span class="sc">*</span> <span class="dv">100</span> <span class="sc">+</span> <span class="dv">800</span>,</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">percent =</span> <span class="cn">NA_integer_</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(proteome_coverage<span class="sc">$</span>percent)){</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculating the percentage of peptides withing a given mz range</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  proteome_coverage<span class="sc">$</span>percent[i] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">which</span>(hu_prot<span class="sc">$</span>precursor_mz <span class="sc">&gt;</span> proteome_coverage<span class="sc">$</span>start_mz[i] <span class="sc">&amp;</span> </span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                                  hu_prot<span class="sc">$</span>precursor_mz <span class="sc">&lt;</span> proteome_coverage<span class="sc">$</span>stop_mz[i])) <span class="sc">/</span> </span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">nrow</span>(hu_prot)</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Rendered table</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>proteome_coverage <span class="sc">%&gt;%</span> </span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>index) <span class="sc">%&gt;%</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th style="text-align: right;" data-quarto-table-cell-role="th">start_mz</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">stop_mz</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">percent</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">300</td>
-<td style="text-align: right;">900</td>
-<td style="text-align: right;">0.7367753</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">400</td>
-<td style="text-align: right;">1000</td>
-<td style="text-align: right;">0.6842329</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">500</td>
-<td style="text-align: right;">1100</td>
-<td style="text-align: right;">0.5229664</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">600</td>
-<td style="text-align: right;">1200</td>
-<td style="text-align: right;">0.3946038</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">700</td>
-<td style="text-align: right;">1300</td>
-<td style="text-align: right;">0.3021816</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">800</td>
-<td style="text-align: right;">1400</td>
-<td style="text-align: right;">0.2333734</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">900</td>
-<td style="text-align: right;">1500</td>
-<td style="text-align: right;">0.1813654</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1000</td>
-<td style="text-align: right;">1600</td>
-<td style="text-align: right;">0.1419781</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1100</td>
-<td style="text-align: right;">1700</td>
-<td style="text-align: right;">0.1111660</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1200</td>
-<td style="text-align: right;">1800</td>
-<td style="text-align: right;">0.0874620</td>
-</tr>
-</tbody>
-</table>
-
-
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(hu_acetyl <span class="sc">%&gt;%</span> <span class="fu">filter</span>(precursor_mz <span class="sc">&gt;</span> min_mz, precursor_mz <span class="sc">&lt;</span> max_mz),</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> precursor_mz)) <span class="sc">+</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">position =</span> <span class="st">"dodge"</span>, <span class="at">binwidth =</span> <span class="dv">10</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="st">"grey80"</span>) <span class="sc">+</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">n.breaks =</span> <span class="dv">15</span>) <span class="sc">+</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Peptide m/z distribution"</span>,</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Acetyl Proteome"</span>,</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Number of precursors"</span>,</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Precursor m/z"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>The peptides represented in this plot contains multiple lysine groups. Let’s group the histogram by the number of lysines.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(hu_acetyl <span class="sc">%&gt;%</span> <span class="fu">filter</span>(precursor_mz <span class="sc">&gt;</span> min_mz, precursor_mz <span class="sc">&lt;</span> max_mz, k_count <span class="sc">&lt;=</span> <span class="dv">4</span>),</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> precursor_mz)) <span class="sc">+</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">position =</span> <span class="st">"dodge"</span>, <span class="at">binwidth =</span> <span class="dv">10</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="st">"grey80"</span>) <span class="sc">+</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">n.breaks =</span> <span class="dv">15</span>) <span class="sc">+</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>k_count, <span class="at">nrow =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Peptide m/z distribution"</span>,</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Acetyl Proteome"</span>,</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Number of precursors"</span>,</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Precursor m/z"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-<p>When calculating the percentage of precursors within a given <em>m/z</em> range, I am going to limit the search to peptides with one or two lysines.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>hu_acetyl_filtered <span class="ot">&lt;-</span> hu_acetyl <span class="sc">%&gt;%</span> </span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(k_count <span class="sc">&lt;=</span> <span class="dv">2</span>,</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>         precursor_mz <span class="sc">&lt;=</span> <span class="dv">2000</span>,</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>         precursor_mz <span class="sc">&gt;=</span> <span class="dv">300</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Initializing the for-loop</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>acetyl_prot_coverage <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">index =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>                           <span class="at">start_mz =</span> index <span class="sc">*</span> <span class="dv">100</span> <span class="sc">+</span> <span class="dv">200</span>,</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>                           <span class="at">stop_mz =</span> index <span class="sc">*</span> <span class="dv">100</span> <span class="sc">+</span> <span class="dv">800</span>,</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                           <span class="at">percent =</span> <span class="cn">NA_integer_</span>)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(acetyl_prot_coverage<span class="sc">$</span>percent)){</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculating the percentage of peptides withing a given mz range</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  acetyl_prot_coverage<span class="sc">$</span>percent[i] <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">which</span>(hu_acetyl_filtered<span class="sc">$</span>precursor_mz <span class="sc">&gt;</span> acetyl_prot_coverage<span class="sc">$</span>start_mz[i] <span class="sc">&amp;</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>                                                  hu_acetyl_filtered<span class="sc">$</span>precursor_mz <span class="sc">&lt;</span> acetyl_prot_coverage<span class="sc">$</span>stop_mz[i])) <span class="sc">/</span> <span class="fu">nrow</span>(hu_acetyl_filtered)</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Rendered table</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>acetyl_prot_coverage<span class="sc">%&gt;%</span> </span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>index) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="table table-striped table-hover table-sm small" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th style="text-align: right;" data-quarto-table-cell-role="th">start_mz</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">stop_mz</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">percent</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">300</td>
-<td style="text-align: right;">900</td>
-<td style="text-align: right;">0.5384447</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">400</td>
-<td style="text-align: right;">1000</td>
-<td style="text-align: right;">0.5905586</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">500</td>
-<td style="text-align: right;">1100</td>
-<td style="text-align: right;">0.5695025</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">600</td>
-<td style="text-align: right;">1200</td>
-<td style="text-align: right;">0.5160668</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">700</td>
-<td style="text-align: right;">1300</td>
-<td style="text-align: right;">0.4579973</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">800</td>
-<td style="text-align: right;">1400</td>
-<td style="text-align: right;">0.3993898</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">900</td>
-<td style="text-align: right;">1500</td>
-<td style="text-align: right;">0.3460195</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1000</td>
-<td style="text-align: right;">1600</td>
-<td style="text-align: right;">0.2984127</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">1100</td>
-<td style="text-align: right;">1700</td>
-<td style="text-align: right;">0.2543409</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">1200</td>
-<td style="text-align: right;">1800</td>
-<td style="text-align: right;">0.2165974</td>
-</tr>
-</tbody>
-</table>
-
-
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>mz1 <span class="ot">&lt;-</span> <span class="dv">640</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>mz2 <span class="ot">&lt;-</span> <span class="dv">650</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Human proteome (Trypsin)</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(hu_prot <span class="sc">%&gt;%</span> <span class="fu">filter</span>(precursor_mz <span class="sc">&gt;=</span> mz1 <span class="sc">&amp;</span> precursor_mz <span class="sc">&lt;=</span> mz2)) <span class="sc">+</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> precursor_mz), <span class="at">binwidth =</span> <span class="fl">0.025</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="st">"grey80"</span>) <span class="sc">+</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">data =</span> optimal_windows_proteome <span class="sc">%&gt;%</span> <span class="fu">filter</span>(start_mz <span class="sc">&gt;=</span> mz1 <span class="sc">&amp;</span> start_mz <span class="sc">&lt;=</span> mz2), </span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">xintercept =</span> start_mz), <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">n.breaks =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Tryptic Proteome"</span>,</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">subtitle =</span> <span class="st">"in silico digest"</span>,</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">x =</span> <span class="st">"Precursor m/z"</span>)</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Acetyl proteome (Arg-C)</span></span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>g2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(hu_acetyl <span class="sc">%&gt;%</span> <span class="fu">filter</span>(precursor_mz <span class="sc">&gt;=</span> mz1 <span class="sc">&amp;</span> precursor_mz <span class="sc">&lt;=</span> mz2)) <span class="sc">+</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> precursor_mz, <span class="at">fill =</span> isotope), <span class="at">binwidth =</span> <span class="fl">0.025</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">data =</span> optimal_windows_proteome <span class="sc">%&gt;%</span> <span class="fu">filter</span>(start_mz <span class="sc">&gt;=</span> mz1 <span class="sc">&amp;</span> start_mz <span class="sc">&lt;=</span> mz2), </span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">xintercept =</span> start_mz), <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">n.breaks =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Acetyl Proteome"</span>,</span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>         <span class="at">subtitle =</span> <span class="st">"in silico digest"</span>,</span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>         <span class="at">x =</span> <span class="st">"Precursor m/z"</span>)</span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Acetyl Spectral library</span></span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>g3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ack_speclib <span class="sc">%&gt;%</span> <span class="fu">filter</span>(PrecursorMz <span class="sc">&gt;=</span> mz1 <span class="sc">&amp;</span> PrecursorMz <span class="sc">&lt;=</span> mz2, PrecursorCharge <span class="sc">&lt;</span> <span class="dv">4</span>)) <span class="sc">+</span></span>
-<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> PrecursorMz), <span class="at">binwidth =</span> <span class="fl">0.025</span>, <span class="at">fill =</span> <span class="st">"#2b8cbe"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">data =</span> optimal_windows_proteome <span class="sc">%&gt;%</span> <span class="fu">filter</span>(start_mz <span class="sc">&gt;=</span> mz1 <span class="sc">&amp;</span> start_mz <span class="sc">&lt;=</span> mz2), </span>
-<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">xintercept =</span> start_mz), <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
-<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">n.breaks =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
-<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Acetyl Spectral library"</span>,</span>
-<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>         <span class="at">subtitle =</span> <span class="st">"Baeza et.al. JPR 2020"</span>,</span>
-<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>         <span class="at">fill =</span> <span class="st">"Charge"</span>,</span>
-<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>         <span class="at">x =</span> <span class="st">"Precursor m/z"</span>)</span>
-<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Rendering all three plots</span></span>
-<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>g1 <span class="sc">/</span> g2 <span class="sc">/</span> g3 <span class="sc">+</span> <span class="fu">plot_annotation</span>(<span class="at">title =</span> <span class="st">'DIA Window placement'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
-</div>
-</div>
-
-
 </section>
+<section id="mz-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="mz-distribution">mz distribution</h2>
+<section id="tryptic-digest" class="level3">
+<h3 class="anchored" data-anchor-id="tryptic-digest">Tryptic digest</h3>
+<p>Plotting the <em>m/z</em> distribution for tryptic peptide precursors</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(hu_prot <span class="sc">%&gt;%</span> <span class="fu">filter</span>(precursor_mz <span class="sc">&gt;</span> min_mz, precursor_mz <span class="sc">&lt;</span> max_mz),</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> precursor_mz)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">position =</span> <span class="st">"dodge"</span>, <span class="at">binwidth =</span> <span class="dv">10</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="st">"grey80"</span>) <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># annotate("rect", xmin = mz1, xmax = mz2, ymin = 0, ymax = Inf) +</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">n.breaks =</span> <span class="dv">15</span>) <span class="sc">+</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Peptide m/z distribution"</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Tryptic Proteome"</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Number of precursors"</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Precursor m/z"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/mz distribution-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="ack-peptides" class="level3">
+<h3 class="anchored" data-anchor-id="ack-peptides">AcK peptides</h3>
+<p>Plotting the <em>m/z</em> distribution for Acetyl-K peptide precursors. Here, I’m restricting the peptides that have either 1 or 2 lysines.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(hu_acetyl <span class="sc">%&gt;%</span> <span class="fu">filter</span>(precursor_mz <span class="sc">&gt;</span> min_mz, precursor_mz <span class="sc">&lt;</span> max_mz, k_count <span class="sc">&lt;=</span> <span class="dv">2</span>),</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> precursor_mz)) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">position =</span> <span class="st">"dodge"</span>, <span class="at">binwidth =</span> <span class="dv">10</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="st">"grey80"</span>) <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">n.breaks =</span> <span class="dv">15</span>) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Peptide m/z distribution"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Acetyl Proteome"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Number of precursors"</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Precursor m/z"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/mz distribution for AcK peptides-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="dia-window-placement" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="dia-window-placement">DIA Window placement</h2>
+<p>Next, we will zoom in to the m/z distribution between 640 and 650 and add the <em>optimized-window-placement</em> windows</p>
+<div class="cell page-columns page-full">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Human proteome (Trypsin)</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(hu_prot <span class="sc">%&gt;%</span> <span class="fu">filter</span>(precursor_mz <span class="sc">&gt;=</span> mz1 <span class="sc">&amp;</span> precursor_mz <span class="sc">&lt;=</span> mz2)) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> precursor_mz), <span class="at">binwidth =</span> <span class="fl">0.025</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">fill =</span> <span class="st">"grey80"</span>) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">data =</span> optimal_windows_proteome <span class="sc">%&gt;%</span> <span class="fu">filter</span>(start_mz <span class="sc">&gt;=</span> mz1 <span class="sc">&amp;</span> start_mz <span class="sc">&lt;=</span> mz2), </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">xintercept =</span> start_mz), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>) <span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">n.breaks =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Tryptic Proteome"</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">subtitle =</span> <span class="st">"in silico digest"</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">x =</span> <span class="st">"Precursor m/z"</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Acetyl proteome (Arg-C)</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>g2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(hu_acetyl <span class="sc">%&gt;%</span> <span class="fu">filter</span>(precursor_mz <span class="sc">&gt;=</span> mz1 <span class="sc">&amp;</span> precursor_mz <span class="sc">&lt;=</span> mz2)) <span class="sc">+</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> precursor_mz, <span class="at">fill =</span> isotope), <span class="at">binwidth =</span> <span class="fl">0.025</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">data =</span> optimal_windows_proteome <span class="sc">%&gt;%</span> <span class="fu">filter</span>(start_mz <span class="sc">&gt;=</span> mz1 <span class="sc">&amp;</span> start_mz <span class="sc">&lt;=</span> mz2), </span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">xintercept =</span> start_mz), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>) <span class="sc">+</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">n.breaks =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Acetyl Proteome"</span>,</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>         <span class="at">subtitle =</span> <span class="st">"in silico digest"</span>,</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>         <span class="at">x =</span> <span class="st">"Precursor m/z"</span>)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Acetyl Spectral library</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>g3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(ack_speclib <span class="sc">%&gt;%</span> <span class="fu">filter</span>(PrecursorMz <span class="sc">&gt;=</span> mz1 <span class="sc">&amp;</span> PrecursorMz <span class="sc">&lt;=</span> mz2, PrecursorCharge <span class="sc">&lt;</span> <span class="dv">4</span>)) <span class="sc">+</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> PrecursorMz), <span class="at">binwidth =</span> <span class="fl">0.025</span>, <span class="at">fill =</span> <span class="st">"#2b8cbe"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">data =</span> optimal_windows_proteome <span class="sc">%&gt;%</span> <span class="fu">filter</span>(start_mz <span class="sc">&gt;=</span> mz1 <span class="sc">&amp;</span> start_mz <span class="sc">&lt;=</span> mz2), </span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">xintercept =</span> start_mz), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>) <span class="sc">+</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">n.breaks =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Acetyl Spectral library"</span>,</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>         <span class="at">subtitle =</span> <span class="st">"Baeza et.al. JPR 2020"</span>,</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>         <span class="at">fill =</span> <span class="st">"Charge"</span>,</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>         <span class="at">x =</span> <span class="st">"Precursor m/z"</span>)</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Rendering all three plots</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>g1 <span class="sc">/</span> g2 <span class="sc">/</span> g3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display column-body-outset">
+<p><img src="index_files/figure-html/DIA window placement-1.png" class="img-fluid" width="1536"></p>
+</div>
+</div>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>So, the optimized window placement function places the DIA windows within areas of the <em>m/z</em> space where monoisotopic peaks are not to be found. This works for acetyl-lysine peptides as well as deuterated acetyl-lysines as described in <a href="https://pubs.acs.org/doi/10.1021/acs.jproteome.0c00088">Baeza et. al.</a></p>
+
+
 </section>
 </section>
 

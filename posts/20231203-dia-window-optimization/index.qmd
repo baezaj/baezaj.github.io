@@ -12,7 +12,7 @@ categories: [Mass Spectrometry, DIA, Skyline] # self-defined categories
 toc: true
 toc-location: left
 toc-expand: true
-draft: true 
+draft: false 
 ---
 
 # Background
@@ -20,6 +20,7 @@ draft: true
 What are "forbidden zones" when working with mass spectrometry-based data. Forbidden zones, described in [Frahm et. al. (2006)](https://doi.org/10.1002/jms.1024), are the areas in the precursor mass range where peptides are not found. A more recent publication describing forbidden zones for DIA method development can be found in [Pino et. al. (2020)](https://doi.org/10.1074/mcp.P119.001913).
 
 ![Forbidden Zones described in Pino et.al. (2020)](gr6_lrg.jpg)
+
 
 The "optimize window placement" feature in [Skyline](https://skyline.ms/) is there to place the boundaries of DIA windows in these forbidden zones.
 
@@ -41,8 +42,8 @@ flowchart LR
   E --> G[calculate\nprecursor m/z]
   F --> G[calculate\nprecursor m/z]
   G --> H[m/z distribution]
-  G --> I[Protein coverage]
   G --> J[Forbidden zones]
+  J --> K[Optimal window placement]
   
 ```
 
@@ -120,9 +121,24 @@ digest_tryp <- function(sequence){
 ```{r}
 #| label: Global variables
 
-
+# Minimum peptide length
 min_pep_len <- 7
+
+# Mass of Proton (Da)
 proton <- 1.007276466
+
+# Acetylation mass (Da)
+ack_d0_mass <- 42.010565
+ack_d3_mass <- ack_d0_mass - 3*(1.007825) + 3*(2.014102) 
+
+# for the mz distribution
+min_mz <- 300
+max_mz <- 2500
+
+# for zooming in the mz distribution
+mz1 <- 640
+mz2 <- 650
+
 
 ```
 
@@ -132,6 +148,8 @@ The first step is to perform an *in silico* digest of the complete human fasta f
 
 
 ```{r}
+#| label: In silico trypsin digestion
+#| code-fold: true
 
 # Digesting human proteome
 # filtering for a minimum peptide length
@@ -165,11 +183,14 @@ hu_prot <- hu_prot %>%
 
 In this step, I am adding an acetyl modification to every lysine residue and digesting the complete human proteome using the Arg-C digest rules. Acetylation on lysine residues prevents the proteolytic digestion by trypsin. Therefore only the arginine residues are used for digestion.
 
-```{r}
+To generate *in silico* AcK peptides, I change the digestion rule from trypsin to ArgC. Trypsin cleaves at K and R residues, while ArgC cleaves at R residues only. Then, the mass of `r ack_d0_mass` and `r ack_d3_mass` is added for light and heavy AcK peptides, respectively. 
 
-# Acetylation mass
-ack_d0_mass <- 42.010565
-ack_d3_mass <- 42.010565 - 3*(1.007825) + 3*(2.014102) 
+
+```{r}
+#| label: in silico ArgC digestion
+#| code-fold: true
+
+
 
 # Digesting human proteome
 # Filtering for lysine containing peptides
@@ -209,6 +230,9 @@ hu_acetyl <- hu_acetyl %>%
 I have a spectral library that was published in [Baeza et.al. 2020](https://pubs.acs.org/doi/10.1021/acs.jproteome.0c00088). I will also use this spectral library to compare with the human proteome analysis. As a clean up step, I am filtering only for peptides that are acetylated, i.e., contain a lysine residue.
 
 ```{r}
+#| label: Preparing AcK spectral library
+#| code-fold: true
+
 
 # Filtering for acetyl peptide
 ack_speclib <- ack_speclib %>% 
@@ -224,18 +248,22 @@ ack_speclib <- ack_speclib %>%
 
 ```
 
-### Plots
+## mz distribution
 
-Plotting the number of precursors across the entire *m/z* range.
+### Tryptic digest
+
+Plotting the *m/z* distribution for tryptic peptide precursors
+
 
 ```{r}
+#| label: mz distribution
+#| code-fold: true
 
-min_mz <- 300
-max_mz <- 2000
 
 ggplot(hu_prot %>% filter(precursor_mz > min_mz, precursor_mz < max_mz),
        aes(x = precursor_mz)) +
   geom_histogram(position = "dodge", binwidth = 10, color = "black", fill = "grey80") +
+  # annotate("rect", xmin = mz1, xmax = mz2, ymin = 0, ymax = Inf) +
   scale_x_continuous(n.breaks = 15) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   theme_bw(base_size = 14) +
@@ -247,9 +275,13 @@ ggplot(hu_prot %>% filter(precursor_mz > min_mz, precursor_mz < max_mz),
 
 ```
 
-What's the fraction of precursors covered within a given *m/z* range?
 
 ```{r}
+#| label: table 1
+#| code-fold: true
+#| include: false
+
+
 
 # Initializing the for-loop
 proteome_coverage <- tibble(index = 1:10,
@@ -267,14 +299,23 @@ for (i in seq_along(proteome_coverage$percent)){
 # Rendered table
 proteome_coverage %>% 
   select(-index) %>%
+  mutate(percent = signif(percent, digits = 3)*100) %>% 
   kable() %>% 
   kable_styling(bootstrap_options = c("striped", "hover"))
 
 ```
 
-```{r}
 
-ggplot(hu_acetyl %>% filter(precursor_mz > min_mz, precursor_mz < max_mz),
+### AcK peptides
+
+Plotting the *m/z* distribution for Acetyl-K peptide precursors. Here, I'm restricting the peptides that have either 1 or 2 lysines. 
+
+
+```{r}
+#| label: mz distribution for AcK peptides
+#| code-fold: true
+
+ggplot(hu_acetyl %>% filter(precursor_mz > min_mz, precursor_mz < max_mz, k_count <= 2),
        aes(x = precursor_mz)) +
   geom_histogram(position = "dodge", binwidth = 10, color = "black", fill = "grey80") +
   scale_x_continuous(n.breaks = 15) +
@@ -288,18 +329,21 @@ ggplot(hu_acetyl %>% filter(precursor_mz > min_mz, precursor_mz < max_mz),
 
 ```
 
-The peptides represented in this plot contains multiple lysine groups. Let's group the histogram by the number of lysines.
+
 
 ```{r}
+#| label: Lysine count
+#| include: false
 
-ggplot(hu_acetyl %>% filter(precursor_mz > min_mz, precursor_mz < max_mz, k_count <= 4),
+
+ggplot(hu_acetyl %>% filter(precursor_mz > min_mz, precursor_mz < max_mz, k_count <= 2),
        aes(x = precursor_mz)) +
   geom_histogram(position = "dodge", binwidth = 10, color = "black", fill = "grey80") +
   scale_x_continuous(n.breaks = 15) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   theme_bw(base_size = 14) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  facet_wrap(~k_count, nrow = 2) +
+  facet_wrap(~k_count, nrow = 2, scales = "free") +
   labs(title = "Peptide m/z distribution",
        subtitle = "Acetyl Proteome",
        y = "Number of precursors",
@@ -308,9 +352,12 @@ ggplot(hu_acetyl %>% filter(precursor_mz > min_mz, precursor_mz < max_mz, k_coun
 
 ```
 
-When calculating the percentage of precursors within a given *m/z* range, I am going to limit the search to peptides with one or two lysines.
+
 
 ```{r}
+#| label: table 2
+#| include: false
+
 
 hu_acetyl_filtered <- hu_acetyl %>% 
   filter(k_count <= 2,
@@ -332,22 +379,31 @@ for (i in seq_along(acetyl_prot_coverage$percent)){
 # Rendered table
 acetyl_prot_coverage%>% 
   select(-index) %>% 
+  mutate(percent = signif(percent, digits = 4)*100) %>% 
   kable() %>% 
   kable_styling(bootstrap_options = c("striped", "hover"))
 
 ```
 
-```{r, fig.height = 12}
+## DIA Window placement
 
-mz1 <- 640
-mz2 <- 650
+Next, we will zoom in to the m/z distribution between `r mz1` and `r mz2` and add the *optimized-window-placement* windows 
+
+
+```{r}
+#| label: DIA window placement
+#| code-fold: true
+#| fig-width: 16
+#| fig-height: 18
+#| column: body-outset
+
 
 # Human proteome (Trypsin)
 g1 <- ggplot(hu_prot %>% filter(precursor_mz >= mz1 & precursor_mz <= mz2)) +
   geom_histogram(aes(x = precursor_mz), binwidth = 0.025, color = "black", fill = "grey80") +
   geom_vline(data = optimal_windows_proteome %>% filter(start_mz >= mz1 & start_mz <= mz2), 
-             aes(xintercept = start_mz), color = "black") +
-  theme_bw(base_size = 14) +
+             aes(xintercept = start_mz), color = "black", linewidth = 1) +
+  theme_bw(base_size = 22) +
   scale_x_continuous(n.breaks = 10) +
     labs(title = "Tryptic Proteome",
          subtitle = "in silico digest",
@@ -357,8 +413,8 @@ g1 <- ggplot(hu_prot %>% filter(precursor_mz >= mz1 & precursor_mz <= mz2)) +
 g2 <- ggplot(hu_acetyl %>% filter(precursor_mz >= mz1 & precursor_mz <= mz2)) +
   geom_histogram(aes(x = precursor_mz, fill = isotope), binwidth = 0.025, color = "black") +
   geom_vline(data = optimal_windows_proteome %>% filter(start_mz >= mz1 & start_mz <= mz2), 
-             aes(xintercept = start_mz), color = "black") +
-  theme_bw(base_size = 14) +
+             aes(xintercept = start_mz), color = "black", linewidth = 1) +
+  theme_bw(base_size = 22) +
   scale_x_continuous(n.breaks = 10) +
     labs(title = "Acetyl Proteome",
          subtitle = "in silico digest",
@@ -368,8 +424,8 @@ g2 <- ggplot(hu_acetyl %>% filter(precursor_mz >= mz1 & precursor_mz <= mz2)) +
 g3 <- ggplot(ack_speclib %>% filter(PrecursorMz >= mz1 & PrecursorMz <= mz2, PrecursorCharge < 4)) +
   geom_histogram(aes(x = PrecursorMz), binwidth = 0.025, fill = "#2b8cbe", color = "black") +
   geom_vline(data = optimal_windows_proteome %>% filter(start_mz >= mz1 & start_mz <= mz2), 
-             aes(xintercept = start_mz), color = "black") +
-  theme_bw(base_size = 14) +
+             aes(xintercept = start_mz), color = "black", linewidth = 1) +
+  theme_bw(base_size = 22) +
   scale_x_continuous(n.breaks = 10) +
     labs(title = "Acetyl Spectral library",
          subtitle = "Baeza et.al. JPR 2020",
@@ -377,6 +433,10 @@ g3 <- ggplot(ack_speclib %>% filter(PrecursorMz >= mz1 & PrecursorMz <= mz2, Pre
          x = "Precursor m/z")
 
 # Rendering all three plots
-g1 / g2 / g3 + plot_annotation(title = 'DIA Window placement')
+g1 / g2 / g3
 
 ```
+
+## Conclusion
+
+So, the optimized window placement function places the DIA windows within areas of the *m/z* space where monoisotopic peaks are not to be found. This works for acetyl-lysine peptides as well as deuterated acetyl-lysines as described in [Baeza et. al.](https://pubs.acs.org/doi/10.1021/acs.jproteome.0c00088)
