@@ -1,0 +1,20 @@
+---
+title: "Processing Thermo Log files "
+# description:
+author:
+  - name: Josue Baeza
+    url: https://josuebaeza.com/
+    orcid: 0000-0003-4960-3905
+date: 06-6-2024
+date-modified: last-modified
+categories: [Mass Spectrometry, Thermo, Orbitrap, Log files] # self-defined categories
+# image: 
+toc: true
+toc-location: left
+toc-expand: true
+draft: true
+---
+
+## Background
+
+
