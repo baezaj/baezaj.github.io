@@ -37,5 +37,8 @@
   },
   "publications.qmd": {
     "publications.html": "f9859b0a"
+  },
+  "posts/20240616-thermo-log-files/index.qmd": {
+    "index.html": "0be3670b"
   }
 }
