@@ -17,4 +17,158 @@ draft: true
 
 ## Background
 
+Thermo mass spectrometers record daily *log* files that contain a lot of valuable information regarding the status of each instrument. The *log* files record data for temperature, pressure, voltages, etc. from numerous guages. Visualizing this data longitudinally can help assess instrument performance. 
+
+In this blog post, I will show you were to find the *log* files, how to import them, and how to visualize. 
+
+### Supported Instruments
+
+* Q-Exactive family instruments
+* Exploris family instruments
+
+*Note: Orbitrap Eclipse instruments do generate log files, however, this blog post will only focus on the instruments above because I don't have access to Eclipse log files*
+
+
+### Directories
+
+Data is located in the following directories for the different instruments
+
+#### Q Exactive
+
+`C:\ProgramData\Thermo\Exactive\Log`
+
+#### Exploris
+
+`C:\ProgramData\Thermo\Exploris\Log`
+
+#### Tribrids
+
+`C:\Thermo\Instruments\TNG\OrbitrapXXXXX\X.X\System\logs`
+
+## Importing *log* files
+
+This is the function used to import individual log files into a dataframe. 
+
+```{r}
+#| label: Import function
+#| code-fold: false
+
+import_orbitrap_logfiles <- function(file){
+  
+  # Loading libraries
+  require(tidyverse)
+  require(janitor)
+  require(lubridate)
+  
+  # Importing log file
+  data <- read.delim2(file, sep = "\t", header = FALSE)
+  
+  # Indexing the rows with text
+  index <- grep("[a-z]", data[,3])
+  
+  # Assigning new column name
+  names(data) <- data[index[1],]
+  
+  # Removing text rows
+  data <- data[-index,]
+  
+  # Cleaning column names
+  # names(data) <- gsub("\\+", "pos ", names(data))
+  # names(data) <- gsub("\\-[0-9]", "neg ", names(data))
+  data <- data %>% clean_names(case = "snake") 
+  
+  # Creating a vector of date-time. I need to deal with this separately
+  date_column <- data$date
+  
+  # Removing the date-time from the dataframe
+  data$date <- NA
+  
+  # Need to convert the entire dataframe to numeric
+  data <- as.data.frame(sapply(data, FUN = as.numeric))
+  
+  # Now that the dataframe is numeric, I can add back the date-time
+  data$date <- date_column
+  
+  # add logfile name
+  data$file <- basename(file)
+  
+  # Formatting date-time
+  data$date <- ymd_hms(data$date)
+  
+  # return dataframe
+  return(data)
+  
+}
+
+```
+
+### Loading libraries
+
+```{r}
+#| label: libraries
+#| warning: false
+#| message: false
+#| error: false
+
+
+library(tidyverse)
+library(janitor)
+library(lubridate)
+
+```
+
+### Reading log files
+
+```{r}
+#| label: Reading log files
+#| code-fold: false
+#| warning: false
+
+# directory where log files are kept
+directory <- "QEHF_logfiles/"
+
+# Reading the log files in the directory
+filelist <- list.files(directory, pattern = "InstrumentTemperature", full.names = TRUE)
+
+# function to read in log files with some error handling
+read_logfile_to_df <- function(x){
+  tryCatch(import_orbitrap_logfiles(x),
+           error = function(e) NA)
+}
+
+# importing log files and saving as a list
+log <- filelist %>% 
+  lapply(read_logfile_to_df) 
+
+# Removing log files that generated an error
+# I can go back and investigate why this happened later
+log <- log[which(!is.na(log))]
+
+# Concatenated files
+data <- log %>% 
+  bind_rows()
+
+```
+
+### Ambient Temperature plot
+
+```{r}
+#| label: Ambient Temp 1
+#| code-fold: false
+#| column: body-outset
+#| fig-height: 6
+#| fig-width: 16
+
+
+data %>% 
+  filter(date >= as.Date("2018-04-01")) %>%
+  ggplot(aes(x = date)) +
+  geom_line(aes(y = ambient_temperature_raw_c)) +
+  theme_bw(base_size = 22) +
+  labs(x = NULL,
+       y = expression('Temp ('~degree*C*')')) +
+  scale_x_datetime(date_breaks = "3 month", 
+                   date_minor_breaks = "1 month",
+                   date_labels = "%b%y")
+```
 
