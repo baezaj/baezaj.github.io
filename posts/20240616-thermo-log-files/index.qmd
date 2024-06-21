@@ -45,64 +45,9 @@ Data is located in the following directories for the different instruments
 
 `C:\Thermo\Instruments\TNG\OrbitrapXXXXX\X.X\System\logs`
 
-## Importing *log* files
+## Reading *Log* files
 
-This is the function used to import individual log files into a dataframe. 
-
-```{r}
-#| label: Import function
-#| code-fold: false
-
-import_orbitrap_logfiles <- function(file){
-  
-  # Loading libraries
-  require(tidyverse)
-  require(janitor)
-  require(lubridate)
-  
-  # Importing log file
-  data <- read.delim2(file, sep = "\t", header = FALSE)
-  
-  # Indexing the rows with text
-  index <- grep("[a-z]", data[,3])
-  
-  # Assigning new column name
-  names(data) <- data[index[1],]
-  
-  # Removing text rows
-  data <- data[-index,]
-  
-  # Cleaning column names
-  # names(data) <- gsub("\\+", "pos ", names(data))
-  # names(data) <- gsub("\\-[0-9]", "neg ", names(data))
-  data <- data %>% clean_names(case = "snake") 
-  
-  # Creating a vector of date-time. I need to deal with this separately
-  date_column <- data$date
-  
-  # Removing the date-time from the dataframe
-  data$date <- NA
-  
-  # Need to convert the entire dataframe to numeric
-  data <- as.data.frame(sapply(data, FUN = as.numeric))
-  
-  # Now that the dataframe is numeric, I can add back the date-time
-  data$date <- date_column
-  
-  # add logfile name
-  data$file <- basename(file)
-  
-  # Formatting date-time
-  data$date <- ymd_hms(data$date)
-  
-  # return dataframe
-  return(data)
-  
-}
-
-```
-
-### Loading libraries
+### Libraries used
 
 ```{r}
 #| label: libraries
@@ -114,15 +59,183 @@ import_orbitrap_logfiles <- function(file){
 library(tidyverse)
 library(janitor)
 library(lubridate)
+library(kableExtra)
 
 ```
 
-### Reading log files
+```{r}
+
+# directory where I keep the log files
+directory <- "QEHF_logfiles/"
+
+# Reading the log files in the directory
+filelist <- list.files(directory, pattern = "InstrumentTemperature", full.names = TRUE)
+
+# plucking a single log file to demonstrate
+file <- filelist[1]
+
+```
+
+
+### Importing a single file
+
+```{r}
+#| label: Importing single file
+#| eval: true
+
+
+logfile <- read.delim2(file, sep = "\t", header = FALSE)
+  
+
+```
+
+
+
+During the file import, I'm using `header = FALSE`. The instrument log files do not always have the first row with the header information. 
+
+Additionally, the header row is often embedded multiple times in a single log file. Scroll down and see how many times this log file has the header information. This will need to be cleaned up in subsequent steps.
+
+```{r}
+#| label: Displaying table
+#| echo: false
+#| eval: true
+#| column: body-outset
+
+# Rendering table
+logfile[,1:7] %>% 
+  kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "hover")) %>% 
+  scroll_box(height = "500px")
+
+```
+
+
+### Cleaning up header
+
+These are the steps being performed in the following chunk.
+
+  1. Indexing the rows in a single log file that contain the header-row
+  2. Removing Non-ASCII characters from header
+  3. Assigning a header-row as column names
+  4. Removing all header-rows from log file
+  5. Cleaning up column names using the `janitor` package
+  
+
+```{r}
+
+# Indexing the header-rows
+index <- grep("[a-z]", logfile[,3])
+
+# Removing Non-ASCII characters
+logfile[index[1],] <- iconv(logfile[index[1],], "utf-8", "ascii", sub = "")
+
+# Assigning new column name
+names(logfile) <- logfile[index[1],]
+
+# Removing header-rows
+logfile <- logfile[-index,]
+
+# Cleaning column names
+logfile <- logfile %>% clean_names(case = "snake") 
+
+
+```
+
+
+### Formatting data types
+
+The next step is to convert the dataframe to `numeric` and the date column to `datetime`. During the data import, the header-rows being present forced all columns to import as character type. 
+
+
+```{r}
+
+# Creating a vector of date-time. I need to deal with this separately
+date_column <- logfile$date
+
+# Removing the date column from the data frame
+logfile$date <- NA
+
+# Need to convert the entire data frame to numeric
+logfile <- as.data.frame(sapply(logfile, FUN = as.numeric))
+
+# Now that the data frame is numeric, I can add back the date-time
+logfile$date <- date_column
+ 
+# Formatting date-time using lubridate
+logfile$date <- ymd_hms(logfile$date)
+
+
+```
+
+
+## Putting it all together
+
+This is the function used to import individual log files into a dataframe. 
+
+```{r}
+#| label: Import function
+#| code-fold: false
+#| include: true
+#| eval: true
+
+import_orbitrap_logfiles <- function(file){
+  
+  # Loading libraries
+  require(tidyverse)
+  require(janitor)
+  require(lubridate)
+  
+  # Importing log file
+  logfile <- read.delim2(file, sep = "\t", header = FALSE)
+  
+  # Indexing the header-rows
+  index <- grep("[a-z]", logfile[,3])
+  
+  # Removing Non-ASCII characters
+  logfile[index[1],] <- iconv(logfile[index[1],], "utf-8", "ascii", sub = "")
+  
+  # Assigning new column name
+  names(logfile) <- logfile[index[1],]
+  
+  # Removing header-rows
+  logfile <- logfile[-index,]
+  
+  # Cleaning column names
+  logfile <- logfile %>% clean_names(case = "snake") 
+  
+  # Creating a vector of date-time. I need to deal with this separately
+  date_column <- logfile$date
+  
+  # Removing the date-time from the dataframe
+  logfile$date <- NA
+  
+  # Need to convert the entire dataframe to numeric
+  logfile <- as.data.frame(sapply(logfile, FUN = as.numeric))
+  
+  # Now that the dataframe is numeric, I can add back the date-time
+  logfile$date <- date_column
+  
+  # Formatting date-time
+  logfile$date <- ymd_hms(logfile$date)
+  
+  # return dataframe
+  return(logfile)
+  
+}
+
+```
+
+
+
+
+### Reading many log files
 
 ```{r}
 #| label: Reading log files
 #| code-fold: false
 #| warning: false
+#| include: true
+#| eval: true
 
 # directory where log files are kept
 directory <- "QEHF_logfiles/"
@@ -152,12 +265,16 @@ data <- log %>%
 
 ### Ambient Temperature plot
 
+
+
 ```{r}
 #| label: Ambient Temp 1
 #| code-fold: false
 #| column: body-outset
 #| fig-height: 6
 #| fig-width: 16
+#| include: true
+#| eval: true
 
 
 data %>% 
@@ -171,4 +288,3 @@ data %>%
                    date_minor_breaks = "1 month",
                    date_labels = "%b%y")
 ```
-
