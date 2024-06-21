@@ -206,7 +206,7 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
   <li><a href="#supported-instruments" id="toc-supported-instruments" class="nav-link" data-scroll-target="#supported-instruments">Supported Instruments</a></li>
   <li><a href="#directories" id="toc-directories" class="nav-link" data-scroll-target="#directories">Directories</a></li>
   </ul></li>
-  <li><a href="#reading-log-files" id="toc-reading-log-files" class="nav-link" data-scroll-target="#reading-log-files">Reading <em>Log</em> files</a>
+  <li><a href="#reading-a-log-file" id="toc-reading-a-log-file" class="nav-link" data-scroll-target="#reading-a-log-file">Reading a <em>log</em> file</a>
   <ul class="collapse">
   <li><a href="#libraries-used" id="toc-libraries-used" class="nav-link" data-scroll-target="#libraries-used">Libraries used</a></li>
   <li><a href="#importing-a-single-file" id="toc-importing-a-single-file" class="nav-link" data-scroll-target="#importing-a-single-file">Importing a single file</a></li>
@@ -217,6 +217,7 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
   <ul class="collapse">
   <li><a href="#reading-many-log-files" id="toc-reading-many-log-files" class="nav-link" data-scroll-target="#reading-many-log-files">Reading many log files</a></li>
   <li><a href="#ambient-temperature-plot" id="toc-ambient-temperature-plot" class="nav-link" data-scroll-target="#ambient-temperature-plot">Ambient Temperature plot</a></li>
+  <li><a href="#instrument-readbacks" id="toc-instrument-readbacks" class="nav-link" data-scroll-target="#instrument-readbacks">Instrument readbacks</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -260,8 +261,8 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 </section>
 </section>
 </section>
-<section id="reading-log-files" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="reading-log-files">Reading <em>Log</em> files</h2>
+<section id="reading-a-log-file" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="reading-a-log-file">Reading a <em>log</em> file</h2>
 <section id="libraries-used" class="level3">
 <h3 class="anchored" data-anchor-id="libraries-used">Libraries used</h3>
 <div class="cell">
@@ -942,20 +943,21 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># function to read in log files with some error handling</span></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>read_logfile_to_df <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>(<span class="fu">import_orbitrap_logfiles</span>(x),</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">error =</span> <span class="cf">function</span>(e) <span class="cn">NA</span>)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># importing log files and saving as a list</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>log <span class="ot">&lt;-</span> filelist <span class="sc">%&gt;%</span> </span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(read_logfile_to_df) </span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Removing log files that generated an error</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co"># I can go back and investigate why this happened later</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>log <span class="ot">&lt;-</span> log[<span class="fu">which</span>(<span class="sc">!</span><span class="fu">is.na</span>(log))]</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Concatenated files</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> log <span class="sc">%&gt;%</span> </span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">error =</span> <span class="cf">function</span>(e) <span class="cn">NA</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">warning =</span> <span class="cf">function</span>(w) <span class="cn">NA</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co"># importing log files and saving as a list</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>log <span class="ot">&lt;-</span> filelist <span class="sc">%&gt;%</span> </span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lapply</span>(read_logfile_to_df) </span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Removing log files that generated an error</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co"># I can go back and investigate why this happened later</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>log <span class="ot">&lt;-</span> log[<span class="fu">which</span>(<span class="sc">!</span><span class="fu">is.na</span>(log))]</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Concatenated files</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> log <span class="sc">%&gt;%</span> </span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="ambient-temperature-plot" class="level3 page-columns page-full">
@@ -973,6 +975,171 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_labels =</span> <span class="st">"%b%y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display column-body-outset">
 <p><img src="index_files/figure-html/Ambient Temp 1-1.png" class="img-fluid" width="1536"></p>
+</div>
+</div>
+</section>
+<section id="instrument-readbacks" class="level3">
+<h3 class="anchored" data-anchor-id="instrument-readbacks">Instrument readbacks</h3>
+<p>The log files record numerous instrument readbacks including:</p>
+<ul>
+<li>Ambient temperature</li>
+<li>Analyzer temperature</li>
+<li>CEPS Peltier temperature</li>
+<li>Fore vacuum pressure</li>
+<li>High vacuum pressure</li>
+<li>Ultra high vacuum pressure</li>
+</ul>
+<p>Below is the full list of readbacks that are available for the QE-HF.</p>
+<p><em>Note: The list of readbacks for each instrument will vary slightly depending on model and tune version</em></p>
+<div class="cell">
+<div class="cell-output-display">
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; ">
+<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">Instrument Readbacks</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">up_time_days</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">vacuum_1_hv_mbar</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">vacuum_2_uhv_mbar</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">vacuum_3_fore_mbar</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">vacuum_4_humidity_mbar</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">turbo1_temp_bearing_r_c</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">turbo1_temp_motor_r_c</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">turbo1_temp_bottompart_r_c</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">turbo1_temp_powerstage_r_c</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">turbo1_temp_electronics_r_c</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">turbo1_volt_r_v</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">turbo1_curr_r_a</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">turbo2_temp_bearing_r_c</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">turbo2_temp_motor_r_c</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">turbo2_temp_bottompart_r_c</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">turbo2_temp_powerstage_r_c</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">turbo2_temp_electronics_r_c</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">turbo2_volt_r_v</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">turbo2_curr_r_a</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">turbo3_temp_bearing_r_c</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">turbo3_temp_motor_r_c</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">turbo3_temp_bottompart_r_c</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">turbo3_temp_powerstage_r_c</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">turbo3_temp_electronics_r_c</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">turbo3_volt_r_v</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">turbo3_curr_r_a</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ambient_temperature_raw_c</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ambient_humidity_result_percent</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">capillary_temperature_c</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">itv_gas_pressure_actual_bar</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ios_heatsink_temperature_c</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">inj_flat_ampl_vpp</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">inj_flat_freq_k_hz</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">bent_flat_freq_k_hz</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ios_rf2_3_freq_k_hz</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ctrap_rf_amp_vpp</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ctrap_amp_current_a</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ctrap_freq_m_hz</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ce_pos_electronics_temperature_act_c</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ce_neg_electronics_temperature_act_c</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">analyzer_temperature_sensor_c</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">analyzer_temp_sensor_filtered_c</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">analyzer_temperature_with_delay_model_c</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ceps_peltier_temperature_sensor_c</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">quad_detector_temperature_c</td>
+</tr>
+</tbody>
+</table>
+</div>
+
 </div>
 </div>
 

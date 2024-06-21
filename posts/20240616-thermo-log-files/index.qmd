@@ -12,7 +12,7 @@ categories: [Mass Spectrometry, Thermo, Orbitrap, Log files] # self-defined cate
 toc: true
 toc-location: left
 toc-expand: true
-draft: true
+draft: false
 ---
 
 ## Background
@@ -45,7 +45,7 @@ Data is located in the following directories for the different instruments
 
 `C:\Thermo\Instruments\TNG\OrbitrapXXXXX\X.X\System\logs`
 
-## Reading *Log* files
+## Reading a *log* file
 
 ### Libraries used
 
@@ -246,7 +246,8 @@ filelist <- list.files(directory, pattern = "InstrumentTemperature", full.names 
 # function to read in log files with some error handling
 read_logfile_to_df <- function(x){
   tryCatch(import_orbitrap_logfiles(x),
-           error = function(e) NA)
+           error = function(e) NA,
+           warning = function(w) NA)
 }
 
 # importing log files and saving as a list
@@ -263,8 +264,8 @@ data <- log %>%
 
 ```
 
-### Ambient Temperature plot
 
+### Ambient Temperature plot
 
 
 ```{r}
@@ -288,3 +289,31 @@ data %>%
                    date_minor_breaks = "1 month",
                    date_labels = "%b%y")
 ```
+
+### Instrument readbacks
+
+The log files record numerous instrument readbacks including:
+
+-   Ambient temperature
+-   Analyzer temperature
+-   CEPS Peltier temperature
+-   Fore vacuum pressure
+-   High vacuum pressure
+-   Ultra high vacuum pressure
+
+Below is the full list of readbacks that are available for the QE-HF. 
+
+*Note: The list of readbacks for each instrument will vary slightly depending on model and tune version*
+
+```{r}
+#| label: full list of readbacks
+#| echo: false
+
+data.frame(InstrumentReadbacks = names(data)[3:47]) %>% 
+  clean_names(case = "title") %>% 
+  kable() %>% 
+  scroll_box(height = "500px")
+
+
+```
+
