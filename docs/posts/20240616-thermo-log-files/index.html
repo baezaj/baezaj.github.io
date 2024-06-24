@@ -187,7 +187,7 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">June 20, 2024</p>
+        <p class="date-modified">June 23, 2024</p>
       </div>
     </div>
       
@@ -216,9 +216,12 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
   <li><a href="#putting-it-all-together" id="toc-putting-it-all-together" class="nav-link" data-scroll-target="#putting-it-all-together">Putting it all together</a>
   <ul class="collapse">
   <li><a href="#reading-many-log-files" id="toc-reading-many-log-files" class="nav-link" data-scroll-target="#reading-many-log-files">Reading many log files</a></li>
-  <li><a href="#ambient-temperature-plot" id="toc-ambient-temperature-plot" class="nav-link" data-scroll-target="#ambient-temperature-plot">Ambient Temperature plot</a></li>
   <li><a href="#instrument-readbacks" id="toc-instrument-readbacks" class="nav-link" data-scroll-target="#instrument-readbacks">Instrument readbacks</a></li>
+  <li><a href="#ambient-temperature" id="toc-ambient-temperature" class="nav-link" data-scroll-target="#ambient-temperature">Ambient Temperature</a></li>
+  <li><a href="#ultra-high-uhv-vacuum-pressure" id="toc-ultra-high-uhv-vacuum-pressure" class="nav-link" data-scroll-target="#ultra-high-uhv-vacuum-pressure">Ultra High (UHV) Vacuum pressure</a></li>
+  <li><a href="#orbitrap-temperature" id="toc-orbitrap-temperature" class="nav-link" data-scroll-target="#orbitrap-temperature">Orbitrap Temperature</a></li>
   </ul></li>
+  <li><a href="#but-why" id="toc-but-why" class="nav-link" data-scroll-target="#but-why">But Why!?!?!</a></li>
   </ul>
 </nav>
 </nav>
@@ -273,7 +276,7 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># directory where I keep the log files</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>directory <span class="ot">&lt;-</span> <span class="st">"QEHF_logfiles/"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>directory <span class="ot">&lt;-</span> <span class="st">"QEHFX_logfiles/"</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Reading the log files in the directory</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>filelist <span class="ot">&lt;-</span> <span class="fu">list.files</span>(directory, <span class="at">pattern =</span> <span class="st">"InstrumentTemperature"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
@@ -315,517 +318,94 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 <td style="text-align: left;">Vacuum 4/humidity [mbar]</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">1472717488</td>
-<td style="text-align: left;">2016-09-01 08:10:49</td>
-<td style="text-align: left;">0.696261574074</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">9.08652659437e-10</td>
-<td style="text-align: left;">1.94529413747</td>
-<td style="text-align: left;">0.00318003167635</td>
+<td style="text-align: left;">1522100156</td>
+<td style="text-align: left;">2018-03-26 21:35:00</td>
+<td style="text-align: left;">0.00550925925926</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">1.660233869e-13</td>
+<td style="text-align: left;">3.36548707765</td>
+<td style="text-align: left;">0.00255750683657</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">1472718388</td>
-<td style="text-align: left;">2016-09-01 08:25:49</td>
-<td style="text-align: left;">0.706678240741</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">9.08652659437e-10</td>
-<td style="text-align: left;">1.93167114622</td>
-<td style="text-align: left;">0.00311368869796</td>
+<td style="text-align: left;">1522101056</td>
+<td style="text-align: left;">2018-03-26 21:50:04</td>
+<td style="text-align: left;">0.0159375</td>
+<td style="text-align: left;">2.54370802439e-05</td>
+<td style="text-align: left;">1.16903339139e-07</td>
+<td style="text-align: left;">3.48584725969</td>
+<td style="text-align: left;">0.00165419810092</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">1472719288</td>
-<td style="text-align: left;">2016-09-01 08:40:49</td>
-<td style="text-align: left;">0.717094907407</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">9.08652659437e-10</td>
-<td style="text-align: left;">1.93167114622</td>
-<td style="text-align: left;">0.00322504379452</td>
+<td style="text-align: left;">1522101956</td>
+<td style="text-align: left;">2018-03-26 22:05:04</td>
+<td style="text-align: left;">0.0263425925926</td>
+<td style="text-align: left;">2.21022954909e-05</td>
+<td style="text-align: left;">7.14848238713e-08</td>
+<td style="text-align: left;">3.53518807913</td>
+<td style="text-align: left;">0.00106244424219</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">1472720188</td>
-<td style="text-align: left;">2016-09-01 08:55:50</td>
-<td style="text-align: left;">0.727511574074</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">8.7728322682e-10</td>
-<td style="text-align: left;">1.91814355746</td>
-<td style="text-align: left;">0.00684082905672</td>
+<td style="text-align: left;">1522102856</td>
+<td style="text-align: left;">2018-03-26 22:20:04</td>
+<td style="text-align: left;">0.0367476851852</td>
+<td style="text-align: left;">2.80336465311e-09</td>
+<td style="text-align: left;">9.55197064021e-08</td>
+<td style="text-align: left;">3.51043098182</td>
+<td style="text-align: left;">0.00119726861043</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">1472721088</td>
-<td style="text-align: left;">2016-09-01 09:10:49</td>
-<td style="text-align: left;">0.737928240741</td>
-<td style="text-align: left;">3.13692038539e-09</td>
-<td style="text-align: left;">8.46996761706e-10</td>
-<td style="text-align: left;">1.93167114622</td>
-<td style="text-align: left;">0.00669811319081</td>
+<td style="text-align: left;">1522103756</td>
+<td style="text-align: left;">2018-03-26 22:35:03</td>
+<td style="text-align: left;">0.0471759259259</td>
+<td style="text-align: left;">2.78373634155e-09</td>
+<td style="text-align: left;">1.25413147734e-07</td>
+<td style="text-align: left;">3.48584725969</td>
+<td style="text-align: left;">0.000813442590873</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">1472721988</td>
-<td style="text-align: left;">2016-09-01 09:25:49</td>
-<td style="text-align: left;">0.748333333333</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">8.24970070541e-10</td>
-<td style="text-align: left;">1.91814355746</td>
-<td style="text-align: left;">0.0072874821726</td>
+<td style="text-align: left;">1522104656</td>
+<td style="text-align: left;">2018-03-26 22:50:04</td>
+<td style="text-align: left;">0.0575810185185</td>
+<td style="text-align: left;">2.78373634155e-09</td>
+<td style="text-align: left;">1.0993229209e-07</td>
+<td style="text-align: left;">3.51043098182</td>
+<td style="text-align: left;">0.000706781548007</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">1472722888</td>
-<td style="text-align: left;">2016-09-01 09:40:49</td>
-<td style="text-align: left;">0.758761574074</td>
-<td style="text-align: left;">3.13692038539e-09</td>
-<td style="text-align: left;">8.03516197533e-10</td>
-<td style="text-align: left;">1.93167114622</td>
-<td style="text-align: left;">0.00809764594458</td>
+<td style="text-align: left;">1522105556</td>
+<td style="text-align: left;">2018-03-26 23:05:04</td>
+<td style="text-align: left;">0.0680092592593</td>
+<td style="text-align: left;">2.80336465311e-09</td>
+<td style="text-align: left;">8.82596717239e-08</td>
+<td style="text-align: left;">3.51043098182</td>
+<td style="text-align: left;">0.000568421583481</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">1472723788</td>
-<td style="text-align: left;">2016-09-01 09:55:50</td>
-<td style="text-align: left;">0.769166666667</td>
-<td style="text-align: left;">3.13692038539e-09</td>
-<td style="text-align: left;">7.82620246179e-10</td>
-<td style="text-align: left;">1.93167114622</td>
-<td style="text-align: left;">0.00965296908481</td>
+<td style="text-align: left;">1522106456</td>
+<td style="text-align: left;">2018-03-26 23:20:03</td>
+<td style="text-align: left;">0.0784143518519</td>
+<td style="text-align: left;">2.82313136521e-09</td>
+<td style="text-align: left;">7.40409406385e-08</td>
+<td style="text-align: left;">3.46143569858</td>
+<td style="text-align: left;">0.000677598898499</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">1472724688</td>
-<td style="text-align: left;">2016-09-01 10:10:49</td>
-<td style="text-align: left;">0.779594907407</td>
-<td style="text-align: left;">3.11495661746e-09</td>
-<td style="text-align: left;">7.6899238779e-10</td>
-<td style="text-align: left;">1.93167114622</td>
-<td style="text-align: left;">0.00912523869282</td>
+<td style="text-align: left;">1522107356</td>
+<td style="text-align: left;">2018-03-26 23:35:03</td>
+<td style="text-align: left;">0.0888425925926</td>
+<td style="text-align: left;">2.82313136521e-09</td>
+<td style="text-align: left;">6.37712756222e-08</td>
+<td style="text-align: left;">3.48584725969</td>
+<td style="text-align: left;">0.00054879498479</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">1472725588</td>
-<td style="text-align: left;">2016-09-01 10:25:49</td>
-<td style="text-align: left;">0.79</td>
-<td style="text-align: left;">3.13692038539e-09</td>
-<td style="text-align: left;">7.55601832902e-10</td>
-<td style="text-align: left;">1.93167114622</td>
-<td style="text-align: left;">0.0106509932333</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1472726488</td>
-<td style="text-align: left;">2016-09-01 10:40:49</td>
-<td style="text-align: left;">0.800416666667</td>
-<td style="text-align: left;">3.13692038539e-09</td>
-<td style="text-align: left;">7.55601832902e-10</td>
-<td style="text-align: left;">1.93167114622</td>
-<td style="text-align: left;">0.0105764037999</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1472727388</td>
-<td style="text-align: left;">2016-09-01 10:55:50</td>
-<td style="text-align: left;">0.810833333333</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">7.42444449322e-10</td>
-<td style="text-align: left;">1.91814355746</td>
-<td style="text-align: left;">0.00965296908481</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1472728288</td>
-<td style="text-align: left;">2016-09-01 11:10:49</td>
-<td style="text-align: left;">0.82125</td>
-<td style="text-align: left;">3.13692038539e-09</td>
-<td style="text-align: left;">7.29516176808e-10</td>
-<td style="text-align: left;">1.94529413747</td>
-<td style="text-align: left;">0.00958536886394</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Time [sec]</td>
-<td style="text-align: left;">Date</td>
-<td style="text-align: left;">Up-Time [days]</td>
-<td style="text-align: left;">Vacuum 1 (HV) [mbar]</td>
-<td style="text-align: left;">Vacuum 2 (UHV) [mbar]</td>
-<td style="text-align: left;">Vacuum 3 (Fore) [mbar]</td>
-<td style="text-align: left;">Vacuum 4/humidity [mbar]</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1472739175</td>
-<td style="text-align: left;">2016-09-01 14:12:11</td>
-<td style="text-align: left;">0.947233796296</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.04575561764e-09</td>
-<td style="text-align: left;">1.95901320402</td>
-<td style="text-align: left;">0.00827018148107</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1472740075</td>
-<td style="text-align: left;">2016-09-01 14:27:16</td>
-<td style="text-align: left;">0.957650462963</td>
-<td style="text-align: left;">7.61202696136e-05</td>
-<td style="text-align: left;">1.34912210331e-09</td>
-<td style="text-align: left;">1.56448223228</td>
-<td style="text-align: left;">0.0068890735804</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Time [sec]</td>
-<td style="text-align: left;">Date</td>
-<td style="text-align: left;">Up-Time [days]</td>
-<td style="text-align: left;">Vacuum 1 (HV) [mbar]</td>
-<td style="text-align: left;">Vacuum 2 (UHV) [mbar]</td>
-<td style="text-align: left;">Vacuum 3 (Fore) [mbar]</td>
-<td style="text-align: left;">Vacuum 4/humidity [mbar]</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1472740659</td>
-<td style="text-align: left;">2016-09-01 14:36:55</td>
-<td style="text-align: left;">0.964421296296</td>
-<td style="text-align: left;">3.82343674603e-05</td>
-<td style="text-align: left;">1.06428819311e-09</td>
-<td style="text-align: left;">1.6318609378</td>
-<td style="text-align: left;">0.008748462243</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1472741559</td>
-<td style="text-align: left;">2016-09-01 14:51:59</td>
-<td style="text-align: left;">0.974826388889</td>
-<td style="text-align: left;">3.20374527283e-09</td>
-<td style="text-align: left;">1.05498121156e-09</td>
-<td style="text-align: left;">1.48938178622</td>
-<td style="text-align: left;">0.00744275565021</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1472742459</td>
-<td style="text-align: left;">2016-09-01 15:07:00</td>
-<td style="text-align: left;">0.98525462963</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.05498121156e-09</td>
-<td style="text-align: left;">1.48938178622</td>
-<td style="text-align: left;">0.00684082905672</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1472743359</td>
-<td style="text-align: left;">2016-09-01 15:21:59</td>
-<td style="text-align: left;">0.995659722222</td>
-<td style="text-align: left;">3.13692038539e-09</td>
-<td style="text-align: left;">1.08314919748e-09</td>
-<td style="text-align: left;">1.57551564643</td>
-<td style="text-align: left;">0.00637658107113</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1472744262</td>
-<td style="text-align: left;">2016-09-01 15:37:02</td>
-<td style="text-align: left;">1.00611111111</td>
-<td style="text-align: left;">3.18131361724e-09</td>
-<td style="text-align: left;">1.09270467533e-09</td>
-<td style="text-align: left;">1.56448223228</td>
-<td style="text-align: left;">0.00546313597647</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1472745159</td>
-<td style="text-align: left;">2016-09-01 15:51:59</td>
-<td style="text-align: left;">1.01649305556</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.10234445105e-09</td>
-<td style="text-align: left;">1.52111585898</td>
-<td style="text-align: left;">0.00439366931872</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1472746059</td>
-<td style="text-align: left;">2016-09-01 16:07:00</td>
-<td style="text-align: left;">1.02689814815</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.1317770349e-09</td>
-<td style="text-align: left;">1.51046340923</td>
-<td style="text-align: left;">0.00376427628788</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1472746959</td>
-<td style="text-align: left;">2016-09-01 16:21:59</td>
-<td style="text-align: left;">1.03731481481</td>
-<td style="text-align: left;">3.13692038539e-09</td>
-<td style="text-align: left;">1.1619954684e-09</td>
-<td style="text-align: left;">1.49988555912</td>
-<td style="text-align: left;">0.00302737938512</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1472747861</td>
-<td style="text-align: left;">2016-09-01 16:36:59</td>
-<td style="text-align: left;">1.04775462963</td>
-<td style="text-align: left;">3.18131361724e-09</td>
-<td style="text-align: left;">1.1619954684e-09</td>
-<td style="text-align: left;">1.49988555912</td>
-<td style="text-align: left;">0.00248661450305</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1472748761</td>
-<td style="text-align: left;">2016-09-01 16:51:56</td>
-<td style="text-align: left;">1.0581712963</td>
-<td style="text-align: left;">3.13692038539e-09</td>
-<td style="text-align: left;">1.18258801255e-09</td>
-<td style="text-align: left;">1.52111585898</td>
-<td style="text-align: left;">0.00216056211893</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1472749661</td>
-<td style="text-align: left;">2016-09-01 17:07:00</td>
-<td style="text-align: left;">1.06858796296</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.19302073372e-09</td>
-<td style="text-align: left;">1.51046340923</td>
-<td style="text-align: left;">0.00199983341008</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Time [sec]</td>
-<td style="text-align: left;">Date</td>
-<td style="text-align: left;">Up-Time [days]</td>
-<td style="text-align: left;">Vacuum 1 (HV) [mbar]</td>
-<td style="text-align: left;">Vacuum 2 (UHV) [mbar]</td>
-<td style="text-align: left;">Vacuum 3 (Fore) [mbar]</td>
-<td style="text-align: left;">Vacuum 4/humidity [mbar]</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1472750010</td>
-<td style="text-align: left;">2016-09-01 17:12:51</td>
-<td style="text-align: left;">1.07263888889</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.18258801255e-09</td>
-<td style="text-align: left;">1.6318609378</td>
-<td style="text-align: left;">0.00246920061846</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1472750910</td>
-<td style="text-align: left;">2016-09-01 17:27:51</td>
-<td style="text-align: left;">1.08305555556</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.20354549174e-09</td>
-<td style="text-align: left;">1.49988555912</td>
-<td style="text-align: left;">0.00216056211893</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1472751810</td>
-<td style="text-align: left;">2016-09-01 17:42:51</td>
-<td style="text-align: left;">1.09347222222</td>
-<td style="text-align: left;">3.18131361724e-09</td>
-<td style="text-align: left;">1.19302073372e-09</td>
-<td style="text-align: left;">1.49988555912</td>
-<td style="text-align: left;">0.00210067282044</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1472752710</td>
-<td style="text-align: left;">2016-09-01 17:57:51</td>
-<td style="text-align: left;">1.10388888889</td>
-<td style="text-align: left;">3.13692038539e-09</td>
-<td style="text-align: left;">1.20354549174e-09</td>
-<td style="text-align: left;">1.49988555912</td>
-<td style="text-align: left;">0.00208596170458</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1472753610</td>
-<td style="text-align: left;">2016-09-01 18:12:51</td>
-<td style="text-align: left;">1.11429398148</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.20354549174e-09</td>
-<td style="text-align: left;">1.49988555912</td>
-<td style="text-align: left;">0.00208596170458</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1472754514</td>
-<td style="text-align: left;">2016-09-01 18:27:51</td>
-<td style="text-align: left;">1.12475694444</td>
-<td style="text-align: left;">3.18131361724e-09</td>
-<td style="text-align: left;">1.18258801255e-09</td>
-<td style="text-align: left;">1.48938178622</td>
-<td style="text-align: left;">0.00199983341008</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1472755411</td>
-<td style="text-align: left;">2016-09-01 18:42:48</td>
-<td style="text-align: left;">1.13513888889</td>
-<td style="text-align: left;">3.18131361724e-09</td>
-<td style="text-align: left;">1.18258801255e-09</td>
-<td style="text-align: left;">1.48938178622</td>
-<td style="text-align: left;">0.0106509932333</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1472756315</td>
-<td style="text-align: left;">2016-09-01 18:57:51</td>
-<td style="text-align: left;">1.14560185185</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.18258801255e-09</td>
-<td style="text-align: left;">1.48938178622</td>
-<td style="text-align: left;">0.00214543159534</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1472757212</td>
-<td style="text-align: left;">2016-09-01 19:12:49</td>
-<td style="text-align: left;">1.1559837963</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.17224652338e-09</td>
-<td style="text-align: left;">1.46859440062</td>
-<td style="text-align: left;">0.00197192162236</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1472758116</td>
-<td style="text-align: left;">2016-09-01 19:27:52</td>
-<td style="text-align: left;">1.16644675926</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.1619954684e-09</td>
-<td style="text-align: left;">1.47895157177</td>
-<td style="text-align: left;">0.00214543159534</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1472759013</td>
-<td style="text-align: left;">2016-09-01 19:42:49</td>
-<td style="text-align: left;">1.1768287037</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.19302073372e-09</td>
-<td style="text-align: left;">1.47895157177</td>
-<td style="text-align: left;">0.0020568478194</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1472759911</td>
-<td style="text-align: left;">2016-09-01 19:57:45</td>
-<td style="text-align: left;">1.18721064815</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.1518340568e-09</td>
-<td style="text-align: left;">1.48938178622</td>
-<td style="text-align: left;">0.0108017539222</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1472760814</td>
-<td style="text-align: left;">2016-09-01 20:12:49</td>
-<td style="text-align: left;">1.19767361111</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.14176150465e-09</td>
-<td style="text-align: left;">1.47895157177</td>
-<td style="text-align: left;">0.00222215883613</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1472761712</td>
-<td style="text-align: left;">2016-09-01 20:27:46</td>
-<td style="text-align: left;">1.20805555556</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.1317770349e-09</td>
-<td style="text-align: left;">1.47895157177</td>
-<td style="text-align: left;">0.00213040703156</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1472762615</td>
-<td style="text-align: left;">2016-09-01 20:42:55</td>
-<td style="text-align: left;">1.21851851852</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.14176150465e-09</td>
-<td style="text-align: left;">1.48938178622</td>
-<td style="text-align: left;">0.00235067062559</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1472763513</td>
-<td style="text-align: left;">2016-09-01 20:57:52</td>
-<td style="text-align: left;">1.22890046296</td>
-<td style="text-align: left;">3.18131361724e-09</td>
-<td style="text-align: left;">1.1317770349e-09</td>
-<td style="text-align: left;">1.49988555912</td>
-<td style="text-align: left;">0.00211548768554</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1472764416</td>
-<td style="text-align: left;">2016-09-01 21:12:55</td>
-<td style="text-align: left;">1.23936342593</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.12187987729e-09</td>
-<td style="text-align: left;">1.49988555912</td>
-<td style="text-align: left;">0.00236724858474</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1472765314</td>
-<td style="text-align: left;">2016-09-01 21:27:53</td>
-<td style="text-align: left;">1.24974537037</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.12187987729e-09</td>
-<td style="text-align: left;">1.48938178622</td>
-<td style="text-align: left;">0.00213040703156</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1472766211</td>
-<td style="text-align: left;">2016-09-01 21:42:50</td>
-<td style="text-align: left;">1.26012731481</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.11206926829e-09</td>
-<td style="text-align: left;">1.48938178622</td>
-<td style="text-align: left;">0.0105764037999</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1472767115</td>
-<td style="text-align: left;">2016-09-01 21:57:53</td>
-<td style="text-align: left;">1.27059027778</td>
-<td style="text-align: left;">3.11495661746e-09</td>
-<td style="text-align: left;">1.09270467533e-09</td>
-<td style="text-align: left;">1.48938178622</td>
-<td style="text-align: left;">0.00235067062559</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1472768012</td>
-<td style="text-align: left;">2016-09-01 22:12:50</td>
-<td style="text-align: left;">1.28097222222</td>
-<td style="text-align: left;">3.13692038539e-09</td>
-<td style="text-align: left;">1.09270467533e-09</td>
-<td style="text-align: left;">1.47895157177</td>
-<td style="text-align: left;">0.0021911440399</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1472768916</td>
-<td style="text-align: left;">2016-09-01 22:27:55</td>
-<td style="text-align: left;">1.29143518519</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.08314919748e-09</td>
-<td style="text-align: left;">1.48938178622</td>
-<td style="text-align: left;">0.00240075607267</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1472769813</td>
-<td style="text-align: left;">2016-09-01 22:42:53</td>
-<td style="text-align: left;">1.30181712963</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.08314919748e-09</td>
-<td style="text-align: left;">1.47895157177</td>
-<td style="text-align: left;">0.00222215883613</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1472770711</td>
-<td style="text-align: left;">2016-09-01 22:57:49</td>
-<td style="text-align: left;">1.31221064815</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.06428819311e-09</td>
-<td style="text-align: left;">1.48938178622</td>
-<td style="text-align: left;">0.0102832331483</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1472771614</td>
-<td style="text-align: left;">2016-09-01 23:12:52</td>
-<td style="text-align: left;">1.32266203704</td>
-<td style="text-align: left;">3.18131361724e-09</td>
-<td style="text-align: left;">1.07367728031e-09</td>
-<td style="text-align: left;">1.47895157177</td>
-<td style="text-align: left;">0.00233420876271</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1472772512</td>
-<td style="text-align: left;">2016-09-01 23:27:49</td>
-<td style="text-align: left;">1.33305555556</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.07367728031e-09</td>
-<td style="text-align: left;">1.46859440062</td>
-<td style="text-align: left;">0.00210067282044</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1472773415</td>
-<td style="text-align: left;">2016-09-01 23:42:53</td>
-<td style="text-align: left;">1.34350694444</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.05498121156e-09</td>
-<td style="text-align: left;">1.47895157177</td>
-<td style="text-align: left;">0.0022536126348</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">1472774313</td>
-<td style="text-align: left;">2016-09-01 23:57:50</td>
-<td style="text-align: left;">1.35387731481</td>
-<td style="text-align: left;">3.15903902133e-09</td>
-<td style="text-align: left;">1.05498121156e-09</td>
-<td style="text-align: left;">1.47895157177</td>
-<td style="text-align: left;">0.00204244361219</td>
+<td style="text-align: left;">1522108256</td>
+<td style="text-align: left;">2018-03-26 23:50:04</td>
+<td style="text-align: left;">0.0992476851852</td>
+<td style="text-align: left;">2.80336465311e-09</td>
+<td style="text-align: left;">5.34976523316e-08</td>
+<td style="text-align: left;">3.48584725969</td>
+<td style="text-align: left;">0.000631614132463</td>
 </tr>
 </tbody>
 </table>
@@ -935,7 +515,7 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 <h3 class="anchored" data-anchor-id="reading-many-log-files">Reading many log files</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># directory where log files are kept</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>directory <span class="ot">&lt;-</span> <span class="st">"QEHF_logfiles/"</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>directory <span class="ot">&lt;-</span> <span class="st">"QEHFX_logfiles/"</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Reading the log files in the directory</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>filelist <span class="ot">&lt;-</span> <span class="fu">list.files</span>(directory, <span class="at">pattern =</span> <span class="st">"InstrumentTemperature"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
@@ -960,24 +540,6 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 <span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="ambient-temperature-plot" class="level3 page-columns page-full">
-<h3 class="anchored" data-anchor-id="ambient-temperature-plot">Ambient Temperature plot</h3>
-<div class="cell page-columns page-full">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> </span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(date <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2018-04-01"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date)) <span class="sc">+</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> ambient_temperature_raw_c)) <span class="sc">+</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>) <span class="sc">+</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="st">'Temp ('</span><span class="sc">~</span>degree<span class="sc">*</span>C<span class="sc">*</span><span class="st">')'</span>)) <span class="sc">+</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_datetime</span>(<span class="at">date_breaks =</span> <span class="st">"3 month"</span>, </span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_minor_breaks =</span> <span class="st">"1 month"</span>,</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_labels =</span> <span class="st">"%b%y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display column-body-outset">
-<p><img src="index_files/figure-html/Ambient Temp 1-1.png" class="img-fluid" width="1536"></p>
-</div>
-</div>
-</section>
 <section id="instrument-readbacks" class="level3">
 <h3 class="anchored" data-anchor-id="instrument-readbacks">Instrument readbacks</h3>
 <p>The log files record numerous instrument readbacks including:</p>
@@ -989,7 +551,7 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 <li>High vacuum pressure</li>
 <li>Ultra high vacuum pressure</li>
 </ul>
-<p>Below is the full list of readbacks that are available for the QE-HF.</p>
+<p>Below is the full list of readbacks that are available for the QE-HFX.</p>
 <p><em>Note: The list of readbacks for each instrument will vary slightly depending on model and tune version</em></p>
 <div class="cell">
 <div class="cell-output-display">
@@ -1142,9 +704,99 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 
 </div>
 </div>
-
-
 </section>
+<section id="ambient-temperature" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="ambient-temperature">Ambient Temperature</h3>
+<div class="cell page-columns page-full">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(date <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2018-04-01"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date)) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> ambient_temperature_raw_c)) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>) <span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="st">'Temp ('</span><span class="sc">~</span>degree<span class="sc">*</span>C<span class="sc">*</span><span class="st">')'</span>)) <span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_datetime</span>(<span class="at">date_breaks =</span> <span class="st">"3 month"</span>, </span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_minor_breaks =</span> <span class="st">"1 month"</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_labels =</span> <span class="st">"%b%y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display column-body-outset">
+<p><img src="index_files/figure-html/Ambient Temp 1-1.png" class="img-fluid" width="1536"></p>
+</div>
+</div>
+</section>
+<section id="ultra-high-uhv-vacuum-pressure" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="ultra-high-uhv-vacuum-pressure">Ultra High (UHV) Vacuum pressure</h3>
+<p>Using <code>vacuum_2_uhv_mbar</code> to plot the UHV pressure can be useful to visualize instrument bake-out procedures. Each time there is a large spike in pressure, it coincides with an instrument venting and bake-out process.</p>
+<div class="cell page-columns page-full">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(date <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2018-04-01"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date)) <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> vacuum_2_uhv_mbar)) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>) <span class="sc">+</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="st">'Pressure (mbar)'</span>)) <span class="sc">+</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_datetime</span>(<span class="at">date_breaks =</span> <span class="st">"3 month"</span>, </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_minor_breaks =</span> <span class="st">"1 month"</span>,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_labels =</span> <span class="st">"%b%y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display column-body-outset">
+<p><img src="index_files/figure-html/UHV Pressure 1-1.png" class="img-fluid" width="1536"></p>
+</div>
+</div>
+</section>
+<section id="orbitrap-temperature" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="orbitrap-temperature">Orbitrap Temperature</h3>
+<p>Another way to visualize bake-out procedures is to plot the Orbitrap temperature directly using <code>analyzer_temperature_sensor_c</code>.</p>
+<div class="cell page-columns page-full">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(date <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2018-04-01"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date)) <span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> analyzer_temperature_sensor_c)) <span class="sc">+</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>) <span class="sc">+</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="st">'Temp ('</span><span class="sc">~</span>degree<span class="sc">*</span>C<span class="sc">*</span><span class="st">')'</span>)) <span class="sc">+</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_datetime</span>(<span class="at">date_breaks =</span> <span class="st">"3 month"</span>, </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_minor_breaks =</span> <span class="st">"1 month"</span>,</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_labels =</span> <span class="st">"%b%y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display column-body-outset">
+<p><img src="index_files/figure-html/Orbitrap Temp 1-1.png" class="img-fluid" width="1536"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="but-why" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="but-why">But Why!?!?!</h2>
+<p>This project started when I was a postdoc in the <a href="https://www.bengarcialab.com/">Garcia lab</a></p>
+<div class="cell page-columns page-full">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(date <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2018-10-01"</span>),</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>         date <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2018-12-01"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date)) <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> ambient_temperature_raw_c)) <span class="sc">+</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>) <span class="sc">+</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="st">'Temp ('</span><span class="sc">~</span>degree<span class="sc">*</span>C<span class="sc">*</span><span class="st">')'</span>)) <span class="sc">+</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_datetime</span>(<span class="at">date_breaks =</span> <span class="st">"1 month"</span>, </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_minor_breaks =</span> <span class="st">"1 week"</span>,</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_labels =</span> <span class="st">"%b%y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display column-body-outset">
+<p><img src="index_files/figure-html/QE HFX temp-1.png" class="img-fluid" width="1536"></p>
+</div>
+</div>
+
+
 </section>
 
 </main> <!-- /main -->

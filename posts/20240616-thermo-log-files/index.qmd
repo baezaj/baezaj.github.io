@@ -66,7 +66,7 @@ library(kableExtra)
 ```{r}
 
 # directory where I keep the log files
-directory <- "QEHF_logfiles/"
+directory <- "QEHFX_logfiles/"
 
 # Reading the log files in the directory
 filelist <- list.files(directory, pattern = "InstrumentTemperature", full.names = TRUE)
@@ -238,7 +238,7 @@ import_orbitrap_logfiles <- function(file){
 #| eval: true
 
 # directory where log files are kept
-directory <- "QEHF_logfiles/"
+directory <- "QEHFX_logfiles/"
 
 # Reading the log files in the directory
 filelist <- list.files(directory, pattern = "InstrumentTemperature", full.names = TRUE)
@@ -265,12 +265,42 @@ data <- log %>%
 ```
 
 
-### Ambient Temperature plot
+### Instrument readbacks
+
+The log files record numerous instrument readbacks including:
+
+-   Ambient temperature
+-   Analyzer temperature
+-   CEPS Peltier temperature
+-   Fore vacuum pressure
+-   High vacuum pressure
+-   Ultra high vacuum pressure
+
+Below is the full list of readbacks that are available for the QE-HFX. 
+
+*Note: The list of readbacks for each instrument will vary slightly depending on model and tune version*
+
+```{r}
+#| label: full list of readbacks
+#| echo: false
+
+data.frame(InstrumentReadbacks = names(data)[3:47]) %>% 
+  clean_names(case = "title") %>% 
+  kable() %>% 
+  scroll_box(height = "500px")
+
+
+```
+
+
+
+### Ambient Temperature
+
 
 
 ```{r}
 #| label: Ambient Temp 1
-#| code-fold: false
+#| code-fold: true
 #| column: body-outset
 #| fig-height: 6
 #| fig-width: 16
@@ -290,30 +320,91 @@ data %>%
                    date_labels = "%b%y")
 ```
 
-### Instrument readbacks
+### Ultra High (UHV) Vacuum pressure 
 
-The log files record numerous instrument readbacks including:
-
--   Ambient temperature
--   Analyzer temperature
--   CEPS Peltier temperature
--   Fore vacuum pressure
--   High vacuum pressure
--   Ultra high vacuum pressure
-
-Below is the full list of readbacks that are available for the QE-HF. 
-
-*Note: The list of readbacks for each instrument will vary slightly depending on model and tune version*
+Using `vacuum_2_uhv_mbar` to plot the UHV pressure can be useful to visualize instrument bake-out procedures. Each time there is a large spike in pressure, it coincides with an instrument venting and bake-out process. 
 
 ```{r}
-#| label: full list of readbacks
-#| echo: false
+#| label: UHV Pressure 1
+#| code-fold: true
+#| column: body-outset
+#| fig-height: 6
+#| fig-width: 16
+#| include: true
+#| eval: true
+#| warning: false
+#| message: false
 
-data.frame(InstrumentReadbacks = names(data)[3:47]) %>% 
-  clean_names(case = "title") %>% 
-  kable() %>% 
-  scroll_box(height = "500px")
+data %>% 
+  filter(date >= as.Date("2018-04-01")) %>%
+  ggplot(aes(x = date)) +
+  geom_line(aes(y = vacuum_2_uhv_mbar)) +
+  theme_bw(base_size = 22) +
+  scale_y_log10() +
+  labs(x = NULL,
+       y = expression('Pressure (mbar)')) +
+  scale_x_datetime(date_breaks = "3 month", 
+                   date_minor_breaks = "1 month",
+                   date_labels = "%b%y")
 
 
 ```
 
+### Orbitrap Temperature 
+
+Another way to visualize bake-out procedures is to plot the Orbitrap temperature directly using `analyzer_temperature_sensor_c`.
+
+
+```{r}
+#| label: Orbitrap Temp 1
+#| code-fold: true
+#| column: body-outset
+#| fig-height: 6
+#| fig-width: 16
+#| include: true
+#| eval: true
+#| warning: false
+#| message: false
+
+data %>% 
+  filter(date >= as.Date("2018-04-01")) %>%
+  ggplot(aes(x = date)) +
+  geom_line(aes(y = analyzer_temperature_sensor_c)) +
+  theme_bw(base_size = 22) +
+  scale_y_log10() +
+  labs(x = NULL,
+       y = expression('Temp ('~degree*C*')')) +
+  scale_x_datetime(date_breaks = "3 month", 
+                   date_minor_breaks = "1 month",
+                   date_labels = "%b%y")
+
+
+```
+
+
+## But Why!?!?!
+
+This project started when I was a postdoc in the [Garcia lab](https://www.bengarcialab.com/) 
+
+```{r}
+#| label: QE HFX temp
+#| code-fold: true
+#| column: body-outset
+#| fig-height: 6
+#| fig-width: 16
+#| include: true
+#| eval: true
+
+
+data %>% 
+  filter(date >= as.Date("2018-10-01"),
+         date <= as.Date("2018-12-01")) %>%
+  ggplot(aes(x = date)) +
+  geom_line(aes(y = ambient_temperature_raw_c)) +
+  theme_bw(base_size = 22) +
+  labs(x = NULL,
+       y = expression('Temp ('~degree*C*')')) +
+  scale_x_datetime(date_breaks = "1 month", 
+                   date_minor_breaks = "1 week",
+                   date_labels = "%b%y")
+```

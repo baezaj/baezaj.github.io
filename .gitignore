@@ -3,5 +3,5 @@
 .RData
 .Ruserdata
 *.log
-QEHF_logfiles/
+QEHFX_logfiles/
 /.quarto/
