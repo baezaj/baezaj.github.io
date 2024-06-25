@@ -17,17 +17,16 @@ draft: false
 
 ## Background
 
-Thermo mass spectrometers record daily *log* files that contain a lot of valuable information regarding the status of each instrument. The *log* files record data for temperature, pressure, voltages, etc. from numerous guages. Visualizing this data longitudinally can help assess instrument performance. 
+Thermo mass spectrometers record daily *log* files that contain a lot of valuable information regarding the status of each instrument. The *log* files record data for temperature, pressure, voltages, etc. from numerous guages. Visualizing this data longitudinally can help assess instrument performance.
 
-In this blog post, I will show you were to find the *log* files, how to import them, and how to visualize. 
+In this blog post, I will show you were to find the *log* files, how to import them, and how to visualize.
 
 ### Supported Instruments
 
-* Q-Exactive family instruments
-* Exploris family instruments
+-   Q-Exactive family instruments
+-   Exploris family instruments
 
 *Note: Orbitrap Eclipse instruments do generate log files, however, this blog post will only focus on the instruments above because I don't have access to Eclipse log files*
-
 
 ### Directories
 
@@ -72,10 +71,9 @@ directory <- "QEHFX_logfiles/"
 filelist <- list.files(directory, pattern = "InstrumentTemperature", full.names = TRUE)
 
 # plucking a single log file to demonstrate
-file <- filelist[1]
+file <- filelist[29]
 
 ```
-
 
 ### Importing a single file
 
@@ -89,9 +87,7 @@ logfile <- read.delim2(file, sep = "\t", header = FALSE)
 
 ```
 
-
-
-During the file import, I'm using `header = FALSE`. The instrument log files do not always have the first row with the header information. 
+During the file import, I'm using `header = FALSE`. The instrument log files do not always have the first row with the header information, if at all.
 
 Additionally, the header row is often embedded multiple times in a single log file. Scroll down and see how many times this log file has the header information. This will need to be cleaned up in subsequent steps.
 
@@ -109,17 +105,15 @@ logfile[,1:7] %>%
 
 ```
 
-
 ### Cleaning up header
 
 These are the steps being performed in the following chunk.
 
-  1. Indexing the rows in a single log file that contain the header-row
-  2. Removing Non-ASCII characters from header
-  3. Assigning a header-row as column names
-  4. Removing all header-rows from log file
-  5. Cleaning up column names using the `janitor` package
-  
+1.  Indexing the rows in a single log file that contain the header-row
+2.  Removing Non-ASCII characters from header
+3.  Assigning a header-row as column names
+4.  Removing all header-rows from log file
+5.  Cleaning up column names using the `janitor` package
 
 ```{r}
 
@@ -141,11 +135,9 @@ logfile <- logfile %>% clean_names(case = "snake")
 
 ```
 
-
 ### Formatting data types
 
-The next step is to convert the dataframe to `numeric` and the date column to `datetime`. During the data import, the header-rows being present forced all columns to import as character type. 
-
+The next step is to convert the dataframe to `numeric` and the date column to `datetime`. During the data import, the header-rows being present forced all columns to import as character type.
 
 ```{r}
 
@@ -167,10 +159,9 @@ logfile$date <- ymd_hms(logfile$date)
 
 ```
 
-
 ## Putting it all together
 
-This is the function used to import individual log files into a dataframe. 
+This is the function used to import individual log files into a dataframe.
 
 ```{r}
 #| label: Import function
@@ -225,9 +216,6 @@ import_orbitrap_logfiles <- function(file){
 
 ```
 
-
-
-
 ### Reading many log files
 
 ```{r}
@@ -264,7 +252,6 @@ data <- log %>%
 
 ```
 
-
 ### Instrument readbacks
 
 The log files record numerous instrument readbacks including:
@@ -276,7 +263,7 @@ The log files record numerous instrument readbacks including:
 -   High vacuum pressure
 -   Ultra high vacuum pressure
 
-Below is the full list of readbacks that are available for the QE-HFX. 
+Below is the full list of readbacks that are available for the QE-HFX.
 
 *Note: The list of readbacks for each instrument will vary slightly depending on model and tune version*
 
@@ -292,11 +279,9 @@ data.frame(InstrumentReadbacks = names(data)[3:47]) %>%
 
 ```
 
-
-
 ### Ambient Temperature
 
-
+The `ambient_temperature_raw_c` provides a measure of the ambient temperature. This sensor is located at the back of the instrument.
 
 ```{r}
 #| label: Ambient Temp 1
@@ -309,7 +294,6 @@ data.frame(InstrumentReadbacks = names(data)[3:47]) %>%
 
 
 data %>% 
-  filter(date >= as.Date("2018-04-01")) %>%
   ggplot(aes(x = date)) +
   geom_line(aes(y = ambient_temperature_raw_c)) +
   theme_bw(base_size = 22) +
@@ -318,11 +302,12 @@ data %>%
   scale_x_datetime(date_breaks = "3 month", 
                    date_minor_breaks = "1 month",
                    date_labels = "%b%y")
+
 ```
 
-### Ultra High (UHV) Vacuum pressure 
+### Ultra High (UHV) Vacuum pressure
 
-Using `vacuum_2_uhv_mbar` to plot the UHV pressure can be useful to visualize instrument bake-out procedures. Each time there is a large spike in pressure, it coincides with an instrument venting and bake-out process. 
+Using `vacuum_2_uhv_mbar` to plot the UHV pressure can be useful to visualize instrument bake-out procedures. Each time there is a large spike in pressure, it coincides with an instrument venting and bake-out process.
 
 ```{r}
 #| label: UHV Pressure 1
@@ -336,7 +321,6 @@ Using `vacuum_2_uhv_mbar` to plot the UHV pressure can be useful to visualize in
 #| message: false
 
 data %>% 
-  filter(date >= as.Date("2018-04-01")) %>%
   ggplot(aes(x = date)) +
   geom_line(aes(y = vacuum_2_uhv_mbar)) +
   theme_bw(base_size = 22) +
@@ -350,10 +334,9 @@ data %>%
 
 ```
 
-### Orbitrap Temperature 
+### Orbitrap Temperature
 
 Another way to visualize bake-out procedures is to plot the Orbitrap temperature directly using `analyzer_temperature_sensor_c`.
-
 
 ```{r}
 #| label: Orbitrap Temp 1
@@ -367,7 +350,6 @@ Another way to visualize bake-out procedures is to plot the Orbitrap temperature
 #| message: false
 
 data %>% 
-  filter(date >= as.Date("2018-04-01")) %>%
   ggplot(aes(x = date)) +
   geom_line(aes(y = analyzer_temperature_sensor_c)) +
   theme_bw(base_size = 22) +
@@ -381,13 +363,17 @@ data %>%
 
 ```
 
-
 ## But Why!?!?!
 
-This project started when I was a postdoc in the [Garcia lab](https://www.bengarcialab.com/) 
+
+### Original problem
+
+This project started when I was a postdoc in the [Garcia lab](https://www.bengarcialab.com/). In 2018, we had a new QE HF-X installed. Some time after installation, we began to notice that the mass accuracy would quickly drift, even with a recent mass calibration. The mass accuracy drift would occur most on samples that were run overnight. The hypothesis was that the temperature of the room fluctuated between at different times of the day. So the beginnings of this analysis script was prompted by this question.
+
+The plot below is how the temperature fluctuated between the day and night time.
 
 ```{r}
-#| label: QE HFX temp
+#| label: QE HFX temp 1
 #| code-fold: true
 #| column: body-outset
 #| fig-height: 6
@@ -398,13 +384,81 @@ This project started when I was a postdoc in the [Garcia lab](https://www.bengar
 
 data %>% 
   filter(date >= as.Date("2018-10-01"),
-         date <= as.Date("2018-12-01")) %>%
+         date <= as.Date("2018-10-26")) %>%
   ggplot(aes(x = date)) +
   geom_line(aes(y = ambient_temperature_raw_c)) +
+  expand_limits(y = 0) +
   theme_bw(base_size = 22) +
   labs(x = NULL,
        y = expression('Temp ('~degree*C*')')) +
-  scale_x_datetime(date_breaks = "1 month", 
-                   date_minor_breaks = "1 week",
-                   date_labels = "%b%y")
+  scale_x_datetime(date_breaks = "1 week", 
+                   limits = as_datetime(c("2018-10-01", "2018-12-15")),
+                   date_labels = "%d-%b")
 ```
+
+### First solution attempt
+
+Using this data, we were able to show the building manager that instrument performance (mass accuracy) was affected by the room temperature. This data was taken to the building manager to find a solution for the problem. It turned out that the AC vents were pointing directly to the top of the instrument. The maintenance team flipped the direction of the vents to see if it solved the problem---it helped, sort of. 
+
+See below. 
+
+```{r}
+#| label: QE HFX temp 2
+#| code-fold: true
+#| column: body-outset
+#| fig-height: 6
+#| fig-width: 16
+#| include: true
+#| eval: true
+
+
+data %>% 
+  filter(date >= as.Date("2018-10-01"),
+         date <= as.Date("2018-11-07")) %>%
+  ggplot(aes(x = date)) +
+  geom_line(aes(y = ambient_temperature_raw_c)) +
+  expand_limits(y = 0) +
+  theme_bw(base_size = 22) +
+  labs(x = NULL,
+       y = expression('Temp ('~degree*C*')')) +
+  scale_x_datetime(date_breaks = "1 week", 
+                   limits = as_datetime(c("2018-10-01", "2018-12-15")),
+                   date_labels = "%d-%b")
+
+```
+
+### Second solution attempt
+
+We went back to the building manager to show that it wasn't fully resolved. This time, they changed the vents to point further away from the building and towards the doorway. Another factor to this saga was that the thermostat to the room was directly behind the QE HF-X. Therefore a work order was placed to change the location of the thermostat to a different part of the room. 
+
+With this work, we finally reached a steady state in temperature.
+
+```{r}
+#| label: QE HFX temp 3
+#| code-fold: true
+#| column: body-outset
+#| fig-height: 6
+#| fig-width: 16
+#| include: true
+#| eval: true
+
+
+data %>% 
+  filter(date >= as.Date("2018-10-01"),
+         date <= as.Date("2018-12-15")) %>%
+  ggplot(aes(x = date)) +
+  geom_line(aes(y = ambient_temperature_raw_c)) +
+  expand_limits(y = 0) +
+  theme_bw(base_size = 22) +
+  labs(x = NULL,
+       y = expression('Temp ('~degree*C*')')) +
+  scale_x_datetime(date_breaks = "1 week", 
+                   limits = as_datetime(c("2018-10-01", "2018-12-15")),
+                   date_labels = "%d-%b")
+```
+
+## Conclusions
+
+Analyzing data from the instrument log files gave us the evidence we needed to show the building manager that our instrument performance issues stemmed from a facilities problem. 
+
+Since 2018, I've used this log file analysis to help troubleshoot or prevent potential issues even before they were real failures. This can be a valuable tool to any mass spectrometrist looking to understand how their instrument is performing. 

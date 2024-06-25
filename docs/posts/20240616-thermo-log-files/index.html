@@ -187,7 +187,7 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
       <div>
       <div class="quarto-title-meta-heading">Modified</div>
       <div class="quarto-title-meta-contents">
-        <p class="date-modified">June 23, 2024</p>
+        <p class="date-modified">June 24, 2024</p>
       </div>
     </div>
       
@@ -221,7 +221,13 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
   <li><a href="#ultra-high-uhv-vacuum-pressure" id="toc-ultra-high-uhv-vacuum-pressure" class="nav-link" data-scroll-target="#ultra-high-uhv-vacuum-pressure">Ultra High (UHV) Vacuum pressure</a></li>
   <li><a href="#orbitrap-temperature" id="toc-orbitrap-temperature" class="nav-link" data-scroll-target="#orbitrap-temperature">Orbitrap Temperature</a></li>
   </ul></li>
-  <li><a href="#but-why" id="toc-but-why" class="nav-link" data-scroll-target="#but-why">But Why!?!?!</a></li>
+  <li><a href="#but-why" id="toc-but-why" class="nav-link" data-scroll-target="#but-why">But Why!?!?!</a>
+  <ul class="collapse">
+  <li><a href="#original-problem" id="toc-original-problem" class="nav-link" data-scroll-target="#original-problem">Original problem</a></li>
+  <li><a href="#first-solution-attempt" id="toc-first-solution-attempt" class="nav-link" data-scroll-target="#first-solution-attempt">First solution attempt</a></li>
+  <li><a href="#second-solution-attempt" id="toc-second-solution-attempt" class="nav-link" data-scroll-target="#second-solution-attempt">Second solution attempt</a></li>
+  </ul></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
   </ul>
 </nav>
 </nav>
@@ -282,7 +288,7 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>filelist <span class="ot">&lt;-</span> <span class="fu">list.files</span>(directory, <span class="at">pattern =</span> <span class="st">"InstrumentTemperature"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># plucking a single log file to demonstrate</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> filelist[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> filelist[<span class="dv">29</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="importing-a-single-file" class="level3 page-columns page-full">
@@ -290,7 +296,7 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>logfile <span class="ot">&lt;-</span> <span class="fu">read.delim2</span>(file, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">header =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>During the file import, I’m using <code>header = FALSE</code>. The instrument log files do not always have the first row with the header information.</p>
+<p>During the file import, I’m using <code>header = FALSE</code>. The instrument log files do not always have the first row with the header information, if at all.</p>
 <p>Additionally, the header row is often embedded multiple times in a single log file. Scroll down and see how many times this log file has the header information. This will need to be cleaned up in subsequent steps.</p>
 <div class="cell page-columns page-full">
 <div class="cell-output-display column-body-outset">
@@ -309,6 +315,1338 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;">1524590456</td>
+<td style="text-align: left;">2018-04-24 11:19:05</td>
+<td style="text-align: left;">28.8252314815</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.07164356907</td>
+<td style="text-align: left;">0.000580532871567</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524591356</td>
+<td style="text-align: left;">2018-04-24 11:34:04</td>
+<td style="text-align: left;">28.8356481481</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">3.07164356907</td>
+<td style="text-align: left;">0.000605535107192</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524592256</td>
+<td style="text-align: left;">2018-04-24 11:49:04</td>
+<td style="text-align: left;">28.8460648148</td>
+<td style="text-align: left;">2.78373634155e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000677598898499</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524593156</td>
+<td style="text-align: left;">2018-04-24 12:04:04</td>
+<td style="text-align: left;">28.8564814815</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.05013269694</td>
+<td style="text-align: left;">0.000556562965495</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524594056</td>
+<td style="text-align: left;">2018-04-24 12:19:04</td>
+<td style="text-align: left;">28.8668981481</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000391660741639</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524594956</td>
+<td style="text-align: left;">2018-04-24 12:34:04</td>
+<td style="text-align: left;">28.8773148148</td>
+<td style="text-align: left;">2.80336465311e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">3.05013269694</td>
+<td style="text-align: left;">0.000588750089782</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524595856</td>
+<td style="text-align: left;">2018-04-24 12:49:04</td>
+<td style="text-align: left;">28.8877199074</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.07164356907</td>
+<td style="text-align: left;">0.000592902213365</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524596756</td>
+<td style="text-align: left;">2018-04-24 13:04:04</td>
+<td style="text-align: left;">28.8981481481</td>
+<td style="text-align: left;">2.88327169793e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000692036414077</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524597656</td>
+<td style="text-align: left;">2018-04-24 13:19:04</td>
+<td style="text-align: left;">28.9085532407</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000497371550805</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524598556</td>
+<td style="text-align: left;">2018-04-24 13:34:04</td>
+<td style="text-align: left;">28.9189699074</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000560488091375</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524599456</td>
+<td style="text-align: left;">2018-04-24 13:49:04</td>
+<td style="text-align: left;">28.9293865741</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">3.07164356907</td>
+<td style="text-align: left;">0.000601294514827</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524600356</td>
+<td style="text-align: left;">2018-04-24 14:04:04</td>
+<td style="text-align: left;">28.9398032407</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.05013269694</td>
+<td style="text-align: left;">0.000663462583626</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524601256</td>
+<td style="text-align: left;">2018-04-24 14:19:04</td>
+<td style="text-align: left;">28.9502199074</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000682377622808</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524602156</td>
+<td style="text-align: left;">2018-04-24 14:34:04</td>
+<td style="text-align: left;">28.9606365741</td>
+<td style="text-align: left;">2.88327169793e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00054879498479</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524603056</td>
+<td style="text-align: left;">2018-04-24 14:49:04</td>
+<td style="text-align: left;">28.9710416667</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.05013269694</td>
+<td style="text-align: left;">0.000601294514827</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524603956</td>
+<td style="text-align: left;">2018-04-24 15:04:04</td>
+<td style="text-align: left;">28.9814583333</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000663462583626</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524604856</td>
+<td style="text-align: left;">2018-04-24 15:19:04</td>
+<td style="text-align: left;">28.991875</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00040000580842</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524605756</td>
+<td style="text-align: left;">2018-04-24 15:34:04</td>
+<td style="text-align: left;">29.0022916667</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000572430341531</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524606656</td>
+<td style="text-align: left;">2018-04-24 15:49:04</td>
+<td style="text-align: left;">29.0127083333</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000592902213365</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524607556</td>
+<td style="text-align: left;">2018-04-24 16:04:04</td>
+<td style="text-align: left;">29.0231365741</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">3.0933061453</td>
+<td style="text-align: left;">0.000618437168518</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524608456</td>
+<td style="text-align: left;">2018-04-24 16:19:04</td>
+<td style="text-align: left;">29.0335532407</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000645071856343</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524609356</td>
+<td style="text-align: left;">2018-04-24 16:34:04</td>
+<td style="text-align: left;">29.0439583333</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000663462583626</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524610256</td>
+<td style="text-align: left;">2018-04-24 16:49:04</td>
+<td style="text-align: left;">29.0543865741</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">3.05013269694</td>
+<td style="text-align: left;">0.000627190907393</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524611156</td>
+<td style="text-align: left;">2018-04-24 17:04:04</td>
+<td style="text-align: left;">29.0647916667</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000580532871567</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524612056</td>
+<td style="text-align: left;">2018-04-24 17:19:04</td>
+<td style="text-align: left;">29.0752083333</td>
+<td style="text-align: left;">2.82313136521e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000658816322274</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524612956</td>
+<td style="text-align: left;">2018-04-24 17:34:04</td>
+<td style="text-align: left;">29.085625</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000556562965495</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524613856</td>
+<td style="text-align: left;">2018-04-24 17:49:04</td>
+<td style="text-align: left;">29.0960416667</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.05013269694</td>
+<td style="text-align: left;">0.000614106222379</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524614756</td>
+<td style="text-align: left;">2018-04-24 18:04:04</td>
+<td style="text-align: left;">29.1064583333</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.0933061453</td>
+<td style="text-align: left;">0.000588750089782</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524615656</td>
+<td style="text-align: left;">2018-04-24 18:19:04</td>
+<td style="text-align: left;">29.116875</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000564440898963</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524616556</td>
+<td style="text-align: left;">2018-04-24 18:34:04</td>
+<td style="text-align: left;">29.1272916667</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000622798658387</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524617456</td>
+<td style="text-align: left;">2018-04-24 18:49:04</td>
+<td style="text-align: left;">29.1376967593</td>
+<td style="text-align: left;">2.96545641142e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">3.05013269694</td>
+<td style="text-align: left;">0.000622798658387</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524618356</td>
+<td style="text-align: left;">2018-04-24 19:04:04</td>
+<td style="text-align: left;">29.1481134259</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">3.05013269694</td>
+<td style="text-align: left;">0.000658816322274</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524619256</td>
+<td style="text-align: left;">2018-04-24 19:19:04</td>
+<td style="text-align: left;">29.1585300926</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000692036414077</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524620156</td>
+<td style="text-align: left;">2018-04-24 19:34:04</td>
+<td style="text-align: left;">29.1689467593</td>
+<td style="text-align: left;">2.82313136521e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.9241942741</td>
+<td style="text-align: left;">0.000687190048774</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524621056</td>
+<td style="text-align: left;">2018-04-24 19:49:04</td>
+<td style="text-align: left;">29.1793634259</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.05013269694</td>
+<td style="text-align: left;">0.000668141612449</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524621956</td>
+<td style="text-align: left;">2018-04-24 20:04:04</td>
+<td style="text-align: left;">29.1897800926</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">3.05013269694</td>
+<td style="text-align: left;">0.000721840854675</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524622856</td>
+<td style="text-align: left;">2018-04-24 20:19:04</td>
+<td style="text-align: left;">29.2001851852</td>
+<td style="text-align: left;">2.88327169793e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">3.05013269694</td>
+<td style="text-align: left;">0.000752928905008</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524623756</td>
+<td style="text-align: left;">2018-04-24 20:34:04</td>
+<td style="text-align: left;">29.2106018519</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000706781548007</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524624656</td>
+<td style="text-align: left;">2018-04-24 20:49:04</td>
+<td style="text-align: left;">29.2210185185</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000726931592642</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524625556</td>
+<td style="text-align: left;">2018-04-24 21:04:03</td>
+<td style="text-align: left;">29.2314351852</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000711766081146</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524626456</td>
+<td style="text-align: left;">2018-04-24 21:19:03</td>
+<td style="text-align: left;">29.2418518519</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000983406805692</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524627356</td>
+<td style="text-align: left;">2018-04-24 21:34:03</td>
+<td style="text-align: left;">29.2522685185</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.07164356907</td>
+<td style="text-align: left;">0.000463617785196</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524628256</td>
+<td style="text-align: left;">2018-04-24 21:49:03</td>
+<td style="text-align: left;">29.2626851852</td>
+<td style="text-align: left;">2.88327169793e-09</td>
+<td style="text-align: left;">3.03097968396e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000408528682503</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524629156</td>
+<td style="text-align: left;">2018-04-24 22:04:03</td>
+<td style="text-align: left;">29.2731018519</td>
+<td style="text-align: left;">2.88327169793e-09</td>
+<td style="text-align: left;">3.05771880663e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000790894520766</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524630056</td>
+<td style="text-align: left;">2018-04-24 22:19:03</td>
+<td style="text-align: left;">29.2835185185</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.0012934943445</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524630956</td>
+<td style="text-align: left;">2018-04-24 22:34:03</td>
+<td style="text-align: left;">29.2939236111</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">3.07164356907</td>
+<td style="text-align: left;">0.000504411652696</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524631856</td>
+<td style="text-align: left;">2018-04-24 22:49:03</td>
+<td style="text-align: left;">29.3043402778</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">3.00447438944e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.00111601682998</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524632756</td>
+<td style="text-align: left;">2018-04-24 23:04:03</td>
+<td style="text-align: left;">29.3147569444</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">3.00447438944e-10</td>
+<td style="text-align: left;">3.07164356907</td>
+<td style="text-align: left;">0.000758238889528</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524633656</td>
+<td style="text-align: left;">2018-04-24 23:19:03</td>
+<td style="text-align: left;">29.3251736111</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">3.0933061453</td>
+<td style="text-align: left;">0.00153113886434</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524634556</td>
+<td style="text-align: left;">2018-04-24 23:34:03</td>
+<td style="text-align: left;">29.3355902778</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.07164356907</td>
+<td style="text-align: left;">0.000716785767397</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524635456</td>
+<td style="text-align: left;">2018-04-24 23:49:03</td>
+<td style="text-align: left;">29.3460069444</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.97820087826e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.00122277866402</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Time [sec]</td>
+<td style="text-align: left;">Date</td>
+<td style="text-align: left;">Up-Time [days]</td>
+<td style="text-align: left;">Vacuum 1 (HV) [mbar]</td>
+<td style="text-align: left;">Vacuum 2 (UHV) [mbar]</td>
+<td style="text-align: left;">Vacuum 3 (Fore) [mbar]</td>
+<td style="text-align: left;">Vacuum 4/humidity [mbar]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524636356</td>
+<td style="text-align: left;">2018-04-25 00:04:03</td>
+<td style="text-align: left;">29.3564236111</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">3.05013269694</td>
+<td style="text-align: left;">0.00118055826489</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524637256</td>
+<td style="text-align: left;">2018-04-25 00:19:03</td>
+<td style="text-align: left;">29.3668402778</td>
+<td style="text-align: left;">2.88327169793e-09</td>
+<td style="text-align: left;">2.97820087826e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.000956147444247</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524638156</td>
+<td style="text-align: left;">2018-04-25 00:34:03</td>
+<td style="text-align: left;">29.3772569444</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.00170135859296</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524639056</td>
+<td style="text-align: left;">2018-04-25 00:49:03</td>
+<td style="text-align: left;">29.3876736111</td>
+<td style="text-align: left;">2.88327169793e-09</td>
+<td style="text-align: left;">3.00447438944e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000711766081146</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524639956</td>
+<td style="text-align: left;">2018-04-25 01:04:03</td>
+<td style="text-align: left;">29.3980902778</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.97820087826e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.00115592902863</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524640856</td>
+<td style="text-align: left;">2018-04-25 01:19:03</td>
+<td style="text-align: left;">29.4085069444</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.05013269694</td>
+<td style="text-align: left;">0.00144743109464</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524641756</td>
+<td style="text-align: left;">2018-04-25 01:34:03</td>
+<td style="text-align: left;">29.4189236111</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">3.00447438944e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000696916958072</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524642656</td>
+<td style="text-align: left;">2018-04-25 01:49:03</td>
+<td style="text-align: left;">29.4293402778</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">3.03097968396e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.0013492022156</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524643556</td>
+<td style="text-align: left;">2018-04-25 02:04:03</td>
+<td style="text-align: left;">29.4397569444</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00124008662297</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524644456</td>
+<td style="text-align: left;">2018-04-25 02:19:03</td>
+<td style="text-align: left;">29.4501736111</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000687190048774</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524645356</td>
+<td style="text-align: left;">2018-04-25 02:34:03</td>
+<td style="text-align: left;">29.4605787037</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.97820087826e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.001499195688</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524646256</td>
+<td style="text-align: left;">2018-04-25 02:49:03</td>
+<td style="text-align: left;">29.4709953704</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000836633496975</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524647156</td>
+<td style="text-align: left;">2018-04-25 03:04:03</td>
+<td style="text-align: left;">29.481412037</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00118888407901</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524648056</td>
+<td style="text-align: left;">2018-04-25 03:19:03</td>
+<td style="text-align: left;">29.4918287037</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.0021911440399</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524648956</td>
+<td style="text-align: left;">2018-04-25 03:34:03</td>
+<td style="text-align: left;">29.5022453704</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000802089326745</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524649856</td>
+<td style="text-align: left;">2018-04-25 03:49:03</td>
+<td style="text-align: left;">29.512662037</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.97820087826e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00132105466785</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524650756</td>
+<td style="text-align: left;">2018-04-25 04:04:03</td>
+<td style="text-align: left;">29.5230671296</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.00123140223489</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524651656</td>
+<td style="text-align: left;">2018-04-25 04:19:03</td>
+<td style="text-align: left;">29.5334837963</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000824956556062</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524652556</td>
+<td style="text-align: left;">2018-04-25 04:34:03</td>
+<td style="text-align: left;">29.543900463</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.97820087826e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00179975148628</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524653456</td>
+<td style="text-align: left;">2018-04-25 04:49:02</td>
+<td style="text-align: left;">29.5543171296</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">3.00447438944e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00099732654859</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524654356</td>
+<td style="text-align: left;">2018-04-25 05:04:02</td>
+<td style="text-align: left;">29.5647337963</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.97820087826e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.00106993706447</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524655256</td>
+<td style="text-align: left;">2018-04-25 05:19:02</td>
+<td style="text-align: left;">29.575150463</td>
+<td style="text-align: left;">2.90360183997e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00202814027835</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524656156</td>
+<td style="text-align: left;">2018-04-25 05:34:02</td>
+<td style="text-align: left;">29.5855671296</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000813442590873</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524657056</td>
+<td style="text-align: left;">2018-04-25 05:49:02</td>
+<td style="text-align: left;">29.5959722222</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">3.00447438944e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00153113886434</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524657956</td>
+<td style="text-align: left;">2018-04-25 06:04:02</td>
+<td style="text-align: left;">29.6063888889</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00202814027835</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524658856</td>
+<td style="text-align: left;">2018-04-25 06:19:02</td>
+<td style="text-align: left;">29.6168055556</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000936199948219</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524659756</td>
+<td style="text-align: left;">2018-04-25 06:34:02</td>
+<td style="text-align: left;">29.6272222222</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00182522627232</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524660656</td>
+<td style="text-align: left;">2018-04-25 06:49:02</td>
+<td style="text-align: left;">29.6376388889</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000854459542992</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524661556</td>
+<td style="text-align: left;">2018-04-25 07:04:02</td>
+<td style="text-align: left;">29.6480671296</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">3.07164356907</td>
+<td style="text-align: left;">0.0013492022156</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524662456</td>
+<td style="text-align: left;">2018-04-25 07:19:02</td>
+<td style="text-align: left;">29.6584837963</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00157479098931</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524663356</td>
+<td style="text-align: left;">2018-04-25 07:34:02</td>
+<td style="text-align: left;">29.668900463</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.00135871738075</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524664256</td>
+<td style="text-align: left;">2018-04-25 07:49:02</td>
+<td style="text-align: left;">29.6793055556</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00191726130892</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524665156</td>
+<td style="text-align: left;">2018-04-25 08:04:02</td>
+<td style="text-align: left;">29.6897222222</td>
+<td style="text-align: left;">2.80336465311e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00202814027835</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524666056</td>
+<td style="text-align: left;">2018-04-25 08:19:02</td>
+<td style="text-align: left;">29.7001388889</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.00208596170458</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524666956</td>
+<td style="text-align: left;">2018-04-25 08:34:02</td>
+<td style="text-align: left;">29.7105555556</td>
+<td style="text-align: left;">2.82313136521e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00185106164411</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524667856</td>
+<td style="text-align: left;">2018-04-25 08:49:02</td>
+<td style="text-align: left;">29.7209722222</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.0021757993496</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524668756</td>
+<td style="text-align: left;">2018-04-25 09:04:02</td>
+<td style="text-align: left;">29.7313888889</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.00213040703156</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524669656</td>
+<td style="text-align: left;">2018-04-25 09:19:02</td>
+<td style="text-align: left;">29.7418055556</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00210067282044</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524670556</td>
+<td style="text-align: left;">2018-04-25 09:34:02</td>
+<td style="text-align: left;">29.7522106481</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.00197192162236</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524671456</td>
+<td style="text-align: left;">2018-04-25 09:49:02</td>
+<td style="text-align: left;">29.7626273148</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">3.03097968396e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.00197192162236</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524672356</td>
+<td style="text-align: left;">2018-04-25 10:04:02</td>
+<td style="text-align: left;">29.7730439815</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.00191726130892</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524673256</td>
+<td style="text-align: left;">2018-04-25 10:19:02</td>
+<td style="text-align: left;">29.7834606481</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.0019858284776</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524674156</td>
+<td style="text-align: left;">2018-04-25 10:34:02</td>
+<td style="text-align: left;">29.7938773148</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00216056211893</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524675056</td>
+<td style="text-align: left;">2018-04-25 10:49:02</td>
+<td style="text-align: left;">29.8042939815</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.0019858284776</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524675956</td>
+<td style="text-align: left;">2018-04-25 11:04:02</td>
+<td style="text-align: left;">29.8147106481</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00173760922921</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524676856</td>
+<td style="text-align: left;">2018-04-25 11:19:02</td>
+<td style="text-align: left;">29.8251157407</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00179975148628</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524677756</td>
+<td style="text-align: left;">2018-04-25 11:34:02</td>
+<td style="text-align: left;">29.8355324074</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00157479098931</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524678656</td>
+<td style="text-align: left;">2018-04-25 11:49:02</td>
+<td style="text-align: left;">29.8459490741</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00178714773743</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524679556</td>
+<td style="text-align: left;">2018-04-25 12:04:02</td>
+<td style="text-align: left;">29.8563657407</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00191726130892</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524680456</td>
+<td style="text-align: left;">2018-04-25 12:19:02</td>
+<td style="text-align: left;">29.8667824074</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.00207135361139</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524681356</td>
+<td style="text-align: left;">2018-04-25 12:34:02</td>
+<td style="text-align: left;">29.8771990741</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.00182522627232</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524682256</td>
+<td style="text-align: left;">2018-04-25 12:49:02</td>
+<td style="text-align: left;">29.8876157407</td>
+<td style="text-align: left;">2.78373634155e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.00207135361139</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524683156</td>
+<td style="text-align: left;">2018-04-25 13:04:02</td>
+<td style="text-align: left;">29.8980324074</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00176220441564</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524684056</td>
+<td style="text-align: left;">2018-04-25 13:19:02</td>
+<td style="text-align: left;">29.9084490741</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00154193712645</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524684956</td>
+<td style="text-align: left;">2018-04-25 13:34:02</td>
+<td style="text-align: left;">29.9188541667</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.00173760922921</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524685856</td>
+<td style="text-align: left;">2018-04-25 13:49:02</td>
+<td style="text-align: left;">29.9292708333</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.00160834486534</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524686756</td>
+<td style="text-align: left;">2018-04-25 14:04:02</td>
+<td style="text-align: left;">29.9396875</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00158589710533</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524687656</td>
+<td style="text-align: left;">2018-04-25 14:19:02</td>
+<td style="text-align: left;">29.9501041667</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00137794949965</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524688556</td>
+<td style="text-align: left;">2018-04-25 14:34:02</td>
+<td style="text-align: left;">29.9605208333</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.97820087826e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00171335731918</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524689456</td>
+<td style="text-align: left;">2018-04-25 14:49:02</td>
+<td style="text-align: left;">29.9709375</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.00185106164411</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524690356</td>
+<td style="text-align: left;">2018-04-25 15:04:02</td>
+<td style="text-align: left;">29.9813541667</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.05013269694</td>
+<td style="text-align: left;">0.00174986361079</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524691256</td>
+<td style="text-align: left;">2018-04-25 15:19:02</td>
+<td style="text-align: left;">29.9917592593</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.00191726130892</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524692156</td>
+<td style="text-align: left;">2018-04-25 15:34:01</td>
+<td style="text-align: left;">30.0021875</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.00177463225326</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524693056</td>
+<td style="text-align: left;">2018-04-25 15:49:01</td>
+<td style="text-align: left;">30.0126041667</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00158589710533</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524693956</td>
+<td style="text-align: left;">2018-04-25 16:04:01</td>
+<td style="text-align: left;">30.0230208333</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.00156376264997</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524694856</td>
+<td style="text-align: left;">2018-04-25 16:19:01</td>
+<td style="text-align: left;">30.0334375</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">3.00447438944e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00138766740324</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524695756</td>
+<td style="text-align: left;">2018-04-25 16:34:01</td>
+<td style="text-align: left;">30.0438541667</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00202814027835</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524696656</td>
+<td style="text-align: left;">2018-04-25 16:49:01</td>
+<td style="text-align: left;">30.0542708333</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.0021911440399</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524697556</td>
+<td style="text-align: left;">2018-04-25 17:04:01</td>
+<td style="text-align: left;">30.0646875</td>
+<td style="text-align: left;">2.82313136521e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00190383463296</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524698456</td>
+<td style="text-align: left;">2018-04-25 17:19:01</td>
+<td style="text-align: left;">30.0750925926</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00171335731918</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524699356</td>
+<td style="text-align: left;">2018-04-25 17:34:01</td>
+<td style="text-align: left;">30.0855092593</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00189050198467</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524700256</td>
+<td style="text-align: left;">2018-04-25 17:49:01</td>
+<td style="text-align: left;">30.0959259259</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.00204244361219</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524701156</td>
+<td style="text-align: left;">2018-04-25 18:04:01</td>
+<td style="text-align: left;">30.1063425926</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.00189050198467</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524702056</td>
+<td style="text-align: left;">2018-04-25 18:19:01</td>
+<td style="text-align: left;">30.1167592593</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.00191726130892</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524702956</td>
+<td style="text-align: left;">2018-04-25 18:34:01</td>
+<td style="text-align: left;">30.1271759259</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00193078267568</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524703856</td>
+<td style="text-align: left;">2018-04-25 18:49:01</td>
+<td style="text-align: left;">30.1375925926</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.00193078267568</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524704756</td>
+<td style="text-align: left;">2018-04-25 19:04:01</td>
+<td style="text-align: left;">30.1480092593</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.00172544066567</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524705656</td>
+<td style="text-align: left;">2018-04-25 19:19:01</td>
+<td style="text-align: left;">30.1584143519</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.00174986361079</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524706556</td>
+<td style="text-align: left;">2018-04-25 19:34:01</td>
+<td style="text-align: left;">30.1688310185</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.00170135859296</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524707456</td>
+<td style="text-align: left;">2018-04-25 19:49:01</td>
+<td style="text-align: left;">30.1792476852</td>
+<td style="text-align: left;">2.88327169793e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00171335731918</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524708356</td>
+<td style="text-align: left;">2018-04-25 20:04:01</td>
+<td style="text-align: left;">30.1896643519</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.00190383463296</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524709256</td>
+<td style="text-align: left;">2018-04-25 20:19:01</td>
+<td style="text-align: left;">30.2000810185</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00190383463296</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524710156</td>
+<td style="text-align: left;">2018-04-25 20:34:01</td>
+<td style="text-align: left;">30.2104976852</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00197192162236</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524711056</td>
+<td style="text-align: left;">2018-04-25 20:49:01</td>
+<td style="text-align: left;">30.2209143519</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.0020568478194</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524711956</td>
+<td style="text-align: left;">2018-04-25 21:04:01</td>
+<td style="text-align: left;">30.2313310185</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.00202814027835</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524712856</td>
+<td style="text-align: left;">2018-04-25 21:19:01</td>
+<td style="text-align: left;">30.2417361111</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.00126650899464</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524713756</td>
+<td style="text-align: left;">2018-04-25 21:34:01</td>
+<td style="text-align: left;">30.2521527778</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.001619687618</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524714656</td>
+<td style="text-align: left;">2018-04-25 21:49:01</td>
+<td style="text-align: left;">30.2625694444</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.0013492022156</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524715556</td>
+<td style="text-align: left;">2018-04-25 22:04:01</td>
+<td style="text-align: left;">30.2729861111</td>
+<td style="text-align: left;">2.82313136521e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.00171335731918</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524716456</td>
+<td style="text-align: left;">2018-04-25 22:19:01</td>
+<td style="text-align: left;">30.2834027778</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00214543159534</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524717356</td>
+<td style="text-align: left;">2018-04-25 22:34:01</td>
+<td style="text-align: left;">30.2938194444</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000956147444247</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524718256</td>
+<td style="text-align: left;">2018-04-25 22:49:01</td>
+<td style="text-align: left;">30.3042361111</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00178714773743</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524719156</td>
+<td style="text-align: left;">2018-04-25 23:04:01</td>
+<td style="text-align: left;">30.3146527778</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00116408114659</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524720056</td>
+<td style="text-align: left;">2018-04-25 23:19:01</td>
+<td style="text-align: left;">30.3250578704</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.00156376264997</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524720956</td>
+<td style="text-align: left;">2018-04-25 23:34:01</td>
+<td style="text-align: left;">30.335474537</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.00168944389442</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524721856</td>
+<td style="text-align: left;">2018-04-25 23:49:01</td>
+<td style="text-align: left;">30.3458912037</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00144743109464</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">Time [sec]</td>
 <td style="text-align: left;">Date</td>
 <td style="text-align: left;">Up-Time [days]</td>
@@ -318,94 +1656,1399 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 <td style="text-align: left;">Vacuum 4/humidity [mbar]</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">1522100156</td>
-<td style="text-align: left;">2018-03-26 21:35:00</td>
-<td style="text-align: left;">0.00550925925926</td>
+<td style="text-align: left;">1524722756</td>
+<td style="text-align: left;">2018-04-26 00:04:01</td>
+<td style="text-align: left;">30.3563194444</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.00208596170458</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524723656</td>
+<td style="text-align: left;">2018-04-26 00:19:01</td>
+<td style="text-align: left;">30.3667361111</td>
 <td style="text-align: left;">2.86308390141e-09</td>
-<td style="text-align: left;">1.660233869e-13</td>
-<td style="text-align: left;">3.36548707765</td>
-<td style="text-align: left;">0.00255750683657</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">1522101056</td>
-<td style="text-align: left;">2018-03-26 21:50:04</td>
-<td style="text-align: left;">0.0159375</td>
-<td style="text-align: left;">2.54370802439e-05</td>
-<td style="text-align: left;">1.16903339139e-07</td>
-<td style="text-align: left;">3.48584725969</td>
-<td style="text-align: left;">0.00165419810092</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.9241942741</td>
+<td style="text-align: left;">0.000903874608696</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">1522101956</td>
-<td style="text-align: left;">2018-03-26 22:05:04</td>
-<td style="text-align: left;">0.0263425925926</td>
-<td style="text-align: left;">2.21022954909e-05</td>
-<td style="text-align: left;">7.14848238713e-08</td>
-<td style="text-align: left;">3.53518807913</td>
-<td style="text-align: left;">0.00106244424219</td>
+<td style="text-align: left;">1524724556</td>
+<td style="text-align: left;">2018-04-26 00:34:02</td>
+<td style="text-align: left;">30.3771527778</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00172544066567</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">1522102856</td>
-<td style="text-align: left;">2018-03-26 22:20:04</td>
-<td style="text-align: left;">0.0367476851852</td>
-<td style="text-align: left;">2.80336465311e-09</td>
-<td style="text-align: left;">9.55197064021e-08</td>
-<td style="text-align: left;">3.51043098182</td>
-<td style="text-align: left;">0.00119726861043</td>
+<td style="text-align: left;">1524725456</td>
+<td style="text-align: left;">2018-04-26 00:49:02</td>
+<td style="text-align: left;">30.3875694444</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.00113181361647</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">1522103756</td>
-<td style="text-align: left;">2018-03-26 22:35:03</td>
-<td style="text-align: left;">0.0471759259259</td>
-<td style="text-align: left;">2.78373634155e-09</td>
-<td style="text-align: left;">1.25413147734e-07</td>
-<td style="text-align: left;">3.48584725969</td>
-<td style="text-align: left;">0.000813442590873</td>
+<td style="text-align: left;">1524726356</td>
+<td style="text-align: left;">2018-04-26 01:04:02</td>
+<td style="text-align: left;">30.3979861111</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00186411614183</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">1522104656</td>
-<td style="text-align: left;">2018-03-26 22:50:04</td>
-<td style="text-align: left;">0.0575810185185</td>
-<td style="text-align: left;">2.78373634155e-09</td>
-<td style="text-align: left;">1.0993229209e-07</td>
-<td style="text-align: left;">3.51043098182</td>
-<td style="text-align: left;">0.000706781548007</td>
+<td style="text-align: left;">1524727256</td>
+<td style="text-align: left;">2018-04-26 01:19:02</td>
+<td style="text-align: left;">30.4083912037</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.00106993706447</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">1522105556</td>
-<td style="text-align: left;">2018-03-26 23:05:04</td>
-<td style="text-align: left;">0.0680092592593</td>
-<td style="text-align: left;">2.80336465311e-09</td>
-<td style="text-align: left;">8.82596717239e-08</td>
-<td style="text-align: left;">3.51043098182</td>
-<td style="text-align: left;">0.000568421583481</td>
+<td style="text-align: left;">1524728156</td>
+<td style="text-align: left;">2018-04-26 01:34:01</td>
+<td style="text-align: left;">30.4188078704</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.00201393711148</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">1522106456</td>
-<td style="text-align: left;">2018-03-26 23:20:03</td>
-<td style="text-align: left;">0.0784143518519</td>
+<td style="text-align: left;">1524729056</td>
+<td style="text-align: left;">2018-04-26 01:49:01</td>
+<td style="text-align: left;">30.429224537</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000949451496312</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524729956</td>
+<td style="text-align: left;">2018-04-26 02:04:01</td>
+<td style="text-align: left;">30.4396412037</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.00170135859296</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524730856</td>
+<td style="text-align: left;">2018-04-26 02:19:01</td>
+<td style="text-align: left;">30.4500578704</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000779855961325</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524731756</td>
+<td style="text-align: left;">2018-04-26 02:34:01</td>
+<td style="text-align: left;">30.460474537</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">2.9241942741</td>
+<td style="text-align: left;">0.00164261366964</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524732656</td>
+<td style="text-align: left;">2018-04-26 02:49:01</td>
+<td style="text-align: left;">30.4708912037</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00100436013237</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524733556</td>
+<td style="text-align: left;">2018-04-26 03:04:01</td>
+<td style="text-align: left;">30.4812962963</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.00171335731918</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524734456</td>
+<td style="text-align: left;">2018-04-26 03:19:01</td>
+<td style="text-align: left;">30.491712963</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00109273408063</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524735356</td>
+<td style="text-align: left;">2018-04-26 03:34:01</td>
+<td style="text-align: left;">30.5021296296</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.00181244412229</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524736256</td>
+<td style="text-align: left;">2018-04-26 03:49:01</td>
+<td style="text-align: left;">30.5125462963</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.9241942741</td>
+<td style="text-align: left;">0.000836633496975</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524737156</td>
+<td style="text-align: left;">2018-04-26 04:04:01</td>
+<td style="text-align: left;">30.522962963</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">2.9241942741</td>
+<td style="text-align: left;">0.00131180325655</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524738056</td>
+<td style="text-align: left;">2018-04-26 04:19:01</td>
+<td style="text-align: left;">30.5333796296</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000819179344418</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524738956</td>
+<td style="text-align: left;">2018-04-26 04:34:01</td>
+<td style="text-align: left;">30.5437847222</td>
+<td style="text-align: left;">2.88327169793e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.00121421548444</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524739856</td>
+<td style="text-align: left;">2018-04-26 04:49:01</td>
+<td style="text-align: left;">30.5542013889</td>
+<td style="text-align: left;">2.90360183997e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000747656106574</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524740756</td>
+<td style="text-align: left;">2018-04-26 05:04:01</td>
+<td style="text-align: left;">30.5646180556</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000866554087271</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524741656</td>
+<td style="text-align: left;">2018-04-26 05:19:01</td>
+<td style="text-align: left;">30.5750347222</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.000622798658387</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524742556</td>
+<td style="text-align: left;">2018-04-26 05:34:01</td>
+<td style="text-align: left;">30.5854513889</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">2.9241942741</td>
+<td style="text-align: left;">0.000819179344418</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524743456</td>
+<td style="text-align: left;">2018-04-26 05:49:01</td>
+<td style="text-align: left;">30.5958680556</td>
+<td style="text-align: left;">2.90360183997e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000522450966751</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524744356</td>
+<td style="text-align: left;">2018-04-26 06:04:01</td>
+<td style="text-align: left;">30.6062731481</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.000605535107192</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524745256</td>
+<td style="text-align: left;">2018-04-26 06:19:01</td>
+<td style="text-align: left;">30.6167013889</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.000357464512731</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524746156</td>
+<td style="text-align: left;">2018-04-26 06:34:01</td>
+<td style="text-align: left;">30.6271064815</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.000391660741639</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524747056</td>
+<td style="text-align: left;">2018-04-26 06:49:01</td>
+<td style="text-align: left;">30.6375347222</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.95215712354e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.000264236779783</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524747956</td>
+<td style="text-align: left;">2018-04-26 07:04:01</td>
+<td style="text-align: left;">30.6479513889</td>
 <td style="text-align: left;">2.82313136521e-09</td>
-<td style="text-align: left;">7.40409406385e-08</td>
-<td style="text-align: left;">3.46143569858</td>
-<td style="text-align: left;">0.000677598898499</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000347555841874</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524748856</td>
+<td style="text-align: left;">2018-04-26 07:19:01</td>
+<td style="text-align: left;">30.6583680556</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000249790884624</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">1522107356</td>
-<td style="text-align: left;">2018-03-26 23:35:03</td>
-<td style="text-align: left;">0.0888425925926</td>
+<td style="text-align: left;">1524749756</td>
+<td style="text-align: left;">2018-04-26 07:34:01</td>
+<td style="text-align: left;">30.6687847222</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">3.11512149551</td>
+<td style="text-align: left;">0.00040000580842</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524750656</td>
+<td style="text-align: left;">2018-04-26 07:49:01</td>
+<td style="text-align: left;">30.6792013889</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000504411652696</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524751556</td>
+<td style="text-align: left;">2018-04-26 08:04:01</td>
+<td style="text-align: left;">30.6896064815</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.80060818845e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000497371550805</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524752456</td>
+<td style="text-align: left;">2018-04-26 08:19:01</td>
+<td style="text-align: left;">30.7000231481</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.80060818845e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000529846058072</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524753356</td>
+<td style="text-align: left;">2018-04-26 08:34:01</td>
+<td style="text-align: left;">30.7104398148</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.80060818845e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000476835333237</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524754256</td>
+<td style="text-align: left;">2018-04-26 08:49:01</td>
+<td style="text-align: left;">30.7208564815</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000426123087367</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524755156</td>
+<td style="text-align: left;">2018-04-26 09:04:01</td>
+<td style="text-align: left;">30.7312731481</td>
 <td style="text-align: left;">2.82313136521e-09</td>
-<td style="text-align: left;">6.37712756222e-08</td>
-<td style="text-align: left;">3.48584725969</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000426123087367</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524756056</td>
+<td style="text-align: left;">2018-04-26 09:19:01</td>
+<td style="text-align: left;">30.7416898148</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.0004539456222</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524756956</td>
+<td style="text-align: left;">2018-04-26 09:34:01</td>
+<td style="text-align: left;">30.7521064815</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.000444475243389</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524757856</td>
+<td style="text-align: left;">2018-04-26 09:49:01</td>
+<td style="text-align: left;">30.7625115741</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000483584752913</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524758756</td>
+<td style="text-align: left;">2018-04-26 10:04:01</td>
+<td style="text-align: left;">30.7729398148</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.13709069713</td>
+<td style="text-align: left;">0.000460371046871</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524759656</td>
+<td style="text-align: left;">2018-04-26 10:19:00</td>
+<td style="text-align: left;">30.7833449074</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000450766618512</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524760556</td>
+<td style="text-align: left;">2018-04-26 10:34:01</td>
+<td style="text-align: left;">30.7937615741</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000473496031768</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524761456</td>
+<td style="text-align: left;">2018-04-26 10:49:01</td>
+<td style="text-align: left;">30.8041782407</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000470180115593</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524762356</td>
+<td style="text-align: left;">2018-04-26 11:04:00</td>
+<td style="text-align: left;">30.8145949074</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000470180115593</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524763256</td>
+<td style="text-align: left;">2018-04-26 11:19:01</td>
+<td style="text-align: left;">30.8250115741</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000504411652696</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524764156</td>
+<td style="text-align: left;">2018-04-26 11:34:00</td>
+<td style="text-align: left;">30.8354282407</td>
+<td style="text-align: left;">2.82313136521e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000486995204464</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524765056</td>
+<td style="text-align: left;">2018-04-26 11:49:00</td>
+<td style="text-align: left;">30.8458449074</td>
+<td style="text-align: left;">2.80336465311e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000441362561233</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524765956</td>
+<td style="text-align: left;">2018-04-26 12:04:00</td>
+<td style="text-align: left;">30.85625</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000435202439068</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524766856</td>
+<td style="text-align: left;">2018-04-26 12:19:00</td>
+<td style="text-align: left;">30.8666666667</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000493888433187</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524767756</td>
+<td style="text-align: left;">2018-04-26 12:34:00</td>
+<td style="text-align: left;">30.8770833333</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000493888433187</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524768656</td>
+<td style="text-align: left;">2018-04-26 12:49:00</td>
+<td style="text-align: left;">30.8875</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000504411652696</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524769556</td>
+<td style="text-align: left;">2018-04-26 13:04:00</td>
+<td style="text-align: left;">30.8979166667</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.00051879221674</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524770456</td>
+<td style="text-align: left;">2018-04-26 13:19:00</td>
+<td style="text-align: left;">30.9083333333</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000438271677344</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524771356</td>
+<td style="text-align: left;">2018-04-26 13:34:00</td>
+<td style="text-align: left;">30.91875</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.0933061453</td>
+<td style="text-align: left;">0.000457147045616</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524772256</td>
+<td style="text-align: left;">2018-04-26 13:49:00</td>
+<td style="text-align: left;">30.9291550926</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000497371550805</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524773156</td>
+<td style="text-align: left;">2018-04-26 14:04:00</td>
+<td style="text-align: left;">30.9395949074</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000529846058072</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524774056</td>
+<td style="text-align: left;">2018-04-26 14:19:00</td>
+<td style="text-align: left;">30.95</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000631614132463</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524774956</td>
+<td style="text-align: left;">2018-04-26 14:34:00</td>
+<td style="text-align: left;">30.9604166667</td>
+<td style="text-align: left;">2.88327169793e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000658816322274</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524775856</td>
+<td style="text-align: left;">2018-04-26 14:49:00</td>
+<td style="text-align: left;">30.9708333333</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.80060818845e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000592902213365</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524776756</td>
+<td style="text-align: left;">2018-04-26 15:04:00</td>
+<td style="text-align: left;">30.98125</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.80060818845e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000592902213365</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524777656</td>
+<td style="text-align: left;">2018-04-26 15:19:00</td>
+<td style="text-align: left;">30.9916666667</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.80060818845e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000507968984669</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524778556</td>
+<td style="text-align: left;">2018-04-26 15:34:00</td>
+<td style="text-align: left;">31.0020833333</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00051879221674</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524779456</td>
+<td style="text-align: left;">2018-04-26 15:49:00</td>
+<td style="text-align: left;">31.0125</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.80060818845e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000544951746315</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524780356</td>
+<td style="text-align: left;">2018-04-26 16:04:00</td>
+<td style="text-align: left;">31.0229050926</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000511551404505</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524781256</td>
+<td style="text-align: left;">2018-04-26 16:19:00</td>
+<td style="text-align: left;">31.0333217593</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.00040000580842</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524782156</td>
+<td style="text-align: left;">2018-04-26 16:34:00</td>
+<td style="text-align: left;">31.0437384259</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000457147045616</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524783056</td>
+<td style="text-align: left;">2018-04-26 16:49:00</td>
+<td style="text-align: left;">31.0541550926</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000411409805761</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524783956</td>
+<td style="text-align: left;">2018-04-26 17:04:00</td>
+<td style="text-align: left;">31.0645717593</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.000429128294076</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524784856</td>
+<td style="text-align: left;">2018-04-26 17:19:00</td>
+<td style="text-align: left;">31.0749884259</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.0933061453</td>
+<td style="text-align: left;">0.000405667735894</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524785756</td>
+<td style="text-align: left;">2018-04-26 17:34:00</td>
+<td style="text-align: left;">31.0854050926</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000388917922056</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524786656</td>
+<td style="text-align: left;">2018-04-26 17:49:00</td>
+<td style="text-align: left;">31.0958101852</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000378137384288</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524787556</td>
+<td style="text-align: left;">2018-04-26 18:04:00</td>
+<td style="text-align: left;">31.1062268519</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000435202439068</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524788456</td>
+<td style="text-align: left;">2018-04-26 18:19:00</td>
+<td style="text-align: left;">31.1166435185</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000438271677344</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524789356</td>
+<td style="text-align: left;">2018-04-26 18:34:00</td>
+<td style="text-align: left;">31.1270601852</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000466887420943</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524790256</td>
+<td style="text-align: left;">2018-04-26 18:49:00</td>
+<td style="text-align: left;">31.1374768519</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.000466887420943</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524791156</td>
+<td style="text-align: left;">2018-04-26 19:04:00</td>
+<td style="text-align: left;">31.1478935185</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000460371046871</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524792056</td>
+<td style="text-align: left;">2018-04-26 19:19:00</td>
+<td style="text-align: left;">31.1583101852</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000444475243389</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524792956</td>
+<td style="text-align: left;">2018-04-26 19:34:00</td>
+<td style="text-align: left;">31.1687268519</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000391660741639</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524793856</td>
+<td style="text-align: left;">2018-04-26 19:49:00</td>
+<td style="text-align: left;">31.1791319444</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.00040000580842</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524794756</td>
+<td style="text-align: left;">2018-04-26 20:04:00</td>
+<td style="text-align: left;">31.1895486111</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.90075086435e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000386194310574</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524795656</td>
+<td style="text-align: left;">2018-04-26 20:19:00</td>
+<td style="text-align: left;">31.1999652778</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.000423138926269</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524796556</td>
+<td style="text-align: left;">2018-04-26 20:34:00</td>
+<td style="text-align: left;">31.2103819444</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000375489269447</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524797456</td>
+<td style="text-align: left;">2018-04-26 20:48:59</td>
+<td style="text-align: left;">31.2207986111</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000429128294076</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524798356</td>
+<td style="text-align: left;">2018-04-26 21:03:59</td>
+<td style="text-align: left;">31.2312268519</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000473496031768</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524799256</td>
+<td style="text-align: left;">2018-04-26 21:18:59</td>
+<td style="text-align: left;">31.2416319444</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000541135422229</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524800156</td>
+<td style="text-align: left;">2018-04-26 21:33:59</td>
+<td style="text-align: left;">31.2520486111</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.00052613551987</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524801056</td>
+<td style="text-align: left;">2018-04-26 21:48:59</td>
+<td style="text-align: left;">31.2624652778</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.77611744532e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000490429708013</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524801956</td>
+<td style="text-align: left;">2018-04-26 22:03:59</td>
+<td style="text-align: left;">31.2728819444</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000490429708013</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524802856</td>
+<td style="text-align: left;">2018-04-26 22:18:59</td>
+<td style="text-align: left;">31.2832986111</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000486995204464</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524803756</td>
+<td style="text-align: left;">2018-04-26 22:33:59</td>
+<td style="text-align: left;">31.2937152778</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000497371550805</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524804656</td>
+<td style="text-align: left;">2018-04-26 22:48:59</td>
+<td style="text-align: left;">31.3041319444</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000490429708013</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524805556</td>
+<td style="text-align: left;">2018-04-26 23:03:59</td>
+<td style="text-align: left;">31.314537037</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000504411652696</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524806456</td>
+<td style="text-align: left;">2018-04-26 23:18:59</td>
+<td style="text-align: left;">31.3249537037</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000497371550805</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524807356</td>
+<td style="text-align: left;">2018-04-26 23:33:59</td>
+<td style="text-align: left;">31.3353703704</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000504411652696</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524808256</td>
+<td style="text-align: left;">2018-04-26 23:48:59</td>
+<td style="text-align: left;">31.345787037</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.80060818845e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000572430341531</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Time [sec]</td>
+<td style="text-align: left;">Date</td>
+<td style="text-align: left;">Up-Time [days]</td>
+<td style="text-align: left;">Vacuum 1 (HV) [mbar]</td>
+<td style="text-align: left;">Vacuum 2 (UHV) [mbar]</td>
+<td style="text-align: left;">Vacuum 3 (Fore) [mbar]</td>
+<td style="text-align: left;">Vacuum 4/humidity [mbar]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524809156</td>
+<td style="text-align: left;">2018-04-27 00:03:59</td>
+<td style="text-align: left;">31.3562037037</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.80060818845e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000486995204464</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524810056</td>
+<td style="text-align: left;">2018-04-27 00:18:59</td>
+<td style="text-align: left;">31.3666203704</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.77611744532e-10</td>
+<td style="text-align: left;">3.0933061453</td>
+<td style="text-align: left;">0.000497371550805</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524810956</td>
+<td style="text-align: left;">2018-04-27 00:33:59</td>
+<td style="text-align: left;">31.377037037</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000541135422229</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524811856</td>
+<td style="text-align: left;">2018-04-27 00:48:59</td>
+<td style="text-align: left;">31.3874537037</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.80060818845e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000605535107192</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524812756</td>
+<td style="text-align: left;">2018-04-27 01:03:59</td>
+<td style="text-align: left;">31.3978587963</td>
+<td style="text-align: left;">2.82313136521e-09</td>
+<td style="text-align: left;">2.80060818845e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000588750089782</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524813656</td>
+<td style="text-align: left;">2018-04-27 01:18:59</td>
+<td style="text-align: left;">31.408275463</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000580532871567</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524814556</td>
+<td style="text-align: left;">2018-04-27 01:33:59</td>
+<td style="text-align: left;">31.4186921296</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000592902213365</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524815456</td>
+<td style="text-align: left;">2018-04-27 01:48:59</td>
+<td style="text-align: left;">31.4291087963</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">2.96558511281</td>
 <td style="text-align: left;">0.00054879498479</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">1522108256</td>
-<td style="text-align: left;">2018-03-26 23:50:04</td>
-<td style="text-align: left;">0.0992476851852</td>
-<td style="text-align: left;">2.80336465311e-09</td>
-<td style="text-align: left;">5.34976523316e-08</td>
-<td style="text-align: left;">3.48584725969</td>
-<td style="text-align: left;">0.000631614132463</td>
+<td style="text-align: left;">1524816356</td>
+<td style="text-align: left;">2018-04-27 02:03:59</td>
+<td style="text-align: left;">31.439525463</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000584627043727</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524817256</td>
+<td style="text-align: left;">2018-04-27 02:18:59</td>
+<td style="text-align: left;">31.4499421296</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000568421583481</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524818156</td>
+<td style="text-align: left;">2018-04-27 02:33:59</td>
+<td style="text-align: left;">31.4603587963</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000597083619542</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524819056</td>
+<td style="text-align: left;">2018-04-27 02:48:59</td>
+<td style="text-align: left;">31.4707638889</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000572430341531</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524819956</td>
+<td style="text-align: left;">2018-04-27 03:03:59</td>
+<td style="text-align: left;">31.4811805556</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.80060818845e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.000572430341531</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524820856</td>
+<td style="text-align: left;">2018-04-27 03:18:59</td>
+<td style="text-align: left;">31.4915972222</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000580532871567</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524821756</td>
+<td style="text-align: left;">2018-04-27 03:33:59</td>
+<td style="text-align: left;">31.5020138889</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00052613551987</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524822656</td>
+<td style="text-align: left;">2018-04-27 03:48:59</td>
+<td style="text-align: left;">31.5124305556</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000560488091375</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524823556</td>
+<td style="text-align: left;">2018-04-27 04:03:59</td>
+<td style="text-align: left;">31.5228472222</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000572430341531</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524824456</td>
+<td style="text-align: left;">2018-04-27 04:18:59</td>
+<td style="text-align: left;">31.533275463</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.80060818845e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000601294514827</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524825356</td>
+<td style="text-align: left;">2018-04-27 04:33:59</td>
+<td style="text-align: left;">31.5436921296</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000560488091375</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524826256</td>
+<td style="text-align: left;">2018-04-27 04:48:59</td>
+<td style="text-align: left;">31.5541087963</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000537345824051</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524827156</td>
+<td style="text-align: left;">2018-04-27 05:03:59</td>
+<td style="text-align: left;">31.5645138889</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000609805606071</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524828056</td>
+<td style="text-align: left;">2018-04-27 05:18:59</td>
+<td style="text-align: left;">31.5749305556</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000636068552055</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524828956</td>
+<td style="text-align: left;">2018-04-27 05:33:59</td>
+<td style="text-align: left;">31.5853472222</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000601294514827</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524829856</td>
+<td style="text-align: left;">2018-04-27 05:48:58</td>
+<td style="text-align: left;">31.5957638889</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000618437168518</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524830756</td>
+<td style="text-align: left;">2018-04-27 06:03:58</td>
+<td style="text-align: left;">31.6061805556</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000605535107192</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524831656</td>
+<td style="text-align: left;">2018-04-27 06:18:58</td>
+<td style="text-align: left;">31.6165972222</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.000605535107192</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524832556</td>
+<td style="text-align: left;">2018-04-27 06:33:58</td>
+<td style="text-align: left;">31.6270023148</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.72777658575e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000672853639833</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524833456</td>
+<td style="text-align: left;">2018-04-27 06:48:58</td>
+<td style="text-align: left;">31.6374189815</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000737221028119</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524834356</td>
+<td style="text-align: left;">2018-04-27 07:03:58</td>
+<td style="text-align: left;">31.6478356481</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000848475720468</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524835256</td>
+<td style="text-align: left;">2018-04-27 07:18:58</td>
+<td style="text-align: left;">31.6582523148</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000878819825145</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524836156</td>
+<td style="text-align: left;">2018-04-27 07:33:58</td>
+<td style="text-align: left;">31.6686689815</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.05013269694</td>
+<td style="text-align: left;">0.000742420233808</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524837056</td>
+<td style="text-align: left;">2018-04-27 07:48:58</td>
+<td style="text-align: left;">31.6790856481</td>
+<td style="text-align: left;">2.88327169793e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000813442590873</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524837956</td>
+<td style="text-align: left;">2018-04-27 08:03:58</td>
+<td style="text-align: left;">31.6895023148</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000721840854675</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524838856</td>
+<td style="text-align: left;">2018-04-27 08:18:58</td>
+<td style="text-align: left;">31.6999074074</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">3.07164356907</td>
+<td style="text-align: left;">0.00065420259892</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524839756</td>
+<td style="text-align: left;">2018-04-27 08:33:58</td>
+<td style="text-align: left;">31.7103356481</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.000580532871567</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524840656</td>
+<td style="text-align: left;">2018-04-27 08:48:58</td>
+<td style="text-align: left;">31.7207407407</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.88338112966</td>
+<td style="text-align: left;">0.000732058232724</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524841556</td>
+<td style="text-align: left;">2018-04-27 09:03:58</td>
+<td style="text-align: left;">31.7311574074</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000854459542992</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524842456</td>
+<td style="text-align: left;">2018-04-27 09:18:58</td>
+<td style="text-align: left;">31.7415740741</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.80060818845e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00088501764759</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524843356</td>
+<td style="text-align: left;">2018-04-27 09:33:58</td>
+<td style="text-align: left;">31.7519907407</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.00111601682998</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524844256</td>
+<td style="text-align: left;">2018-04-27 09:48:58</td>
+<td style="text-align: left;">31.7624074074</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.000962890614942</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524845156</td>
+<td style="text-align: left;">2018-04-27 10:03:58</td>
+<td style="text-align: left;">31.7728240741</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000878819825145</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524846056</td>
+<td style="text-align: left;">2018-04-27 10:18:58</td>
+<td style="text-align: left;">31.7832407407</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000903874608696</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524846956</td>
+<td style="text-align: left;">2018-04-27 10:33:58</td>
+<td style="text-align: left;">31.7936458333</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00077439459138</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524847856</td>
+<td style="text-align: left;">2018-04-27 10:48:58</td>
+<td style="text-align: left;">31.8040625</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.000891259179794</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524848756</td>
+<td style="text-align: left;">2018-04-27 11:03:58</td>
+<td style="text-align: left;">31.8144791667</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.92634111611e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00108508160971</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524849656</td>
+<td style="text-align: left;">2018-04-27 11:18:58</td>
+<td style="text-align: left;">31.8249074074</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00114783400036</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524850556</td>
+<td style="text-align: left;">2018-04-27 11:33:58</td>
+<td style="text-align: left;">31.8353240741</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.80060818845e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00100436013237</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524851456</td>
+<td style="text-align: left;">2018-04-27 11:48:58</td>
+<td style="text-align: left;">31.8457407407</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.80060818845e-10</td>
+<td style="text-align: left;">3.02877246651</td>
+<td style="text-align: left;">0.00104027914367</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524852356</td>
+<td style="text-align: left;">2018-04-27 12:03:58</td>
+<td style="text-align: left;">31.8561458333</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00108508160971</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524853256</td>
+<td style="text-align: left;">2018-04-27 12:18:58</td>
+<td style="text-align: left;">31.8665625</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.80060818845e-10</td>
+<td style="text-align: left;">3.05013269694</td>
+<td style="text-align: left;">0.00127544097096</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524854156</td>
+<td style="text-align: left;">2018-04-27 12:33:58</td>
+<td style="text-align: left;">31.8769791667</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.82531498747e-10</td>
+<td style="text-align: left;">3.00756182283</td>
+<td style="text-align: left;">0.00104761564797</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524855056</td>
+<td style="text-align: left;">2018-04-27 12:48:58</td>
+<td style="text-align: left;">31.8873958333</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000903874608696</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524855956</td>
+<td style="text-align: left;">2018-04-27 13:03:58</td>
+<td style="text-align: left;">31.8978125</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.96558511281</td>
+<td style="text-align: left;">0.000878819825145</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524856856</td>
+<td style="text-align: left;">2018-04-27 13:18:58</td>
+<td style="text-align: left;">31.9082291667</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.90371599668</td>
+<td style="text-align: left;">0.000819179344418</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524857756</td>
+<td style="text-align: left;">2018-04-27 13:33:58</td>
+<td style="text-align: left;">31.9186458333</td>
+<td style="text-align: left;">2.88327169793e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.000929643693586</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524858656</td>
+<td style="text-align: left;">2018-04-27 13:48:58</td>
+<td style="text-align: left;">31.9290625</td>
+<td style="text-align: left;">2.82313136521e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.00101144332006</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1524859556</td>
+<td style="text-align: left;">2018-04-27 14:03:58</td>
+<td style="text-align: left;">31.9394791667</td>
+<td style="text-align: left;">2.86308390141e-09</td>
+<td style="text-align: left;">2.87538439409e-10</td>
+<td style="text-align: left;">2.98649971834</td>
+<td style="text-align: left;">0.00109273408063</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1524860456</td>
+<td style="text-align: left;">2018-04-27 14:18:58</td>
+<td style="text-align: left;">31.9498842593</td>
+<td style="text-align: left;">2.84303745373e-09</td>
+<td style="text-align: left;">2.8502397484e-10</td>
+<td style="text-align: left;">2.9448169733</td>
+<td style="text-align: left;">0.00108508160971</td>
 </tr>
 </tbody>
 </table>
@@ -707,19 +3350,19 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 </section>
 <section id="ambient-temperature" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="ambient-temperature">Ambient Temperature</h3>
+<p>The <code>ambient_temperature_raw_c</code> provides a measure of the ambient temperature. This sensor is located at the back of the instrument.</p>
 <div class="cell page-columns page-full">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> </span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(date <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2018-04-01"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date)) <span class="sc">+</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> ambient_temperature_raw_c)) <span class="sc">+</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>) <span class="sc">+</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="st">'Temp ('</span><span class="sc">~</span>degree<span class="sc">*</span>C<span class="sc">*</span><span class="st">')'</span>)) <span class="sc">+</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_datetime</span>(<span class="at">date_breaks =</span> <span class="st">"3 month"</span>, </span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_minor_breaks =</span> <span class="st">"1 month"</span>,</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_labels =</span> <span class="st">"%b%y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date)) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> ambient_temperature_raw_c)) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="st">'Temp ('</span><span class="sc">~</span>degree<span class="sc">*</span>C<span class="sc">*</span><span class="st">')'</span>)) <span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_datetime</span>(<span class="at">date_breaks =</span> <span class="st">"3 month"</span>, </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_minor_breaks =</span> <span class="st">"1 month"</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_labels =</span> <span class="st">"%b%y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display column-body-outset">
 <p><img src="index_files/figure-html/Ambient Temp 1-1.png" class="img-fluid" width="1536"></p>
@@ -733,16 +3376,15 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> </span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(date <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2018-04-01"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date)) <span class="sc">+</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> vacuum_2_uhv_mbar)) <span class="sc">+</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>) <span class="sc">+</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>,</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="st">'Pressure (mbar)'</span>)) <span class="sc">+</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_datetime</span>(<span class="at">date_breaks =</span> <span class="st">"3 month"</span>, </span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_minor_breaks =</span> <span class="st">"1 month"</span>,</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_labels =</span> <span class="st">"%b%y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date)) <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> vacuum_2_uhv_mbar)) <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="st">'Pressure (mbar)'</span>)) <span class="sc">+</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_datetime</span>(<span class="at">date_breaks =</span> <span class="st">"3 month"</span>, </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_minor_breaks =</span> <span class="st">"1 month"</span>,</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_labels =</span> <span class="st">"%b%y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display column-body-outset">
 <p><img src="index_files/figure-html/UHV Pressure 1-1.png" class="img-fluid" width="1536"></p>
@@ -756,16 +3398,15 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> </span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(date <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2018-04-01"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date)) <span class="sc">+</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> analyzer_temperature_sensor_c)) <span class="sc">+</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>) <span class="sc">+</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>,</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="st">'Temp ('</span><span class="sc">~</span>degree<span class="sc">*</span>C<span class="sc">*</span><span class="st">')'</span>)) <span class="sc">+</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_datetime</span>(<span class="at">date_breaks =</span> <span class="st">"3 month"</span>, </span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_minor_breaks =</span> <span class="st">"1 month"</span>,</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_labels =</span> <span class="st">"%b%y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date)) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> analyzer_temperature_sensor_c)) <span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>) <span class="sc">+</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="st">'Temp ('</span><span class="sc">~</span>degree<span class="sc">*</span>C<span class="sc">*</span><span class="st">')'</span>)) <span class="sc">+</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_datetime</span>(<span class="at">date_breaks =</span> <span class="st">"3 month"</span>, </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_minor_breaks =</span> <span class="st">"1 month"</span>,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_labels =</span> <span class="st">"%b%y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display column-body-outset">
 <p><img src="index_files/figure-html/Orbitrap Temp 1-1.png" class="img-fluid" width="1536"></p>
@@ -775,26 +3416,86 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 </section>
 <section id="but-why" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="but-why">But Why!?!?!</h2>
-<p>This project started when I was a postdoc in the <a href="https://www.bengarcialab.com/">Garcia lab</a></p>
+<section id="original-problem" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="original-problem">Original problem</h3>
+<p>This project started when I was a postdoc in the <a href="https://www.bengarcialab.com/">Garcia lab</a>. In 2018, we had a new QE HF-X installed. Some time after installation, we began to notice that the mass accuracy would quickly drift, even with a recent mass calibration. The mass accuracy drift would occur most on samples that were run overnight. The hypothesis was that the temperature of the room fluctuated between at different times of the day. So the beginnings of this analysis script was prompted by this question.</p>
+<p>The plot below is how the temperature fluctuated between the day and night time.</p>
 <div class="cell page-columns page-full">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> </span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(date <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2018-10-01"</span>),</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>         date <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2018-12-01"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>         date <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2018-10-26"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date)) <span class="sc">+</span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> ambient_temperature_raw_c)) <span class="sc">+</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>) <span class="sc">+</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>,</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="st">'Temp ('</span><span class="sc">~</span>degree<span class="sc">*</span>C<span class="sc">*</span><span class="st">')'</span>)) <span class="sc">+</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_datetime</span>(<span class="at">date_breaks =</span> <span class="st">"1 month"</span>, </span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_minor_breaks =</span> <span class="st">"1 week"</span>,</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_labels =</span> <span class="st">"%b%y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand_limits</span>(<span class="at">y =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>) <span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="st">'Temp ('</span><span class="sc">~</span>degree<span class="sc">*</span>C<span class="sc">*</span><span class="st">')'</span>)) <span class="sc">+</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_datetime</span>(<span class="at">date_breaks =</span> <span class="st">"1 week"</span>, </span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">limits =</span> <span class="fu">as_datetime</span>(<span class="fu">c</span>(<span class="st">"2018-10-01"</span>, <span class="st">"2018-12-15"</span>)),</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_labels =</span> <span class="st">"%d-%b"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display column-body-outset">
-<p><img src="index_files/figure-html/QE HFX temp-1.png" class="img-fluid" width="1536"></p>
+<p><img src="index_files/figure-html/QE HFX temp 1-1.png" class="img-fluid" width="1536"></p>
 </div>
 </div>
+</section>
+<section id="first-solution-attempt" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="first-solution-attempt">First solution attempt</h3>
+<p>Using this data, we were able to show the building manager that instrument performance (mass accuracy) was affected by the room temperature. This data was taken to the building manager to find a solution for the problem. It turned out that the AC vents were pointing directly to the top of the instrument. The maintenance team flipped the direction of the vents to see if it solved the problem—it helped, sort of.</p>
+<p>See below.</p>
+<div class="cell page-columns page-full">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(date <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2018-10-01"</span>),</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>         date <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2018-11-07"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date)) <span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> ambient_temperature_raw_c)) <span class="sc">+</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand_limits</span>(<span class="at">y =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="st">'Temp ('</span><span class="sc">~</span>degree<span class="sc">*</span>C<span class="sc">*</span><span class="st">')'</span>)) <span class="sc">+</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_datetime</span>(<span class="at">date_breaks =</span> <span class="st">"1 week"</span>, </span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">limits =</span> <span class="fu">as_datetime</span>(<span class="fu">c</span>(<span class="st">"2018-10-01"</span>, <span class="st">"2018-12-15"</span>)),</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_labels =</span> <span class="st">"%d-%b"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display column-body-outset">
+<p><img src="index_files/figure-html/QE HFX temp 2-1.png" class="img-fluid" width="1536"></p>
+</div>
+</div>
+</section>
+<section id="second-solution-attempt" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="second-solution-attempt">Second solution attempt</h3>
+<p>We went back to the building manager to show that it wasn’t fully resolved. This time, they changed the vents to point further away from the building and towards the doorway. Another factor to this saga was that the thermostat to the room was directly behind the QE HF-X. Therefore a work order was placed to change the location of the thermostat to a different part of the room.</p>
+<p>With this work, we finally reached a steady state in temperature.</p>
+<div class="cell page-columns page-full">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(date <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">"2018-10-01"</span>),</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>         date <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">"2018-12-15"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date)) <span class="sc">+</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> ambient_temperature_raw_c)) <span class="sc">+</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand_limits</span>(<span class="at">y =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">22</span>) <span class="sc">+</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="fu">expression</span>(<span class="st">'Temp ('</span><span class="sc">~</span>degree<span class="sc">*</span>C<span class="sc">*</span><span class="st">')'</span>)) <span class="sc">+</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_datetime</span>(<span class="at">date_breaks =</span> <span class="st">"1 week"</span>, </span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">limits =</span> <span class="fu">as_datetime</span>(<span class="fu">c</span>(<span class="st">"2018-10-01"</span>, <span class="st">"2018-12-15"</span>)),</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_labels =</span> <span class="st">"%d-%b"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display column-body-outset">
+<p><img src="index_files/figure-html/QE HFX temp 3-1.png" class="img-fluid" width="1536"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="conclusions" class="level2">
+<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
+<p>Analyzing data from the instrument log files gave us the evidence we needed to show the building manager that our instrument performance issues stemmed from a facilities problem.</p>
+<p>Since 2018, I’ve used this log file analysis to help troubleshoot or prevent potential issues even before they were real failures. This can be a valuable tool to any mass spectrometrist looking to understand how their instrument is performing.</p>
 
 
 </section>
