@@ -157,11 +157,10 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Processing Thermo Log files</h1>
+      <h1 class="title">Processing Thermo <em>Log</em> files</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">Mass Spectrometry</div>
                 <div class="quarto-category">Thermo</div>
-                <div class="quarto-category">Orbitrap</div>
                 <div class="quarto-category">Log files</div>
               </div>
                   </div>
@@ -215,7 +214,7 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
   </ul></li>
   <li><a href="#putting-it-all-together" id="toc-putting-it-all-together" class="nav-link" data-scroll-target="#putting-it-all-together">Putting it all together</a>
   <ul class="collapse">
-  <li><a href="#reading-many-log-files" id="toc-reading-many-log-files" class="nav-link" data-scroll-target="#reading-many-log-files">Reading many log files</a></li>
+  <li><a href="#reading-many-log-files" id="toc-reading-many-log-files" class="nav-link" data-scroll-target="#reading-many-log-files">Reading many <em>log</em> files</a></li>
   <li><a href="#instrument-readbacks" id="toc-instrument-readbacks" class="nav-link" data-scroll-target="#instrument-readbacks">Instrument readbacks</a></li>
   <li><a href="#ambient-temperature" id="toc-ambient-temperature" class="nav-link" data-scroll-target="#ambient-temperature">Ambient Temperature</a></li>
   <li><a href="#ultra-high-uhv-vacuum-pressure" id="toc-ultra-high-uhv-vacuum-pressure" class="nav-link" data-scroll-target="#ultra-high-uhv-vacuum-pressure">Ultra High (UHV) Vacuum pressure</a></li>
@@ -244,7 +243,7 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 <section id="background" class="level2">
 <h2 class="anchored" data-anchor-id="background">Background</h2>
 <p>Thermo mass spectrometers record daily <em>log</em> files that contain a lot of valuable information regarding the status of each instrument. The <em>log</em> files record data for temperature, pressure, voltages, etc. from numerous guages. Visualizing this data longitudinally can help assess instrument performance.</p>
-<p>In this blog post, I will show you were to find the <em>log</em> files, how to import them, and how to visualize.</p>
+<p>In this blog post, I will show you were to find the <em>log</em> files, how to import and visualize them.</p>
 <section id="supported-instruments" class="level3">
 <h3 class="anchored" data-anchor-id="supported-instruments">Supported Instruments</h3>
 <ul>
@@ -267,6 +266,7 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 <section id="tribrids" class="level4">
 <h4 class="anchored" data-anchor-id="tribrids">Tribrids</h4>
 <p><code>C:\Thermo\Instruments\TNG\OrbitrapXXXXX\X.X\System\logs</code></p>
+<p>where <code>OrbitrapXXXXX</code> can be <code>OrbitrapFusion</code> or <code>OrbitrapEclipse</code> and <code>X.X</code> is the software tune version.</p>
 </section>
 </section>
 </section>
@@ -296,8 +296,8 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>logfile <span class="ot">&lt;-</span> <span class="fu">read.delim2</span>(file, <span class="at">sep =</span> <span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">header =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>During the file import, I’m using <code>header = FALSE</code>. The instrument log files do not always have the first row with the header information, if at all.</p>
-<p>Additionally, the header row is often embedded multiple times in a single log file. Scroll down and see how many times this log file has the header information. This will need to be cleaned up in subsequent steps.</p>
+<p>During the file import, I’m using <code>header = FALSE</code>. The instrument <em>log</em> files do not always have the first row with the header information, if at all.</p>
+<p>Additionally, the header row is often embedded multiple times in a single log file. Scroll down and see how many times this <em>log</em> file has the header information. This will need to be cleaned up in subsequent steps.</p>
 <div class="cell page-columns page-full">
 <div class="cell-output-display column-body-outset">
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; ">
@@ -3061,10 +3061,10 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 <h3 class="anchored" data-anchor-id="cleaning-up-header">Cleaning up header</h3>
 <p>These are the steps being performed in the following chunk.</p>
 <ol type="1">
-<li>Indexing the rows in a single log file that contain the header-row</li>
+<li>Indexing the rows in a single <em>log</em> file that contain the header-row</li>
 <li>Removing Non-ASCII characters from header</li>
 <li>Assigning a header-row as column names</li>
-<li>Removing all header-rows from log file</li>
+<li>Removing all header-rows from <em>log</em> file</li>
 <li>Cleaning up column names using the <code>janitor</code> package</li>
 </ol>
 <div class="cell">
@@ -3107,7 +3107,7 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 </section>
 <section id="putting-it-all-together" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="putting-it-all-together">Putting it all together</h2>
-<p>This is the function used to import individual log files into a dataframe.</p>
+<p>This is the function used to import individual <em>log</em> files into a dataframe.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>import_orbitrap_logfiles <span class="ot">&lt;-</span> <span class="cf">function</span>(file){</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -3155,7 +3155,7 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 <span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="reading-many-log-files" class="level3">
-<h3 class="anchored" data-anchor-id="reading-many-log-files">Reading many log files</h3>
+<h3 class="anchored" data-anchor-id="reading-many-log-files">Reading many <em>log</em> files</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># directory where log files are kept</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>directory <span class="ot">&lt;-</span> <span class="st">"QEHFX_logfiles/"</span></span>
@@ -3185,7 +3185,7 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 </section>
 <section id="instrument-readbacks" class="level3">
 <h3 class="anchored" data-anchor-id="instrument-readbacks">Instrument readbacks</h3>
-<p>The log files record numerous instrument readbacks including:</p>
+<p>The <em>log</em> files record numerous instrument readbacks including:</p>
 <ul>
 <li>Ambient temperature</li>
 <li>Analyzer temperature</li>
@@ -3494,8 +3494,8 @@ gtag('config', 'G-9E13F99WG4', { 'anonymize_ip': true});
 </section>
 <section id="conclusions" class="level2">
 <h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
-<p>Analyzing data from the instrument log files gave us the evidence we needed to show the building manager that our instrument performance issues stemmed from a facilities problem.</p>
-<p>Since 2018, I’ve used this log file analysis to help troubleshoot or prevent potential issues even before they were real failures. This can be a valuable tool to any mass spectrometrist looking to understand how their instrument is performing.</p>
+<p>Analyzing data from the instrument <em>log</em> files gave us the evidence we needed to show the building manager that our instrument performance issues stemmed from a facilities problem.</p>
+<p>Since 2018, I’ve used this <em>log</em> file analysis to help troubleshoot or prevent potential issues even before they were real failures. This can be a valuable tool to any mass spectrometrist looking to understand how their instrument is performing.</p>
 
 
 </section>

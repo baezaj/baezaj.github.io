@@ -1,5 +1,5 @@
 ---
-title: "Processing Thermo Log files "
+title: "Processing Thermo *Log* files "
 # description:
 author:
   - name: Josue Baeza
@@ -7,7 +7,7 @@ author:
     orcid: 0000-0003-4960-3905
 date: 06-6-2024
 date-modified: last-modified
-categories: [Mass Spectrometry, Thermo, Orbitrap, Log files] # self-defined categories
+categories: [Mass Spectrometry, Thermo, Log files] # self-defined categories
 # image: 
 toc: true
 toc-location: left
@@ -19,7 +19,7 @@ draft: false
 
 Thermo mass spectrometers record daily *log* files that contain a lot of valuable information regarding the status of each instrument. The *log* files record data for temperature, pressure, voltages, etc. from numerous guages. Visualizing this data longitudinally can help assess instrument performance.
 
-In this blog post, I will show you were to find the *log* files, how to import them, and how to visualize.
+In this blog post, I will show you were to find the *log* files, how to import and visualize them.
 
 ### Supported Instruments
 
@@ -43,6 +43,8 @@ Data is located in the following directories for the different instruments
 #### Tribrids
 
 `C:\Thermo\Instruments\TNG\OrbitrapXXXXX\X.X\System\logs`
+
+  where `OrbitrapXXXXX` can be `OrbitrapFusion` or `OrbitrapEclipse` and `X.X` is the software tune version.
 
 ## Reading a *log* file
 
@@ -87,9 +89,9 @@ logfile <- read.delim2(file, sep = "\t", header = FALSE)
 
 ```
 
-During the file import, I'm using `header = FALSE`. The instrument log files do not always have the first row with the header information, if at all.
+During the file import, I'm using `header = FALSE`. The instrument *log* files do not always have the first row with the header information, if at all.
 
-Additionally, the header row is often embedded multiple times in a single log file. Scroll down and see how many times this log file has the header information. This will need to be cleaned up in subsequent steps.
+Additionally, the header row is often embedded multiple times in a single log file. Scroll down and see how many times this *log* file has the header information. This will need to be cleaned up in subsequent steps.
 
 ```{r}
 #| label: Displaying table
@@ -109,10 +111,10 @@ logfile[,1:7] %>%
 
 These are the steps being performed in the following chunk.
 
-1.  Indexing the rows in a single log file that contain the header-row
+1.  Indexing the rows in a single *log* file that contain the header-row
 2.  Removing Non-ASCII characters from header
 3.  Assigning a header-row as column names
-4.  Removing all header-rows from log file
+4.  Removing all header-rows from *log* file
 5.  Cleaning up column names using the `janitor` package
 
 ```{r}
@@ -161,7 +163,7 @@ logfile$date <- ymd_hms(logfile$date)
 
 ## Putting it all together
 
-This is the function used to import individual log files into a dataframe.
+This is the function used to import individual *log* files into a dataframe.
 
 ```{r}
 #| label: Import function
@@ -216,7 +218,7 @@ import_orbitrap_logfiles <- function(file){
 
 ```
 
-### Reading many log files
+### Reading many *log* files
 
 ```{r}
 #| label: Reading log files
@@ -254,7 +256,7 @@ data <- log %>%
 
 ### Instrument readbacks
 
-The log files record numerous instrument readbacks including:
+The *log* files record numerous instrument readbacks including:
 
 -   Ambient temperature
 -   Analyzer temperature
@@ -459,6 +461,6 @@ data %>%
 
 ## Conclusions
 
-Analyzing data from the instrument log files gave us the evidence we needed to show the building manager that our instrument performance issues stemmed from a facilities problem. 
+Analyzing data from the instrument *log* files gave us the evidence we needed to show the building manager that our instrument performance issues stemmed from a facilities problem. 
 
-Since 2018, I've used this log file analysis to help troubleshoot or prevent potential issues even before they were real failures. This can be a valuable tool to any mass spectrometrist looking to understand how their instrument is performing. 
+Since 2018, I've used this *log* file analysis to help troubleshoot or prevent potential issues even before they were real failures. This can be a valuable tool to any mass spectrometrist looking to understand how their instrument is performing. 
